@@ -27,7 +27,7 @@ public class TestDecisionListeners {
 	@Test
 	public void testBaselineListenerListEmpty(){
 		ApplicationControllers.getDecisionController().setDecisionFiredListeners(listenerList);
-		assertEquals("Baseline Decision listeners should be zero", 0, ApplicationControllers.getDecisionController()
+		assertEquals("Baseline Decision listeners should start at zero", 0, ApplicationControllers.getDecisionController()
 				.getDecisionFiredListeners().size());
 	}
 	

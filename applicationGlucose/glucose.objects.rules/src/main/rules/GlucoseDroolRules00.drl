@@ -1,5 +1,8 @@
 package glucose.decision.rules  
 
+// I removed system out commands to improve developer experience.
+// Mike Dean
+
 import glucose.decision.object.GlucoseDecision;
 
 global Integer severeHypoglycemiaLimit;
