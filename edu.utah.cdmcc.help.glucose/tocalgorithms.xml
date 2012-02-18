@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Algorithms">
+	<topic label="Definitions" href="html/algorithms/definitions.html" />
+	<topic label="Units of Measure" href="html/algorithms/units.html" /> 
+	<topic label="Assessing Glucose" href="html/algorithms/assessglucose.html"/> 
+	<topic label="Dosing Insulin" href="html/algorithms/insulin.html" />
+	<topic label="Treating Hypoglycemia" href="html/algorithms/hypoglycemia.html" /> 
+	<topic label="Changes in Carbohydrate Intake" href="html/algorithms/carbohydrate.html" />
+</toc>

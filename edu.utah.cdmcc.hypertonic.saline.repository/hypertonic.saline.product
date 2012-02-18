@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Hypertonic Saline in ICP" uid="hypertonic.saline.product" id="edu.utah.cdmcc.decisionsupport.hypertonic.saline.application.product1" application="edu.utah.cdmcc.decisionsupport.hypertonic.saline.application.hypertonicsaline" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/edu.utah.cdmcc.decisionsupport.hypertonic.saline.application/icons/about.gif"/>
+      <text>
+         %aboutText
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <programArgs>-consoleLog</programArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i32="/edu.utah.cdmcc.decisionsupport.hypertonic.saline.application/icons/32gif.gif"/>
+
+   <splash
+      location="edu.utah.cdmcc.decisionsupport.hypertonic.saline.application"
+      handlerType="interactive" />
+   <launcher name="HypertonicSalineRCP">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <intro introId="edu.utah.cdmcc.decisionsupport.hypertonic.saline.application.intro1"/>
+
+   <vm>
+   </vm>
+
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="edu.utah.cdmcc.feature.hypertonic.saline" version="1.0.0.qualifier"/>
+      <feature id="org.eclipse.rcp" version="3.7.1.r37x_v20110729-9DB5FmNFnFLSFCtLxnRfMqt15A4A"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
+      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
+   </configurations>
+
+</product>

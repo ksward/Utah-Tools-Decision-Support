@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+       <session-factory>
+              
+              <!-- MySQL DATABASE PROPERTIES   -->
+                     <property name="hibernate.connection.driver_class">
+                     com.mysql.jdbc.Driver
+                     </property>
+                     <property name="hibernate.connection.url">
+                     jdbc:mysql://localhost:3306/glucose
+                     </property>
+                     <property name="hibernate.connection.username">root</property>
+                     <property name="hibernate.connection.password">root</property>
+                     <property name="hibernate.dialect">
+                     org.hibernate.dialect.MySQLDialect
+                     </property>
+            
+              <!-- HSQLDB DATABASE PROPERTIES -->
+              <!--        			
+              <property name="hibernate.connection.driver_class">
+                     org.hsqldb.jdbcDriver
+              </property>
+              <property name="hibernate.connection.url">
+                     jdbc:hsqldb:hsql://localhost
+              </property>
+              <property name="hibernate.connection.username">sa</property>
+              <property name="hibernate.dialect">
+                     org.hibernate.dialect.HSQLDialect
+              </property>
+              -->
+              
+              <!-- CONNECTION POOL PROPERTIES -->
+              <property name="current_session_context_class">thread</property>
+              <property name="hibernate.c3p0.min_size">5</property>
+              <property name="hibernate.c3p0.max_size">20</property>
+              <property name="hibernate.c3p0.timeout">1800</property>
+              <property name="hibernate.c3p0.max_statements">50</property>
+              <property name="hibernate.c3p0.max_statements_per_connection">50</property>
+              
+              <!-- SQL DETAIL PROPERTIES -->   
+              <property name="hibernate.show_sql">false</property> 
+              <property name="hibernate.format_sql">false</property>
+              <property name="hibernate.use_sql_comments">false</property>
+              
+              <!-- EXPERIMENTAL CRAP -->
+              <!--
+                     <property name="hibernate.generate_statistics">true</property>
+              -->	
+              
+              <!-- TRANSACTION PROPERTIES -->
+              <property name="hibernate.transaction.auto_close_session">false</property>
+              
+              <!-- CLASSES TO BE MAPPED BY HIBERNATE -->
+        <mapping class="core.patient.object.Patient" />
+        <mapping class="core.decision.object.ClinicalDecision" />
+        <mapping class="glucose.decision.object.GlucoseDecision" />
+ 	    <mapping class="core.laboratory.object.BasicLaboratoryObject"/>
+ 	    <mapping class="core.laboratory.object.SingleValueLaboratoryObject"/>
+ 	    <mapping class="core.laboratory.object.SerumGlucoseLaboratoryResult"/>
+        <mapping class="core.user.object.User" />                 
+              
+              <!-- HIBERNATE VALIDATORS -->
+              <event type="pre-update">
+                     <listener class="org.hibernate.validator.event.ValidatePreUpdateEventListener"/>
+              </event>
+              <event type="pre-insert">
+                     <listener class="org.hibernate.validator.event.ValidatePreInsertEventListener"/>
+              </event>		
+       </session-factory>
+       
+</hibernate-configuration>
+

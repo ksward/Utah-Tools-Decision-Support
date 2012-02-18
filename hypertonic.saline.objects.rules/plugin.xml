@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="objects.rules.preference.parent"
+            class="drools.preferences.DroolsPreferencePage"
+            id="hypertonic.objects.rules.page1"
+            name="Drools Preferences">
+      </page>
+      <page
+            category="objects.rules.preference.parent"
+            class="hypertonic.saline.preferences.HypertonicSalinePreferencePage"
+            id="edu.utah.cdmcc.decisionsupport.hypertonic.saline.preferencepage"
+            name="Hypertonic Saline Preferences">
+      </page>
+      <page
+            class="decisionsupport.preferences.DecisionSupportPreferenceParentPage"
+            id="objects.rules.preference.parent"
+            name="Decision Support Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="drools.preferences.DroolsPreferenceInitializer"/>
+      <initializer
+            class="hypertonic.saline.preferences.HypertonicSalinePreferenceInitializer">
+      </initializer>
+   </extension>
+</plugin>

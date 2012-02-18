@@ -1,0 +1,9 @@
+This splashhandler includes the necessary hooks to check user accounts and set the administrative roles properly.
+
+Unfortunately, when an RCP product is created with a splash handler indicated, the PDE creates a package in the
+specific application plugin, which does not include this code.  If we erase that package, then the PDE creates a
+new one.
+
+The solution is to copy THIS class into that plugin package.  Once it exists, the PDE does not overwrite it.
+
+So I am keeping this version here, but it has to be manually copied if a new domain application is developed.

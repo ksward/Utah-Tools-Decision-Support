@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Application Core Tests
+Bundle-SymbolicName: edu.utah.cdmcc.application.core.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: J. Michael Dean
+Fragment-Host: edu.utah.cdmcc.decisionsupport.application.core;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.8.2"

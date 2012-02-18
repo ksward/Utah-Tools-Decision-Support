@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: edu.utah.cdmcc.glucose.swtbot.tests
+Bundle-SymbolicName: edu.utah.cdmcc.glucose.swtbot.tests;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: 
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.swtbot.go,
+ org.apache.log4j,
+ org.eclipse.swtbot.eclipse.ui;bundle-version="2.0.5",
+ org.eclipse.swtbot.forms.finder;bundle-version="2.0.5",
+ org.eclipse.swtbot.eclipse.spy;bundle-version="2.0.5"
+Eclipse-RegisterBuddy: org.apache.log4j
+

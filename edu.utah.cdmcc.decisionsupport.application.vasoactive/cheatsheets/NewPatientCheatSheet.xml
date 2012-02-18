@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+	title="Adding a new patient to the Decision Support database">
+	<intro href="edu.utah.cdmcc.help.patientsView">
+		<description>
+			This cheat sheet will show you how to add a new patient to
+			the Decision Support application database.
+		</description>
+	</intro>
+	<item title="Add a Patient" skip="true">
+		<description>
+		Select the File -> New Patient command.
+		This opens the New Research Patients wizard.
+		On the first page, enter the demographic information 
+		and then click on the Next button.  You must enter values
+		for all the fields on this page. On the next page, enter the weight
+		and height;  you may select the units that you prefer.  The
+		program will actually store the values for the metric system.
+		Click on the Next button. 
+		Now select the study that your patient is enrolled for, and select
+		your institution.  Enter a number between 1 and 9999 into the
+		next field, and click on the button Construct TrialDB Number.
+		This should result in a study number in the adjacent field.  When
+		this happens, click on the Finish button.
+		</description>
+		<command serialization = "edu.utah.cdmcc.commands.NewPatient"/>
+	</item>
+		<item title="What Happens with Blank Fields?" skip="true">
+		<description>
+		Select the File -> New Patient command. This time, however,
+		click on the Next button on the first two pages; on the last page,
+		 click the Finish button.  After you do this, a dialog box
+		 entitled "Error in patient entry" will be displayed, indicating
+		 problems with fields that were not filled with valid values.  Click
+		 OK and then either complete the fields or click the Cancel button.		
+		</description>
+		<command serialization = "edu.utah.cdmcc.commands.NewPatient"/>	
+	</item>
+</cheatsheet>

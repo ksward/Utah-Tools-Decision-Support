@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Glucose Tests
+Bundle-SymbolicName: glucose.objects.rules.tests
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: glucose.objects.rules;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit4;bundle-version="4.8.1"
+Bundle-Vendor: J. Michael Dean, M.D.
+Export-Package: glucose.core.tests
+Import-Package: org.hibernate,
+ org.hibernate.tool.hbm2ddl,
+ org.hsqldb

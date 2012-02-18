@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Glucose Help Plug-in
+Bundle-SymbolicName: edu.utah.cdmcc.help.glucose; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.help.webapp,
+ org.eclipse.help.ui
+Bundle-Vendor: J. Michael Dean, M.D.
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

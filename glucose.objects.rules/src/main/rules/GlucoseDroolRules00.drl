@@ -1,0 +1,678 @@
+package glucose.decision.rules  
+
+import glucose.decision.object.GlucoseDecision;
+
+global Integer severeHypoglycemiaLimit;
+global Integer moderateHypoglycemiaLimit;
+global Integer mildHypoglycemiaLimit;
+global Integer lowerRangeLimit;
+global Integer upperRangeLimit;
+global Integer adultWeightLimit;    /*limit dextrose bolus to 1 or .5 amp*/
+global String insulinOnlyPerHour;   /*adult or pediatric*/
+
+//Explain the patient state relative to the glucose target range.
+
+rule "Explain glucose above range"
+no-loop
+ruleflow-group "AboveRangeGroup"
+
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration > upperRangeLimit)
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
+		setInsulinMode(insulinOnlyPerHour),
+		explain("The serum glucose concentration is above the targeted range.");
+		}
+		System.out.println(kcontext.getRule().getName());
+		System.out.println(insulinOnlyPerHour);
+end
+
+rule "Explain glucose within range"
+lock-on-active
+ruleflow-group "WithinRangeGroup"
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration <= upperRangeLimit, 
+					serumGlucoseConcentration  >= lowerRangeLimit)
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
+				setInsulinMode(insulinOnlyPerHour),
+			explain("The serums glucose concentration is in the targeted range ("+lowerRangeLimit+" to " 
+								+ upperRangeLimit+").");
+		}
+end
+
+rule "Explain glucose below range but not hypoglycemic"
+no-loop
+ruleflow-group "BelowRangeGroup"
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration < lowerRangeLimit,
+				serumGlucoseConcentration >= mildHypoglycemiaLimit)
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
+			explain("The serum glucose concentration is below the targeted range but above the hypoglycemia threshold.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Explain mild hypoglycemia"	
+no-loop
+ruleflow-group "BelowRangeGroup"
+	when
+		decision : GlucoseDecision( serumGlucoseConcentration < mildHypoglycemiaLimit, 
+									serumGlucoseConcentration > moderateHypoglycemiaLimit )
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
+			explain("The patient has mild hypoglycemia (serum glucose is " + 
+				decision.getSerumGlucoseConcentration() +" mg/dL).");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Explain moderate hypoglycemia"
+no-loop
+ruleflow-group "BelowRangeGroup"
+	when
+		decision : GlucoseDecision( serumGlucoseConcentration <= moderateHypoglycemiaLimit, 
+									serumGlucoseConcentration > severeHypoglycemiaLimit )
+	then 
+		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
+			explain("The patient has moderate hypoglycemia (serum glucose is " + 
+				decision.getSerumGlucoseConcentration() +" mg/dL).");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Explain severe hypoglycemia"
+no-loop
+ruleflow-group "BelowRangeGroup"
+	when
+		decision : GlucoseDecision( serumGlucoseConcentration <= severeHypoglycemiaLimit )
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
+			explain("The patient has severe hypoglycemia (serum glucose is " + 
+				decision.getSerumGlucoseConcentration() +" mg/dL).");
+			}	
+		System.out.println(kcontext.getRule().getName());
+end
+
+//HYPOGLYCEMIA GROUP
+
+rule "Glucose bolus for extreme hypoglycemia"
+// If below the adult weight definition, glucose bolus dose will be 0.5 gm per kg
+lock-on-active
+ruleflow-group "Hypoglycemia"
+	when
+		decision : GlucoseDecision(weight:patientWeight<=adultWeightLimit,
+									serumGlucoseConcentration <= severeHypoglycemiaLimit)
+	then
+		Double bolus = weight * 0.5;
+		modify(decision){	
+		setRecommendedGlucoseBolus(bolus),
+		advise("Administer glucose bolus (0.50 gm/kg = " + bolus + " grams)."),
+		explain( "Glucose bolus recommended because of extreme hypoglycemia (<= " 
+			+ severeHypoglycemiaLimit +" mg/dL).");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Glucose bolus for extreme hypoglycemia and above adult weight definition"
+// If above the adult weight definition, glucose bolus will be capped
+lock-on-active
+ruleflow-group "Hypoglycemia"
+	when
+		decision : GlucoseDecision(weight:patientWeight > adultWeightLimit,
+									serumGlucoseConcentration <= severeHypoglycemiaLimit)
+	then		
+		Double bolus = 0.5 * adultWeightLimit;
+		modify(decision){
+			setRecommendedGlucoseBolus(bolus),
+			advise("Administer glucose bolus ("+ decision.formatOneDecimal(bolus)+" grams total)."),
+			explain( "Glucose bolus recommended because of extreme hypoglycemia (<= " 
+				+ severeHypoglycemiaLimit +" mg/dL)."),
+			explain("The maximum recommended glucose bolus is "+ decision.formatOneDecimal(bolus)+
+				" grams when patient weight > "+adultWeightLimit+" kg.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Glucose bolus for moderate hypoglycemia"
+// If below the adult weight definition, dose will be 0.25 gm per kilogram
+lock-on-active
+ruleflow-group "Hypoglycemia"
+	when
+		decision : GlucoseDecision(weight:patientWeight <= adultWeightLimit,
+									serumGlucoseConcentration <= moderateHypoglycemiaLimit,
+									serumGlucoseConcentration > severeHypoglycemiaLimit)
+	then
+		Double bolus = weight * 0.25;
+		modify(decision){
+			setRecommendedGlucoseBolus(bolus),
+			advise("Administer glucose bolus (0.25 gm/kg = " + bolus + " grams)."),
+			explain("Glucose bolus recommended because of moderate hypoglycemia (between "
+						+severeHypoglycemiaLimit+" and "+moderateHypoglycemiaLimit+" mg/dL).");
+		}	
+		System.out.println(kcontext.getRule().getName());		
+end
+
+rule "Glucose bolus for moderate hypoglycemia and above adult weight definition"
+// If above the adult weight definition, dose will be capped
+lock-on-active
+ruleflow-group "Hypoglycemia"
+	when
+		decision : GlucoseDecision(weight:patientWeight >  adultWeightLimit, 
+									serumGlucoseConcentration <= moderateHypoglycemiaLimit,
+									serumGlucoseConcentration  > severeHypoglycemiaLimit)
+	then
+		Double bolus = 0.25 * adultWeightLimit;
+		modify(decision){
+			setRecommendedGlucoseBolus(bolus),
+			advise("Administer glucose bolus ("+ decision.formatOneDecimal(bolus)+" grams total)."),
+			explain("Glucose bolus recommended because of moderate hypoglycemia (between "
+						+severeHypoglycemiaLimit+" and "+moderateHypoglycemiaLimit+" mg/dL)."),
+			explain("The maximum recommended glucose bolus is "+ decision.formatOneDecimal(bolus)+
+				" grams when patient weight > "+adultWeightLimit+" kg.");
+		}	
+		System.out.println(kcontext.getRule().getName());
+end
+
+
+//NO INSULIN GROUP
+
+rule "Serum glucose within range and insulin is off"
+lock-on-active
+ruleflow-group "NoInsulin"
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration <= upperRangeLimit, 
+		serumGlucoseConcentration  >= lowerRangeLimit, 
+		currentInsulinDripRate <= 0.0)
+	then
+		modify(decision){
+		setRecommendedInsulinDripRate(0.0),
+		advise("Do not give any insulin at this time." );
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Serum glucose below range and insulin is off"
+no-loop
+ruleflow-group "NoInsulin"
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration < lowerRangeLimit, 
+		currentInsulinDripRate <= 0)
+	then
+		modify(decision){
+		setRecommendedInsulinDripRate(0.0),
+		advise("Do not give any insulin at this time.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Serum glucose below range and on insulin"
+no-loop
+ruleflow-group "NoInsulin"
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration < lowerRangeLimit, 
+		currentInsulinDripRate > 0)
+	then
+		modify(decision){
+			setRecommendedInsulinDripRate(0.0),
+			advise("Turn OFF the insulin drip now.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+//Above range and insulin is off. Start insulin UNLESS feeds stopped.
+//START INSULIN GROUP
+
+rule "Feeds off no insulin"
+no-loop
+ruleflow-group "StartInsulin"
+	when decision: GlucoseDecision(serumGlucoseConcentration >upperRangeLimit, 
+	currentInsulinDripRate  <= 0, 
+	carbohydrateStatus == 2)
+	then
+	//Double adjustedRate = 0.0;
+		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
+		    explain("Do not begin insulin for at least one hour after a decrease in feeds."),
+		    setRecommendedInsulinDripRate (0.0)
+		    //setRecommendedInsulinDripRate(adjustedRate)};
+		    };
+		System.out.println(kcontext.getRule().getName());
+end
+
+//Adult start dose is given in units/hour and is adjusted for patient weight
+rule "Start insulin adult"
+no-loop
+ruleflow-group "StartInsulin"
+	when
+		decision : GlucoseDecision(glucose:serumGlucoseConcentration > upperRangeLimit, 
+		currentInsulinDripRate  <= 0, 
+		carbohydrateStatus != 2, 
+		insulinMode == "adult",
+		weight:patientWeight)
+		//eval(weight * glucose * 0.00018 >= 0.1)
+	then
+		Double startingDose = weight * 0.00018 * glucose;
+		//startingDose = formatOneDecimal(startingDose);
+		modify(decision){
+			setRecommendedInsulinDripRate(startingDose),
+			explain("Computed dose is " + startingDose + " u/h"),
+			advise ("Start insulin at " + decision.formatOneDecimal(startingDose) + " units/hour.")
+		};
+		System.out.println(kcontext.getRule().getName());
+	end
+
+//Pediatric start dose is given in units/kg/hour
+rule "Start insulin pediatric"
+no-loop
+ruleflow-group "StartInsulin"
+	when
+		decision : GlucoseDecision(glucose:serumGlucoseConcentration > upperRangeLimit, 
+		currentInsulinDripRate  <= 0, 
+		carbohydrateStatus != 2, 
+		insulinMode == "pediatric",
+		weight:patientWeight)
+		//eval(weight * glucose * 0.00018 >= 0.1)
+	then
+		Double startingDose = 0.00018 * glucose;
+		//startingDose = formatTwoDecimals(startingDose);
+		modify(decision){
+			setRecommendedInsulinDripRate(startingDose),
+			explain("Computed dose is " + startingDose + " u/kg/h"),
+			advise ("Start insulin at " + decision.formatTwoDecimals(startingDose) + " units/kg/hour.")
+		}
+		System.out.println(kcontext.getRule().getName());
+	end
+
+
+//ADJUST INSULIN NODE
+//within or above range and insulin is on	
+
+
+rule "Adjust insulin adult" 
+no-loop
+ruleflow-group "AdjustInsulin"
+//adjustInsulinRate is a function in the java code of the GlucoseDecision object
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+		glucoseChangePerHour != null,
+		carbohydrateStatus != 2,
+		currentInsulinDripRate > 0.0,
+		insulinMode == "adult"
+		)
+	then
+		Double adjustedRate = decision.adjustInsulinRate(lowerRangeLimit, upperRangeLimit);
+		modify(decision){	
+		setRecommendedInsulinDripRate(adjustedRate),
+		explain("Computed dose is " + decision.formatOneDecimal(adjustedRate) + " u/h");
+		}	
+		System.out.println(kcontext.getRule().getName());
+		System.out.println("Adult dose computed");	
+end
+
+rule "Adjust insulin pediatric"
+no-loop
+ruleflow-group "AdjustInsulin"
+//adjustInsulinRatePed is a function in the java code of the GlucoseDecision object
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+		glucoseChangePerHour != null,
+		carbohydrateStatus != 2,
+		currentInsulinDripRate > 0.0,
+		insulinMode == "pediatric",
+		weight:patientWeight)
+	then
+		Double adjustedRate = decision.adjustInsulinRatePed(lowerRangeLimit, upperRangeLimit);
+		
+		modify(decision){	
+		setRecommendedInsulinDripRate(adjustedRate),
+		explain("Computed dose is " + decision.formatTwoDecimals(adjustedRate) + " u/kg/h");
+		}	
+		System.out.println(kcontext.getRule().getName());	
+		System.out.println("Pediatric computed dose = " + adjustedRate);
+end
+
+
+rule "Adjust insulin for insulin running but no previous"
+no-loop
+lock-on-active 
+ruleflow-group "AdjustInsulin"
+//dose change computation requires two glucose values
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration >= lowerRangeLimit,
+		glucoseChangePerHour == null,
+		carbohydrateStatus != 2,
+		currentInsulinDripRate: currentInsulinDripRate > 0.0)
+	then
+		Double adjustedRate = currentInsulinDripRate;
+		modify(decision){
+		setMinutesToNextEvaluation(decision.ONE_HOUR),	
+		setRecommendedInsulinDripRate(adjustedRate),
+		explain("No change. Unable to compute a new insulin dose until there are at least two glucose values.");
+		}	
+		System.out.println(kcontext.getRule().getName());	
+end
+
+
+rule "Feeds off insulin running"
+no-loop
+lock-on-active 
+ruleflow-group "AdjustInsulin"
+	when 
+		decision: GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+		currentInsulinDripRate > 0.0,
+		carbohydrateStatus == 2)
+	then
+	Double adjustedRate = 0.0;
+		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
+		    explain("The insulin needs to be turned off for one hour after a decrease in feeds."),
+		    setRecommendedInsulinDripRate(adjustedRate)};
+		System.out.println(kcontext.getRule().getName());
+end
+
+
+//Meta-rules: Doubling, Minimum dose of insulin, Maximum dose of insulin
+//REFINE INSULIN GROUP
+rule "Refine Doubling "
+//new dose should not be more than twice the previous dose
+lock-on-active
+ruleflow-group "RefineInsulin"
+salience 1000
+when
+	decision: GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+	recommendedInsulinDripRate > 0.0,
+	currentInsulinDripRate > 0.0)
+	eval(decision.getRecommendedInsulinDripRate() > (2.0 * decision.getCurrentInsulinDripRate()))		
+then
+	Double refinedRate = (decision.getCurrentInsulinDripRate() * 2.0);
+		modify(decision){
+			setRecommendedInsulinDripRate(refinedRate),
+			explain("The new insulin dose is not allowed to be more than twice the current dose.");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Refine max dose adult"
+// maxDose = 42 for u/h mode
+lock-on-active
+ruleflow-group "RefineInsulin"
+salience 900
+when
+	decision: GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+	insulinMode == "adult",
+	recommendedInsulinDripRate > 42.0)
+then
+	Double refinedRate = 42.0;
+	modify(decision){
+			setRecommendedInsulinDripRate(refinedRate),
+			explain("The computed insulin dose is greater than the maximum dose allowed by the protocol.");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Refine max dose pediatric"
+// maxDose = 42 for u/h mode
+lock-on-active
+ruleflow-group "RefineInsulin"
+salience 900
+when
+	decision: GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+	insulinMode == "pediatric",
+	recommendedInsulinDripRate > 0.6)
+then
+	Double refinedRate = 0.6;
+	modify(decision){
+			setRecommendedInsulinDripRate(refinedRate),
+			explain("The computed insulin dose is greater than the maximum dose allowed by the protocol.");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Refine minimum dose adult"
+//minDose = 0.5 for u/h mode
+lock-on-active
+ruleflow-group "RefineInsulin"
+salience 800
+when
+	decision: GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+	insulinMode == "adult",
+	recommendedInsulinDripRate < 0.5)
+then
+	Double refinedRate = 0.0;
+		modify(decision){
+			setRecommendedInsulinDripRate(refinedRate),
+			explain("The computed insulin dose is below the minimum dose allowed by the protocol.");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Refine minimum dose pediatric"
+//minDose = 0.01 for u/kg/h mode
+lock-on-active
+ruleflow-group "RefineInsulin"
+salience 800
+when
+	decision: GlucoseDecision(serumGlucoseConcentration >=lowerRangeLimit,
+	insulinMode == "pediatric",
+	recommendedInsulinDripRate < 0.01)
+then
+	Double refinedRate = 0.0;
+		modify(decision){
+			setRecommendedInsulinDripRate(refinedRate),
+			explain("The computed insulin dose is below the minimum dose allowed by the protocol.");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+//check fast drop rule
+rule "Fast drop"
+lock-on-active
+ruleflow-group "RefineInsulin"
+salience 700
+	when
+		decision : GlucoseDecision(serumGlucoseConcentration  >= mildHypoglycemiaLimit,
+		serumGlucoseConcentration < 140,
+		glucoseChangePerHour < -20,
+		carbohydrateStatus != 2)
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
+			explain("The serum glucose is falling faster than desired.");
+			}
+		System.out.println(kcontext.getRule().getName());
+end
+
+// AdviseExplain ruleflow group determines the verbiage of start insulin or adjust insulin messages
+
+
+
+rule "Adjust insulin text TURN OFF"
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision : GlucoseDecision(
+		insulinMode == "adult",
+		currentInsulinDripRate > 0,
+		recommendedInsulinDripRate <= 0.5)
+	then
+		modify(decision){
+		advise("Turn off the insulin drip.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Adjust insulin text TURN OFF pediatric"
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision : GlucoseDecision(
+		insulinMode == "pediatric",
+		currentInsulinDripRate > 0,
+		recommendedInsulinDripRate <= 0.01)
+	then
+		modify(decision){
+		advise("Turn off the insulin drip.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+//adult dosage is rounded to one decimal, so changes of less than .1 magnitude will round to same number
+rule "Adjust insulin text MAINTAIN"
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision : GlucoseDecision(insulinMode == "adult",
+		currentInsulinDripRate > 0,
+		recommendedInsulinDripRate < (decision.getCurrentInsulinDripRate() + 0.1),
+		recommendedInsulinDripRate > (decision.getCurrentInsulinDripRate() - 0.1))
+	then
+		modify(decision){
+		advise("Maintain the insulin drip at " + 
+			decision.formatOneDecimal(decision.getCurrentInsulinDripRate()) + " units/hour.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Adjust insulin text MAINTAIN pediatric"
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision : GlucoseDecision(insulinMode == "pediatric",
+		currentInsulinDripRate > 0,
+		recommendedInsulinDripRate < (decision.getCurrentInsulinDripRate() + 0.005),
+		recommendedInsulinDripRate > (decision.getCurrentInsulinDripRate() - 0.005))
+	then
+		modify(decision){
+		advise("Maintain the insulin drip at " + 
+			decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " units/kg/hour.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Adjust insulin text INCREASE"
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision : GlucoseDecision(
+		insulinMode == "adult",
+		currentInsulinDripRate > 0,
+		recommendedInsulinDripRate >= (decision.getCurrentInsulinDripRate() + 0.1))
+	then
+		modify(decision){
+		advise("Increase the insulin drip from " + decision.formatOneDecimal(decision.getCurrentInsulinDripRate()) + " to " +
+			decision.formatOneDecimal(decision.getRecommendedInsulinDripRate()) + " units/hour.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Adjust insulin text INCREASE pediatric"
+// Warning - has simulation adjustment */
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision : GlucoseDecision(
+		insulinMode == "pediatric",
+		currentInsulinDripRate > 0,
+		serumGlucoseConcentration !=276,
+		recommendedInsulinDripRate >= (decision.getCurrentInsulinDripRate() + 0.005))
+	then
+		modify(decision){
+		advise("Increase the insulin drip from " + decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " to " +
+			decision.formatTwoDecimals(decision.getRecommendedInsulinDripRate()) + " units/kg/hour.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Adjust insulin text INCREASE pediatric pathologic"
+// Warning -  simulation adjustment */
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision : GlucoseDecision(
+		insulinMode == "pediatric",
+		currentInsulinDripRate > 0,
+		serumGlucoseConcentration ==276,
+		recommendedInsulinDripRate >= (decision.getCurrentInsulinDripRate() + 0.005))
+	then
+		modify(decision){
+		advise("Increase the insulin drip from " + decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " to " +
+			"0.6" + " units/kg/hour.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Adjust insulin text DECREASE"
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision: GlucoseDecision(
+		insulinMode=="adult",
+		currentInsulinDripRate > 0,
+		recommendedInsulinDripRate > 0.5,
+		recommendedInsulinDripRate <= (decision.getCurrentInsulinDripRate() - 0.1))
+	then
+		modify(decision){
+		advise("Decrease the insulin drip from " + decision.formatOneDecimal(decision.getCurrentInsulinDripRate()) + " to " +
+			decision.formatOneDecimal(decision.getRecommendedInsulinDripRate()) + " units/hour.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Adjust insulin text DECREASE pediatric"
+no-loop
+ruleflow-group "AdviseExplain"
+	when
+		decision: GlucoseDecision(
+		insulinMode=="pediatric",
+		currentInsulinDripRate > 0,
+		recommendedInsulinDripRate > 0.01,
+		recommendedInsulinDripRate <= (decision.getCurrentInsulinDripRate() - 0.005))
+	then
+		modify(decision){
+		advise("Decrease the insulin drip from " + decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " to " +
+			decision.formatTwoDecimals(decision.getRecommendedInsulinDripRate()) + " units/kg/hour.");
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Set timer if it has not already been assigned"
+no-loop
+ruleflow-group "RefineTimer"
+	when
+		decision : GlucoseDecision(minutesToNextEvaluation:minutesToNextEvaluation)
+		eval(minutesToNextEvaluation == decision.UNASSIGNED_TIME) 			
+	then
+		modify(decision){
+			setMinutesToNextEvaluation(decision.TWO_HOUR);
+		}
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Advise recheck glucose in one hour"
+no-loop
+ruleflow-group "RefineTimer"
+	when
+		decision : GlucoseDecision(minutesToNextEvaluation:minutesToNextEvaluation)
+		eval(minutesToNextEvaluation == decision.ONE_HOUR)
+	then
+		modify(decision){
+			advise("Recheck serum glucose in one hour.")
+		}	
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "Advise recheck glucose in two hours"
+no-loop
+ruleflow-group "RefineTimer"
+	when
+		decision : GlucoseDecision(minutesToNextEvaluation:minutesToNextEvaluation)
+		eval(minutesToNextEvaluation == decision.TWO_HOUR)
+	then
+		modify(decision){
+			advise("Recheck serum glucose in two hours.");
+		}	
+		System.out.println(kcontext.getRule().getName());
+end
+
+/*___________ Simulation study broken rules at value of 276 see adjust insulin text increase______ */
+
+//This is the end of the file

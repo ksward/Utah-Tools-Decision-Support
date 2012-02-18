@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hypertonic Saline Objects and Rules
+Bundle-SymbolicName: edu.utah.generic.objects.rules;singleton:=true
+Bundle-Version: 1.0.0
+Export-Package: activator,
+ drools.engine,
+ hypertonic.decision.object,
+ hypertonic.saline.preferences,
+ patient.laboratory.controller
+Require-Bundle: edu.utah.cdmcc.decisionsupport.objects.core,
+ org.eclipse.ui,
+ org.eclipse.core.runtime;bundle-version="3.4.0",
+ Drools510Runtime;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: J. Michael Dean, M.D.
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Activator: activator.Activator
+Eclipse-RegisterBuddy: org.hibernate.eclipse,  Drools510Runtime
+Eclipse-ExtensibleAPI: true
+Import-Package: org.eclipse.ui.views.properties
+

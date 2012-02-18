@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="Glucose Decision Support Enhanced" uid="edu.utah.cdmcc.glucose.product" id="edu.utah.cdmcc.decisionsupport.glucose.application.product" application="edu.utah.cdmcc.decisionsupport.glucose.application.glucose" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="icons/about.gif"/>
+      <text>
+         %aboutText
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i16="/edu.utah.cdmcc.decisionsupport.glucose.application/icons/alt16.gif"/>
+
+   <splash
+      location="edu.utah.cdmcc.decisionsupport.glucose.application"
+      handlerType="interactive" />
+   <launcher name="GlucoseRCP">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <intro introId="edu.utah.cdmcc.decisionsupport.glucose.application.intro1"/>
+
+   <vm>
+   </vm>
+
+   <license>
+        <text>
+   This is the licensing text that Mike and Kathy need to write.
+         </text>
+   </license>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="edu.utah.cdmcc.feature.glucose" version="1.0.0.qualifier"/>
+      <feature id="org.eclipse.rcp" version="3.7.1.r37x_v20110729-9DB5FmNFnFLSFCtLxnRfMqt15A4A"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+      <plugin id="org.eclipse.osgi" autoStart="true" startLevel="-1" />
+      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="3" />
+   </configurations>
+
+</product>

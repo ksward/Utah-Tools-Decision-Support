@@ -1,0 +1,33 @@
+<contexts>
+	<context id="patientsView">
+		<description>This is the patient view.</description>
+		<topic label="Adding a New Patient"
+			href="html/tasks/newpatient.html" />
+		<topic label="Deleting a Patient"
+			href="html/tasks/deletepatient.html" />
+		<topic label="Editing a Patient"
+			href="html/tasks/editpatient.html" />
+		<topic label="Calculating a Decision"
+			href="html/tasks/calculate.html" />
+	</context>
+	<context id="editorView">
+		<description>
+			This is the editor in which decisions are calculated.
+		</description>
+		<topic label="Entering Patient Data"
+			href="html/tasks/glucosedata.html"/>
+		<topic label="Accepting a Decision"
+			href="html/tasks/accept.html" />
+		<topic label="Declining a Decision"
+			href="html/tasks/decline.html" />
+		<topic label="Moving the Editor Parts"
+			href="html/tasks/adjusteditor.html" />
+	</context>
+	<context id="preferences">
+		<description>This is the preferences page for the glucose decision support tool.
+		</description>
+		<topic label="Changing the Inference Engine" href="html/tasks/preferences.html"/>
+		<topic label="Changing the User Mode" href="html/tasks/preferences.html"/>
+		<topic label="Changing the Database Engine" href="html/tasks/preferences.html"/>
+	</context>
+</contexts>

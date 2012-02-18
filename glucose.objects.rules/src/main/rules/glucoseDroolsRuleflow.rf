@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<process xmlns="http://drools.org/drools-5.0/process"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+         xs:schemaLocation="http://drools.org/drools-5.0/process drools-processes-5.0.xsd"
+         type="RuleFlow" name="glucoseflow" id="glucose.flow.id" package-name="glucose.decision.rules" version="1" routerLayout="2" >
+
+  <header>
+    <imports>
+      <import name="glucose.decision.object.GlucoseDecision" />
+    </imports>
+    <globals>
+      <global identifier="mildHypoglycemiaLimit" type="Integer" />
+      <global identifier="severeHypoglycemiaLimit" type="Integer" />
+      <global identifier="moderateHypoglycemiaLimit" type="Integer" />
+      <global identifier="adultWeightLimit" type="Integer" />
+      <global identifier="insulinOnlyPerHour" type="String" />
+      <global identifier="lowerRangeLimit" type="Integer" />
+      <global identifier="upperRangeLimit" type="Integer" />
+    </globals>
+  </header>
+
+  <nodes>
+    <start id="1" name="Start" x="27" y="20" width="80" height="40" />
+    <split id="2" name="GlucoseRange" x="245" y="14" width="80" height="40" type="2" >
+      <constraints>
+        <constraint toNodeId="5" toType="DROOLS_DEFAULT" name="above target" priority="1" type="rule" dialect="mvel" >GlucoseDecision(serumGlucoseConcentration &gt; upperRangeLimit)</constraint>
+        <constraint toNodeId="4" toType="DROOLS_DEFAULT" name="within target" priority="1" type="rule" dialect="mvel" >GlucoseDecision(serumGlucoseConcentration &lt;= upperRangeLimit, 
+									serumGlucoseConcentration  &gt;= lowerRangeLimit)</constraint>
+        <constraint toNodeId="3" toType="DROOLS_DEFAULT" name="below target" priority="1" type="rule" dialect="mvel" >GlucoseDecision(serumGlucoseConcentration &lt; lowerRangeLimit)</constraint>
+      </constraints>
+    </split>
+    <ruleSet id="3" name="Below Range" x="69" y="89" width="80" height="40" ruleFlowGroup="BelowRangeGroup" />
+    <ruleSet id="4" name="Within Range" x="242" y="90" width="80" height="40" ruleFlowGroup="WithinRangeGroup" />
+    <ruleSet id="5" name="Above Range" x="451" y="89" width="101" height="40" ruleFlowGroup="AboveRangeGroup" />
+    <end id="6" name="End" x="380" y="514" width="80" height="40" />
+    <join id="7" name="Join" x="256" y="446" width="70" height="34" type="2" />
+    <split id="9" name="Hypoglycemia" x="72" y="159" width="80" height="40" type="2" >
+      <constraints>
+        <constraint toNodeId="10" toType="DROOLS_DEFAULT" name="Yes" priority="1" type="rule" dialect="mvel" >GlucoseDecision (serumGlucoseConcentration &lt; mildHypoglycemiaLimit)</constraint>
+        <constraint toNodeId="20" toType="DROOLS_DEFAULT" name="No" priority="1" type="rule" dialect="mvel" >GlucoseDecision (serumGlucoseConcentration &gt;=  mildHypoglycemiaLimit)</constraint>
+      </constraints>
+    </split>
+    <ruleSet id="10" name="Treat Hypoglycemia" x="24" y="307" width="120" height="40" ruleFlowGroup="Hypoglycemia" />
+    <split id="11" name="Insulin On and Within" x="209" y="154" width="128" height="40" type="2" >
+      <constraints>
+        <constraint toNodeId="15" toType="DROOLS_DEFAULT" name="Yes" priority="1" type="rule" dialect="mvel" >GlucoseDecision(currentInsulinDripRate &gt; 0)</constraint>
+        <constraint toNodeId="20" toType="DROOLS_DEFAULT" name="No" priority="1" type="rule" dialect="mvel" >GlucoseDecision(currentInsulinDripRate &lt;= 0)</constraint>
+      </constraints>
+    </split>
+    <split id="12" name="Insulin On and Above" x="425" y="166" width="132" height="40" type="2" >
+      <constraints>
+        <constraint toNodeId="13" toType="DROOLS_DEFAULT" name="No" priority="1" type="rule" dialect="mvel" >decision : GlucoseDecision(currentInsulinDripRate &lt;= 0.0)</constraint>
+        <constraint toNodeId="15" toType="DROOLS_DEFAULT" name="Yes" priority="1" type="rule" dialect="mvel" >decision : GlucoseDecision(currentInsulinDripRate &gt; 0.0)</constraint>
+      </constraints>
+    </split>
+    <ruleSet id="13" name="Start Insulin" x="456" y="271" width="80" height="40" ruleFlowGroup="StartInsulin" />
+    <ruleSet id="14" name="Adjust Insulin" x="335" y="275" width="80" height="40" ruleFlowGroup="AdjustInsulin" />
+    <join id="15" name="Join Insulin On" x="318" y="221" width="96" height="40" type="2" />
+    <ruleSet id="17" name="RefineInsulin" x="388" y="394" width="104" height="40" ruleFlowGroup="RefineInsulin" />
+    <join id="16" name="Join Insulin Dose" x="387" y="333" width="102" height="40" type="2" />
+    <ruleSet id="18" name="Refine Timer" x="244" y="520" width="80" height="40" ruleFlowGroup="RefineTimer" />
+    <join id="20" name="Join No Insulin" x="169" y="306" width="80" height="40" type="2" />
+    <ruleSet id="22" name="No Insulin" x="169" y="389" width="80" height="40" ruleFlowGroup="NoInsulin" />
+    <ruleSet id="24" name="Insulin Message" x="385" y="452" width="108" height="40" ruleFlowGroup="AdviseExplain" />
+  </nodes>
+
+  <connections>
+    <connection from="1" to="2" />
+    <connection from="2" to="3" />
+    <connection from="2" to="4" />
+    <connection from="2" to="5" />
+    <connection from="18" to="6" />
+    <connection from="22" to="7" />
+    <connection from="24" to="7" />
+    <connection from="3" to="9" />
+    <connection from="9" to="10" />
+    <connection from="4" to="11" />
+    <connection from="5" to="12" />
+    <connection from="12" to="13" />
+    <connection from="15" to="14" />
+    <connection from="11" to="15" />
+    <connection from="12" to="15" />
+    <connection from="16" to="17" />
+    <connection from="13" to="16" />
+    <connection from="14" to="16" />
+    <connection from="7" to="18" />
+    <connection from="9" to="20" />
+    <connection from="11" to="20" />
+    <connection from="10" to="20" />
+    <connection from="20" to="22" />
+    <connection from="17" to="24" />
+  </connections>
+
+</process>

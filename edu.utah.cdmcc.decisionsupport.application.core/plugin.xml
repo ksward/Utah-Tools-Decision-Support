@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="objects.rules.preference.parent"
+            class="edu.utah.cdmcc.preferences.StudyPreferencePage"
+            id="edu.utah.cdmcc.decisionsupport.study.preferencePage"
+            name="Study Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="edu.utah.cdmcc.preferences.StudyPreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

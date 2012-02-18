@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+	title="Deleting a patient from the Decision Support database">
+	<intro href="edu.utah.cdmcc.help.patientsView">
+		<description>
+			This cheat sheet will show you how to delete a patient from
+			the Decision Support application database. This action
+			is permanent and removes the patient from the database, so there
+			is a confirmation dialog that will give you a chance to change
+			your mind.
+		</description>
+	</intro>
+	<item title="Select a patient in the Patients view">
+		<description>
+		Select the patient that you wish to delete. 
+		</description>
+	</item>
+	<item title="Delete the patient">
+		<description>
+		Select the Edit -> Delete Patient command. 
+		</description>
+	</item>
+	<item title="Alternative method to delete patient" skip="true">
+		<description>
+		Right click on the patient with your mouse, and
+		Select the Edit -> Delete patient command from the pop-up menu.		
+		</description>
+	</item>
+</cheatsheet>

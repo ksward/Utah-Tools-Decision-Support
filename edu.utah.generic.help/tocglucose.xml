@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Glucose and Insulin in the ICU">
+	<topic label="Glucose Metabolism" href="html/glucose/metabolism.html" />
+	<topic label="Hyperglycemia in the Adult ICU Patient" href="html/glucose/adult.html" > 
+	<topic label="Medical ICU" href="html/glucose/medical.html"/> 
+	<topic label="Surgical ICU" href="html/glucose/surgical.html" />
+	</topic>
+	<topic label="Glucose Control in Children" href="html/glucose/pediatric.html" /> 
+	<topic label="Unresolved Issues" href="html/glucose/unresolved.html" />
+</toc>

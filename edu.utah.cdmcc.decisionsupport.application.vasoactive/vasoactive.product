@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="vasoactive.productID" id="edu.utah.cdmcc.decisionsupport.application.vasoactive.product" application="edu.utah.cdmcc.decisionsupport.application.vasoactive.glucose" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <splash
+      location="edu.utah.cdmcc.decisionsupport.application.vasoactive" />
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.rcp" version="3.5.1.R35x_v20090811-9SA0FxVFqE70OL1ARMrfcO6e7BA6"/>
+      <feature id="vasoactive.feature.project" version="1.0.0.qualifier"/>
+   </features>
+
+
+</product>

@@ -1,0 +1,114 @@
+<!--
+Describes the version(s) of the libraries JBossCache depends on
+Author: Bela Ban
+Version: $Id: dependencies.xml,v 1.5 2006/02/05 03:20:51 bwang Exp $
+ -->
+
+<dependencies>
+   <jdk>1.4</jdk>
+
+   <lib name="beanshell">
+      <jar>bsh-2.0b4.jar</jar>
+      <version>1.3.0</version>
+      <version>2.0b4</version>
+      <description>Embeddable Java source interpreter. Used in distribution demo. </description>
+   </lib>
+
+   <lib name="commons-logging">
+      <jar>commons-logging.jar</jar>
+      <version>1.0.3</version>
+      <description>Apache commons logging. Used in logging now.</description>
+   </lib>
+
+   <lib name="concurrent">
+      <jar>concurrent.jar</jar>
+      <version>1.3.4</version>
+      <description>Doug Lea's concurrent package.</description>
+   </lib>
+
+   <lib name="javassist">
+      <jar>javassist.jar</jar>
+      <version>3.1RC2</version>
+      <description>Simple Java bytecode manipulation. Used by Aop.</description>
+   </lib>
+
+   <lib name="qdox">
+      <jar>qdox.jar</jar>
+      <version>1.4</version>
+      <description>Parser for annotation used in Aop.</description>
+   </lib>
+
+   <lib name="jboss-aop">
+      <jar>jboss-aop.jar</jar>
+      <version>1.3.5</version>
+      <description>Standalone JBoss Aop.</description>
+   </lib>
+
+   <lib name="jboss-aop-15">
+      <jar>jboss-aop-jdk50.jar</jar>
+      <version>1.3.5</version>
+      <description>Standalone JBoss Aop for JDK50.</description>
+   </lib>
+
+   <lib name="jboss-common">
+      <jar>jboss-common.jar</jar>
+      <version>4.0.3</version>
+      <description>JBoss common classes</description>
+   </lib>
+
+   <lib name="jboss-j2ee">
+      <jar>jboss-j2ee.jar</jar>
+      <version>4.0.3</version>
+      <description>j2ee interfaces</description>
+   </lib>
+
+   <lib name="jboss-jmx">
+      <jar>jboss-jmx.jar</jar>
+      <version>4.0.3</version>
+      <description>jmx implementaiton</description>
+   </lib>
+
+   <lib name="jboss-minimal">
+      <jar>jboss-minimal.jar</jar>
+      <version>4.0.3</version>
+      <description></description>
+   </lib>
+
+   <lib name="jboss-system">
+      <jar>jboss-system.jar</jar>
+      <version>4.0.3</version>
+      <description></description>
+   </lib>
+
+   <lib name="jgroups">
+      <jar>jgroups.jar</jar>
+      <version>2.2.7</version>
+      <version>2.2.8</version>
+      <description>Reliable messaging library. Used in replication.</description>
+   </lib>
+
+   <lib name="junit">
+      <jar>junit.jar</jar>
+      <version>3.8.1</version>
+      <description>Unit testing framework. Used for examples.</description>
+   </lib>
+
+   <lib name="sleepycat">
+      <jar>sleepycat/je.jar</jar>
+      <version>1.7.0</version>
+      <version>2.0.54</version>
+      <description>Embeded DB. Used for JE cache loader.</description>
+   </lib>
+
+   <lib name="trove">
+      <jar>trove.jar</jar>
+      <version>1.0.2</version>
+      <description>High performance collections for Java. Used by Aop.</description>
+   </lib>
+
+</dependencies>
+
+
+
+
+

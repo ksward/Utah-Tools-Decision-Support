@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Knowledge">
+	<topic label="Jess Rules Engine" href="html/knowledge/jess.html" />
+	<topic label="Sample Facts" href= "html/knowledge/facts.html"/> 
+	<topic label="Sample Rules" href="html/knowledge/rules.html"/> 
+</toc>

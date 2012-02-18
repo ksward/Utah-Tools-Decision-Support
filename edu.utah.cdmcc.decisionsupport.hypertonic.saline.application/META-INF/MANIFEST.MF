@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hypertonic Saline Decision Support
+Bundle-SymbolicName: edu.utah.cdmcc.decisionsupport.hypertonic.saline.application;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: edu.utah.cdmcc.decisionsupport.application.DecisionSupportActivator
+Bundle-Vendor: J. Michael Dean, M.D.
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.views,
+ org.eclipse.ui.cheatsheets,
+ org.eclipse.ui.forms,
+ org.eclipse.ui.intro,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.eclipse.jdt.debug,
+ org.eclipse.ui.editors,
+ org.eclipse.core.runtime,
+ org.eclipse.jface,
+ org.eclipse.ui.workbench,
+ org.eclipse.jface.databinding,
+ org.eclipse.jface.text,
+ edu.utah.cdmcc.decisionsupport.application.core;bundle-version="1.0.0",
+ edu.utah.cdmcc.decisionsupport.objects.core;bundle-version="1.0.0",
+ Drools510Runtime;bundle-version="1.0.0",
+ hypertonic.saline.objects.rules;bundle-version="1.0.0",
+ edu.utah.hibernate;bundle-version="1.0.0",
+ edu.utah.cdmcc.hsqldb;bundle-version="1.0.0"
+Eclipse-RegisterBuddy: edu.utah.hibernate, Drools510Runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+

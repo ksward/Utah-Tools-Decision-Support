@@ -1,0 +1,11 @@
+The tests in this package are JUnit tests that are run from
+AllDatabaseTests.java - this class uses a global setup to handle
+turning on and off the database server and makes it possible to
+run these tests in reasonable time.
+
+The tests for glucose and patient object addition and deletion are
+located here because of need for access to certain DAO objects
+that I have not been able to completely dissociate from this root.
+My goal is that all tests relating to patients will be in the
+objects.core and all tests relating to glucose decisions will be
+in the glucose.objects.rules plugin.  

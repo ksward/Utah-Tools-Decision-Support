@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Pediatric Ventilator Decision Support Tool" topic="html/toc.html">
+   <topic label="Introduction to Adequately Explicit Protocols">
+      	<link toc="tocgettingstarted.xml"/>
+   </topic>
+   <topic label="Ventilator Management in the PICU">
+      	<link toc="tocglucose.xml"/>
+   </topic>
+   <topic label="Algorithms Used by the Tool">
+   		<link toc="tocalgorithms.xml"/>
+   	</topic>
+   <topic label="Representation of Knowledge by the Tool">
+   		<link toc="tocknowledge.xml"/>
+   	</topic>
+   <topic label="Using the Tool">
+      	<link toc="tocusingtool.xml"/>
+   </topic>
+   <topic label="Database Utilities">
+      	<link toc="tocdatabase.xml"/>
+   </topic>
+   <topic label="Programmer Interface Documentation">
+   		<link toc="tocjavadoc.xml"/>
+   	</topic>
+   	<topic label="References">
+   		<link toc="tocreference.xml"/>
+   	</topic>
+</toc>

@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.utah.cdmcc</groupId>
+	<artifactId>edu.utah.cdmcc.hypertonic.saline.parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Hypertonic Saline Parent Project</name>
+
+	<properties>
+		<tycho-version>0.13.0</tycho-version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- enable tycho build extension -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>edu.utah.cdmcc</groupId>
+							<artifactId>edu.utah.cdmcc.indigo.target</artifactId>
+							<version>1.0.0-SNAPSHOT</version>
+							<classifier>indigo</classifier>
+						</artifact>
+					</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<modules>
+		<module>../edu.utah.cdmcc.encryption</module>
+		<module>../edu.utah.cdmcc.MySQLDriver</module>
+		<module>../Drools510Runtime</module>
+		<module>../edu.utah.cdmcc.hsqldb</module>
+		<module>../edu.utah.hibernate</module>
+		<module>../edu.utah.cdmcc.decisionsupport.objects.core</module>
+		<module>../edu.utah.cdmcc.decisionsupport.objects.core.tests</module>
+		<module>../edu.utah.cdmcc.decisionsupport.application.core</module>
+		<module>../edu.utah.cdmcc.application.core.tests</module>
+		<module>../edu.utah.cdmcc.indigo.target</module>
+		<module>../hypertonic.saline.objects.rules</module>
+		<module>../hypertonic.saline.objects.rules.tests</module>
+		<module>../edu.utah.cdmcc.decisionsupport.hypertonic.saline.application</module>
+<!-- 		<module>../edu.utah.cdmcc.decisionsupport.hypertonic.saline.application.tests</module> -->
+		<module>../edu.utah.cdmcc.help.hypertonic.saline</module>
+		<module>../edu.utah.cdmcc.feature.hypertonic.saline</module>
+		<module>../edu.utah.cdmcc.hypertonic.saline.repository</module>
+		<module>../edu.utah.mockito</module>
+
+	</modules>
+
+
+</project>

@@ -1,0 +1,391 @@
+/* Glucose.clp
+	Glucose.clp is a file containing Jess rules for the Java-based
+	decision support tool being written by J. Michael Dean, M.D.
+	based on pioneering work by Drs. Warner, Morris, and Sorenson,
+	all of the University of Utah School of Medicine.
+
+	File started in July 2006.
+	J. Michael Dean, M.D., M.B.A.
+	University of Utah School of Medicine   */
+
+
+/* 	Global variables for glucose decision support - future consideration
+   	would be to incorporate these into some kind of preferences option
+	inside the java application, and then create shadow facts from there. */
+
+(defglobal ?*lowTargetLimit* = 80)  
+(defglobal ?*glucoseTarget* = 95)
+(defglobal ?*highTargetLimit* = 110)
+(defglobal ?*moderateHypoglycemiaLimit* = 60)
+(defglobal ?*extremeHypoglycemiaLimit* = 40)
+(defglobal ?*pediatricAgeLimit* = (* 14 365))
+(defglobal ?*pediatricWeightLimit* = 50)
+(defglobal ?*minimumAdultInsulinDose* = 0.10)
+(defglobal ?*maximumAdultInsulinDose* = 25)
+(defglobal ?*minimumChildInsulinDose* = 0.10)
+(defglobal ?*maximumChildInsulinDose* = 25)
+(defglobal ?*lowGlucoseDosePerKg* = 0.25)
+(defglobal ?*highGlucoseDosePerKg* = 0.50)
+(defglobal ?*maximumGlucoseBolusDose* = 50.0)
+(defglobal ?*startInsulinDosePer70KgPerGlucose* = 0.012)
+(defglobal ?*startInsulinDosePerKgPerGlucose* = 0.00017143)
+
+/*	Fact templates for decision milestones - these are asserted
+	or retracted by the rules as they fire.				
+*/
+
+(deftemplate adult)
+(deftemplate pediatric)
+(deftemplate currentGlucoseInRange)
+(deftemplate currentGlucoseAboveRange)
+(deftemplate currentGlucoseBelowRange)
+(deftemplate mildHypoglycemia)
+(deftemplate moderateHypoglycemia)
+(deftemplate extremeHypoglycemia)
+(deftemplate insulinOn)
+(deftemplate insulinOff)
+(deftemplate insulinNegligible)
+(deftemplate needInsulinOff)
+(deftemplate needGlucoseBolus)
+(deftemplate recommendedInsulinOff)
+(deftemplate recommendedInsulinOn)
+(deftemplate recommendedInsulinUp)
+(deftemplate recommendedInsulinDown)
+(deftemplate recommendedGlucoseBolus)
+(deftemplate trimInsulinToMax)
+(deftemplate caloriesDecreased)
+(deftemplate caloriesIncreased)
+(deftemplate hypoglycemiaLast6Hours)
+(deftemplate hypoglycemiaLast12hours)
+(deftemplate hypoglycemiaLast24hours)
+(deftemplate glucoseBolusRecommendedLast6Hours)
+(deftemplate glucoseBolusRecommendedLast12Hours)
+(deftemplate glucoseBolusRecommendedLast24Hours)
+
+/*	User defined functions to make it just a little easier
+	append-text: combines two strings with a newline between.
+*/
+
+/*	(load-function edu.utah.cdmcc.jess.extensions.TextAppendFunction)
+
+/* 	Main facts are asserted from within the java application based on classes.
+	Since the persons editing this file may not have access to this code, the
+	slots are listed here for reference.										*/
+
+
+(deftemplate GlucoseDecision
+    (declare (from-class "edu.utah.cdmcc.entities.GlucoseDecision")(slot-specific TRUE)))
+/*	Usable slots:	adviceText - this is where recommendations should be posted
+    				carbohydrateSource - to find out if on carbohydrates or not
+					currentInsulinDripRate - to get current insulin drip rate
+					minutesToNextEvaluation - tell system how long to wait
+    				rationaleText - reasoning for recommendations (in semi English)
+    				recommendedGlucoseBolus - recommended glucose bolus dose
+        			recommendedInsulinBolus - recommended insulin bolus dose
+                	recommendedInsulinDripRate - recommended insulin drip rate
+                	rulesFiredText - trace of the rules (watch all)
+    				serumGlucoseConcentration - to get current glucose concentration
+    				patientAge - age of patient at time of decision (days)
+    				patientWeight - weight of patient at time of decision (kg)
+					patientHeight - height of patient at time of decision (cm)
+  	Other slots should not be manipulated by rules in this file.      
+*/
+
+;; CLASSIFY PATIENT AS A CHILD OR ADULT BASED ON WEIGHT AND AGE
+    
+ (defrule is-child
+    "Definition of child is normally under 14 years and under 50 kg"    
+	(GlucoseDecision {patientAgeDays < ?*pediatricAgeLimit* 
+    	&& patientWeight < ?*pediatricWeightLimit*})  
+    =>
+    	(assert (pediatric)))
+
+ (defrule is-adult
+    "Definition of adult is normally over 14 years and over 50 kg" 
+    (GlucoseDecision {patientAgeDays >= ?*pediatricAgeLimit* 
+    	&& patientWeight >= ?*pediatricWeightLimit*}) 
+    =>
+    	(assert (adult)))
+
+(defrule is-child-though-adult-age
+    "Classify an older individual as a child based on weight"
+    (GlucoseDecision {patientAgeDays >= ?*pediatricAgeLimit* 
+    	&& patientWeight < ?*pediatricWeightLimit*})
+    =>
+		(assert (pediatric)))
+   
+(defrule is-adult-though-child-age
+    "Classify a pediatric individual as an adult based on weight"
+    (GlucoseDecision {patientAgeDays < ?*pediatricAgeLimit* 
+        && patientWeight >= ?*pediatricWeightLimit*})
+    =>
+		(assert (adult)))
+
+;; CLASSIFY GLUCOSE LEVEL AS HYPERGLYCEMIC, NORMOGLYCEMIC, OR HYPOGLYCEMIC
+
+(defrule current-glucose-range-check-normal
+    "Define current glucose status as normal compared to target range."
+    ?decision <- (GlucoseDecision {serumGlucoseConcentration > ?*lowTargetLimit* 
+        && serumGlucoseConcentration <= ?*highTargetLimit*})
+    =>
+        (assert(currentGlucoseInRange))  	
+        (modify ?decision (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+            "The glucose is in the targeted range."))))
+
+(defrule current-glucose-range-check-high
+    "Define current glucose status as high compared to target range."
+    ?decision <- (GlucoseDecision (serumGlucoseConcentration ?value)
+            		{serumGlucoseConcentration > ?*highTargetLimit*})
+    =>
+        (assert(currentGlucoseAboveRange))  	
+        (modify ?decision (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+            "The patient is hyperglycemic. (Glucose is " ?value " mg/dL)."))))
+    
+(defrule current-glucose-range-check-low
+    "Define current glucose status as  low  compared to target range."
+    ?decision <- (GlucoseDecision (serumGlucoseConcentration ?value) 
+        			{serumGlucoseConcentration < ?*lowTargetLimit*}) 
+    =>
+        (assert(currentGlucoseBelowRange))  	
+        (modify ?decision (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+            "The patient is hypoglycemic. (Glucose is " ?value " mg/dL)."))))
+
+;; CLASSIFY HYPOGLYCEMIA AS MILD, MODERATE OR EXTREME
+                
+(defrule mild-hypoglycemia-definition
+	"Define whether hypoglycemia is mild"
+	(currentGlucoseBelowRange)
+	?decision <- (GlucoseDecision {serumGlucoseConcentration >= ?*moderateHypoglycemiaLimit*})
+	=>
+	(assert(mildHypoglycemia))
+            (modify ?decision (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+            "The patient is mildly hypoglycemic (< 80 mg/dL)."))))
+	
+(defrule moderate-hypoglycemia-definition
+		"Define whether hypoglycemia is moderate"
+	(currentGlucoseBelowRange)
+	?decision <- (GlucoseDecision {serumGlucoseConcentration < ?*moderateHypoglycemiaLimit* 
+        && serumGlucoseConcentration >= ?*extremeHypoglycemiaLimit*})
+		=>
+	 (assert(moderateHypoglycemia))
+    		(modify ?decision (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+            "The patient is moderately hypoglycemic (< 60 mg/dL)."))))	
+
+(defrule extreme-hypoglycemia-definition
+	"Define whether hypoglycemia is extreme"
+	(currentGlucoseBelowRange)
+	?decision <- (GlucoseDecision {serumGlucoseConcentration < ?*extremeHypoglycemiaLimit*})
+	=>
+	(assert(extremeHypoglycemia))
+    		(modify ?decision (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+            "The patient is extremely hypoglycemic (< 40 mg/dL)."))))
+	
+;; CHECK WHETHER INSULIN IS ON OR OFF   
+
+(defrule is-insulin-off
+    "Determine if insulin is off"
+    (GlucoseDecision {currentInsulinDripRate == 0.0})
+    =>
+        (assert (insulinOff)))
+
+(defrule is-insulin-on
+    "Determine if insulin is on"
+    (GlucoseDecision {currentInsulinDripRate > 0.0})
+    =>
+        (assert (insulinOn)))           
+
+;; TURN OFF INSULIN IF HYPOGLYCEMIC   
+
+(defrule hypoglycemia-need-insulin-off
+    "If hypoglycemic but insulin on, need it off"
+    (currentGlucoseBelowRange)
+    (insulinOn)
+    =>
+    (assert (needInsulinOff)))
+    
+(defrule recommend-off-insulin-hypoglycemic
+    "If we need the insulin off for hypoglycemia, then recommend it be turned off."
+    (currentGlucoseBelowRange)
+    (needInsulinOff)
+    ?decision <- (GlucoseDecision)
+    =>
+    (assert (recommendedInsulinOff))
+    (modify ?decision (recommendedInsulinDripRate 0.0)
+					  (adviceText (append-text (fact-slot-value ?decision adviceText)
+            			"Turn OFF the insulin drip."))
+    				  (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+           				"The patient is receiving insulin despite being hypoglycemic."))))
+
+;; TREAT HYPOGLYCEMIA WITH GLUCOSE BOLUS IF MODERATE OR EXTREME
+    
+(defrule give-glucose-extreme
+    "Give glucose for extreme hypoglycemia"
+    (extremeHypoglycemia)
+    ?decision <- (GlucoseDecision (patientWeight ?weight))
+    =>
+	(assert(recommendedGlucoseBolus))
+    (modify ?decision (recommendedGlucoseBolus (* ?weight ?*highGlucoseDosePerKg*))
+		 			  (adviceText (append-text (fact-slot-value ?decision adviceText) 
+            			"Administer glucose (0.50 gm/kg = " (format nil "%.2f" (* ?weight ?*highGlucoseDosePerKg*)) " grams)."))
+            		  (rationaleText (append-text (fact-slot-value ?decision rationaleText)
+                        "The glucose bolus is recommended for extreme hypoglycemia (< 40 mg/dL)."))))
+
+(defrule give-glucose-moderate
+    "Give glucose for moderate hypoglycemia"
+    (moderateHypoglycemia)
+    ?decision <- (GlucoseDecision (patientWeight ?weight))
+    =>
+    (assert (recommendedGlucoseBolus))
+    (modify ?decision (recommendedGlucoseBolus (* ?weight ?*lowGlucoseDosePerKg*))
+					  (adviceText (append-text (fact-slot-value ?decision adviceText)
+            				 "Administer glucose (0.25 gm/kg = " (* ?weight ?*lowGlucoseDosePerKg*)"gm.)"))
+            		  (rationaleText (append-text (fact-slot-value ?decision rationaleText)
+                        "The glucose bolus is recommended for moderate hypoglycemia (< 60 mg/dL, >= 40 mg/dL)."))))
+
+
+;; START INSULIN IF NEEDED AND IS CURRENTLY COMPLETELY OFF
+;; If the start dose would be lower than minimum, start at the minimum dose
+ 
+(defrule start-insulin-child
+    "Start pediatric insulin if not already on and glucose is high"
+    (pediatric)
+    (currentGlucoseAboveRange)
+	(insulinOff)
+    ?decision<- (GlucoseDecision (serumGlucoseConcentration ?value) (patientWeight ?weight))
+    =>
+	(assert (recommendedInsulinOn))
+    (modify ?decision (recommendedInsulinDripRate (max (* ?weight ?value ?*startInsulinDosePerKgPerGlucose*)
+                			 ?*minimumChildInsulinDose*))
+	  				  (adviceText  (append-text (fact-slot-value ?decision adviceText)
+             				"Start an insulin drip at " (format nil "%.4f" (max (* ?weight ?value ?*startInsulinDosePerKgPerGlucose*) 
+            				?*minimumChildInsulinDose*)) " units/hour."))
+	 				  (rationaleText (append-text (fact-slot-value ?decision rationaleText)
+            				"The starting dose of insulin is calculated from the patient weight and the glucose value."))))
+    
+(defrule start-insulin-adult
+    "Start adult insulin if not already on and glucose is high"
+    (adult)
+    (currentGlucoseAboveRange)
+	(insulinOff)
+    ?decision<- (GlucoseDecision (serumGlucoseConcentration ?value) (patientWeight ?weight))
+    =>
+	(assert (recommendedInsulinOn))
+    (modify ?decision (recommendedInsulinDripRate (max (* ?weight ?value ?*startInsulinDosePerKgPerGlucose*)
+                			 ?*minimumAdultInsulinDose*))
+	  				  (adviceText  (append-text (fact-slot-value ?decision adviceText)
+             				"Start an insulin drip at " (format nil "%.4f" (max (* ?weight ?value ?*startInsulinDosePerKgPerGlucose*)
+                			 ?*minimumAdultInsulinDose*)) " units/hour."))
+	 				  (rationaleText (append-text (fact-slot-value ?decision rationaleText)
+            				"The starting dose of insulin is calculated from the patient weight and the glucose value."))))
+
+;; TURN OFF INSULIN COMPLETELY IF IT IS AT NEGLIGIBLE DOSE
+
+(defrule is-insulin-negligible-adult
+    "Determine if insulin dose is so low, for an adult patient, that should be turned off"
+    (not (recommendedInsulinOff))
+    ?decision <- (GlucoseDecision {currentInsulinDripRate < ?*minimumAdultInsulinDose*})
+    (insulinOn)
+	(adult)
+    =>
+    (assert (insulinNegligible))
+    ;(assert (needInsulinOff))
+    (modify ?decision (recommendedInsulinDripRate 0.0)
+					  (adviceText (append-text (fact-slot-value ?decision adviceText)
+            			"Turn OFF the insulin drip."))
+    				  (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+           				"The current dose of insulin is negligible for an adult patient, so have recommended turning insulin off."))))
+
+(defrule is-insulin-negligible-child
+    "Determine if insulin dose is so low, for a pediatric patient, that should be turned off"
+    (not (recommendedInsulinOff))
+    ?decision <- (GlucoseDecision {currentInsulinDripRate < ?*minimumChildInsulinDose*})
+    (insulinOn)
+	(pediatric)
+    =>
+    (assert (insulinNegligible))
+    ;(assert (needInsulinOff))
+    (modify ?decision (recommendedInsulinDripRate 0.0)
+					  (adviceText (append-text (fact-slot-value ?decision adviceText)
+            			"Turn OFF the insulin drip."))
+    				  (rationaleText (append-text (fact-slot-value ?decision rationaleText) 
+           				"The current dose of insulin is negligible even for a pediatric patient, so have recommended turning insulin off."))))
+
+
+; TEST CASES FOLLOW
+
+;(printout t crlf "Sample one - child, on insulin, moderate hypoglycemia" crlf)
+;(reset)
+;(assert (GlucoseDecision 
+;        (patientAgeDays (* 13 365)) (patientWeight 3)
+;		(serumGlucoseConcentration 55) (currentInsulinDripRate 5) 
+;        (recommendedInsulinDripRate nil)(recommendedGlucoseBolus nil)
+;        (recommendedInsulinBolus nil)(adviceText "some advice")(rationaleText "")))
+;(watch all)
+;(run)
+;(facts)
+
+;(printout t crlf "Sample two - child, on insulin, extreme hypoglycemia" crlf)
+;(reset)
+;(assert (GlucoseDecision 
+;        (patientAgeDays (* 13 365)) (patientWeight 3)
+;		(serumGlucoseConcentration 15) (currentInsulinDripRate 5) 
+;        (recommendedInsulinDripRate nil)(recommendedGlucoseBolus nil)
+;        (recommendedInsulinBolus nil)(adviceText "some advice")(rationaleText "")))
+;(watch activations)
+;(run)
+;
+;
+;(printout t crlf "Sample two - child, on insulin, extreme hypoglycemia" crlf)
+;(reset)
+;(assert (GlucoseDecision (serumGlucoseConcentration 35) (currentInsulinDripRate 5) 
+;        (patientAgeDays 3000)(patientWeight 3)
+;        (recommendedInsulinDripRate nil)(recommendedGlucoseBolus nil)
+;        (recommendedInsulinBolus nil)(adviceText "some advice")(rationaleText "")))
+;(run)
+;(facts)
+;
+;(printout t crlf "Sample three - child, on insulin, hyperglycemic" crlf)
+;(reset)
+;(assert (GlucoseDecision 
+;        (patientAgeDays (* 13 365)) (patientWeight 3)
+;		(serumGlucoseConcentration 455) (currentInsulinDripRate 5) 
+;        (recommendedInsulinDripRate nil)(recommendedGlucoseBolus nil)
+;        (recommendedInsulinBolus nil)(adviceText "some advice")(rationaleText "")))
+;(run)
+;(facts)
+;
+;(printout t crlf "Sample four - adult, on insulin, moderate hypoglycemia" crlf)
+;(reset)
+;(assert (GlucoseDecision 
+;        (patientAgeDays (* 43 365)) (patientWeight 73)
+;		(serumGlucoseConcentration 55) (currentInsulinDripRate 5) 
+;        (recommendedInsulinDripRate nil)(recommendedGlucoseBolus nil)
+;        (recommendedInsulinBolus nil)(adviceText "some advice")(rationaleText "")))
+;(run)
+;(facts)
+;
+;(printout t crlf "Sample five - adult, on insulin, extreme hypoglycemia" crlf)
+;(reset)
+;(assert (GlucoseDecision 
+;        (patientAgeDays (* 43 365)) (patientWeight 73)
+;		(serumGlucoseConcentration 35) (currentInsulinDripRate 5) 
+;        (recommendedInsulinDripRate nil)(recommendedGlucoseBolus nil)
+;        (recommendedInsulinBolus nil)(adviceText "some advice")(rationaleText "")))
+;(run)
+;(facts)
+;
+;(printout t crlf "Sample six - small adult, not on insulin, hyperglycemia" crlf)
+;(reset)
+;(assert (GlucoseDecision 
+;        (patientAgeDays (* 43 365)) (patientWeight 33)
+;		(serumGlucoseConcentration 455) (currentInsulinDripRate 0.0) 
+;        (recommendedInsulinDripRate nil)(recommendedGlucoseBolus nil)
+;        (recommendedInsulinBolus nil)(adviceText "")(rationaleText "")))
+;(facts)
+;(watch all)
+;(run)
+;(facts)
+;(reset)
+;(run)
+;(ppdefglobal *)
+       

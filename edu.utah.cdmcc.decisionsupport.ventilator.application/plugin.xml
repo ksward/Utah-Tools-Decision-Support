@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
+   <extension
+         id="ventilator"
+         name="Pediatric Ventilator Decision Support Application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            icon="icons/32gif.gif"
+            thread="main"
+            visible="true">
+         <run
+               class="edu.utah.cdmcc.decisionsupport.application.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="edu.utah.cdmcc.decisionsupport.application.PerspectiveNormalUser"
+            icon="icons/human.gif"
+            id="edu.utah.cdmcc.decisionsupport.ventilator.perspective.normalUser"
+            name="Bedside User Perspective">
+      </perspective>
+      <perspective
+            class="edu.utah.cdmcc.decisionsupport.application.PerspectiveAdministrativeUser"
+            icon="icons/human.gif"
+            id="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser"
+            name="Administrative User Perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="edu.utah.cdmcc.decisionsupport.ventilator.perspective.normalUser">
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.views.PatientDemographicView"
+               minimized="false"
+               moveable="true"
+               ratio="0.25f"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.clock"
+               minimized="false"
+               moveable="true"
+               ratio="0.75f"
+               relationship="bottom"
+               relative="edu.utah.cdmcc.decisionsupport.views.PatientDemographicView"
+               showTitle="true"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.decision.table.viewer"
+               minimized="false"
+               moveable="true"
+               ratio="0.75f"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.hypertonic.laboratory.view"
+               minimized="false"
+               moveable="true"
+               relationship="stack"
+               relative="edu.utah.cdmcc.decisionsupport.decision.table.viewer"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser">
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.views.PatientDemographicView"
+               minimized="false"
+               moveable="true"
+               ratio="0.25f"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.clock"
+               minimized="false"
+               moveable="true"
+               ratio="0.75f"
+               relationship="bottom"
+               relative="edu.utah.cdmcc.decisionsupport.views.PatientDemographicView"
+               showTitle="true"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.decision.table.viewer"
+               minimized="false"
+               moveable="true"
+               ratio="0.75f"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="true"
+               id="org.eclipse.ui.views.PropertySheet"
+               minimized="false"
+               moveable="true"
+               ratio="0.5f"
+               relationship="bottom"
+               relative="edu.utah.cdmcc.decisionsupport.views.PatientDemographicView"
+               showTitle="true"
+               standalone="true"
+               visible="true">
+         </view>
+         <view
+               closeable="true"
+               id="edu.utah.cdmcc.decisionsupport.drools.AuditView"
+               minimized="false"
+               moveable="true"
+               relationship="stack"
+               relative="edu.utah.cdmcc.decisionsupport.decision.table.viewer"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="edu.utah.cdmcc.decisionsupport.hypertonic.laboratory.view"
+               minimized="false"
+               moveable="true"
+               relationship="stack"
+               relative="edu.utah.cdmcc.decisionsupport.decision.table.viewer"
+               showTitle="true"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="edu.utah.cdmcc.decisionsupport.clock.core.Clock"
+            icon="icons/topic_small.gif"
+            id="edu.utah.cdmcc.decisionsupport.clock"
+            name="Time to Next Measurement"/>
+      <view
+            class="edu.utah.cdmcc.jface.viewers.DecisionTableView"
+            id="edu.utah.cdmcc.decisionsupport.decision.table.viewer"
+            name="Decision Table"/>
+      <view
+            class="edu.utah.cdmcc.views.drools.AuditView"
+            icon="icons/drools.gif"
+            id="edu.utah.cdmcc.decisionsupport.drools.AuditView"
+            name="Rules Trace"/>
+      <view
+            class="edu.utah.cdmcc.decisionsupport.viewers.PatientDemographicView"
+            id="edu.utah.cdmcc.decisionsupport.views.PatientDemographicView"
+            name="Active Patient"/>
+      <view
+            class="edu.utah.cdmcc.jface.viewers.HypertonicLaboratoryTableView"
+            icon="icons/function_assets.gif"
+            id="edu.utah.cdmcc.decisionsupport.hypertonic.laboratory.view"
+            name="Laboratory Table"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="edu.utah.cdmcc.wizards.NewPatientWizard"
+            icon="icons/human.gif"
+            id="edu.utah.cdmcc.wizards.newPatient"
+            name="New Patient"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="edu.utah.cdmcc.editors.VentilatorDecisionCalculatorEditorBasedOnTemplate"
+            default="false"
+            icon="icons/human.gif"
+            id="edu.utah.cdmcc.decisionsupport.hypertonic.saline.editor.decisionCalculator"
+            name="Patient"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+      <category
+            id="edu.utah.cdmcc.decisionsupport.application.cheatsheets"
+            name="Decision Support Application"/>
+      <cheatsheet
+            category="edu.utah.cdmcc.decisionsupport.application.cheatsheets"
+            composite="false"
+            contentFile="cheatsheets/NewPatientCheatSheet.xml"
+            id="edu.utah.cdmcc.decisionsupport.cheatsheet.newPatient"
+            name="Adding a new patient">
+         <description>
+            This cheat sheet will show you how to add a new patient to the Decision Support database.
+         </description>
+      </cheatsheet>
+      <cheatsheet
+            category="edu.utah.cdmcc.decisionsupport.application.cheatsheets"
+            composite="false"
+            contentFile="cheatsheets/DeletePatientCheatSheet.xml"
+            id="edu.utah.cdmcc.decisionsupport.cheatsheet.deletePatient"
+            name="Deleting a Patient">
+         <description>
+         This cheat sheet will show you how to delete a patient from the Decision Support database.
+         </description>
+      </cheatsheet>
+      <cheatsheet
+      		category="edu.utah.cdmcc.decisionsupport.application.cheatsheets"
+            composite="false"
+            contentFile="cheatsheets/InitializeCheatSheet.xml"
+            id="edu.utah.cdmcc.decisionsupport.cheatsheet.initialize"
+            name="Initializing the database">
+         <description>This cheat sheet will show you how to initialize (erase) the Decision Support database.
+         </description>
+      </cheatsheet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.ui.cheatsheets.actionSet"
+            label="%CHEAT_SHEETS"
+            visible="true">
+         <action
+               class="org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction"
+               id="org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction"
+               label="%CHEAT_SHEETS_MENU"
+               menubarPath="help/CheatSheets"
+               style="push"/>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro">
+
+      <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            id="edu.utah.cdmcc.decisionsupport.ventilator.application.intro">
+      </intro>
+      <introProductBinding
+            introId="edu.utah.cdmcc.decisionsupport.ventilator.application.intro"
+            productId="edu.utah.cdmcc.decisionsupport.ventilator.application.product">
+      </introProductBinding>
+      <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            id="edu.utah.cdmcc.decisionsupport.ventilator.application.intro1">
+      </intro>
+      <introProductBinding
+            introId="edu.utah.cdmcc.decisionsupport.ventilator.application.intro1"
+            productId="edu.utah.cdmcc.decisionsupport.ventilator.application.product1">
+      </introProductBinding>
+
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.config">
+      <config
+            content="introContent.xml"
+            id="edu.utah.cdmcc.decisionsupport.ventilator.application.introConfigId"
+            introId="edu.utah.cdmcc.decisionsupport.ventilator.application.intro">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx"
+                  style="content/shared.css">
+            </implementation>
+         </presentation>
+      </config>
+      <config
+            content="introContent.xml"
+            id="edu.utah.cdmcc.decisionsupport.ventilator.application.introConfigId"
+            introId="edu.utah.cdmcc.decisionsupport.ventilator.application.intro1">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx"
+                  style="content/shared.css">
+            </implementation>
+         </presentation>
+      </config>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="objects.rules.preference.parent"
+            class="edu.utah.cdmcc.decisionsupport.database.preferences.DatabasePreferencePage"
+            id="edu.utah.cdmcc.decisionsupport.database.preferencePage"
+            name="Database Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="edu.utah.cdmcc.decisionsupport.database.preferences.DatabasePreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandlerProductBinding
+            productId="edu.utah.cdmcc.decisionsupport.ventilator.application.product"
+            splashId="edu.utah.cdmcc.decisionsupport.ventilator.application.splashHandlers.interactive">
+      </splashHandlerProductBinding>
+      <splashHandler
+            class="edu.utah.cdmcc.decisionsupport.ventilator.application.splashHandlers.InteractiveSplashHandler"
+            id="edu.utah.cdmcc.decisionsupport.ventilator.application.splashHandlers.interactive">
+      </splashHandler>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="core.patient.object.Patient"
+            class="core.patient.object.PatientPropertiesSourceAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="ventilator.decision.object.VentilatorDecision"
+            
+            class="ventilator.decision.object.VentilatorDecisionPropertySourceAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.ExitHandler"
+            description="Exit the application"
+            id="edu.utah.cdmcc.commands.Exit"
+            name="Exit">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.InitializeDatabaseHandler"
+            description="Initialize (erase) the database"
+            id="edu.utah.cdmcc.commands.InitializeDatabase"
+            name="Initialize database">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.SelectPatientHandler"
+            description="Select active patient"
+            id="edu.utah.cdmcc.commands.SelectPatient"
+            name="Select patient">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.NewPatientHandler"
+            description="New patient"
+            id="edu.utah.cdmcc.commands.NewPatient"
+            name="New patient">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.AddFakePatientsHandler"
+            description="Add fake patients"
+            id="edu.utah.cdmcc.commands.AddFakePatients"
+            name="Add fake patients">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.ShowRuleTraceHandler"
+            description="Show rule trace"
+            id="edu.utah.cdmcc.commands.showRuleTrace"
+            name="Show rule trace">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.VentilatorEditorHandler"
+            description="Open hypertonic saline editor"
+            id="edu.utah.cdmcc.commands.showDomainEditor"
+            name="Open hypertonic saline editor">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.UpdatePatientHandler"
+            description="Update patient information"
+            id="edu.utah.cdmcc.commands.updatePatient"
+            name="Update patient information">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.FilterInvalidDecisionRecordsHandler"
+            description="Invalid Decision Records"
+            id="edu.utah.cdmcc.commands.filterInvalidDecisionRecords"
+            name="Show or hide invalid decision records">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.FilterInvalidLaboratoryRecordsHandler"
+            description="Invalid Laboratory Records"
+            id="edu.utah.cdmcc.commands.filterInvalidLaboratoryRecords"
+            name="Show or hide invalid laboratory records">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.NewGlucoseLaboratoryHandler"
+            description="Serum hypertonic"
+            id="edu.utah.cdmcc.commands.glucoselab"
+            name="Enter new serum hypertonic">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.NewSodiumLaboratoryHandler"
+            description="Serum sodium"
+            id="edu.utah.cdmcc.commands.sodiumlab"
+            name="Enter new serum sodium">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.NewSerumOsmolalityLaboratoryHandler"
+            description="Serum osmolality"
+            id="edu.utah.cdmcc.commands.osmolalitylab"
+            name="Enter new serum osmolality">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.NewUserHandler"
+            description="Add new user"
+            id="edu.utah.cdmcc.commands.addNewUser"
+            name="Add new user">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.TransferPatientsToTargetHandler"
+            description="Transfer data to target database"
+            id="edu.utah.cdmcc.commands.transferData"
+            name="Transfer data">
+      </command>
+      <command
+            defaultHandler="edu.utah.cdmcc.commands.InitializeTargetDatabaseHandler"
+            description="Destroys the non-local target database.  DANGEROUS."
+            id="edu.utah.cdmcc.commands.eraseTARGETDatabase"
+            name="Initialize (DESTROY) target (not local) database">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="pediatricVentilatorMenu"
+               label="Pediatric Ventilation">
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  label="Preferences ..."
+                  style="push"
+                  tooltip="Decision support preferences">
+                  <visibleWhen>
+                  	<with variable="activeWorkbenchWindow.activePerspective">
+                  		<equals value="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser"/>
+                  	</with>
+                  </visibleWhen>                  
+            </command>
+            <separator
+                  name="separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="edu.utah.cdmcc.commands.Exit"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="fileMenu"
+               label="File">
+            <command
+                  commandId="edu.utah.cdmcc.commands.NewPatient"
+                  icon="icons/human.gif"
+                  label="New patient"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="editMenu"
+               label="Edit">
+            <command
+                  commandId="edu.utah.cdmcc.commands.SelectPatient"
+                  icon="icons/human.gif"
+                  label="Select active patient"
+                  style="push"
+                  tooltip="Select the active patient from a list of patients">
+            </command>
+            <command
+                  commandId="edu.utah.cdmcc.commands.updatePatient"
+                  icon="icons/edit.gif"
+                  label="Update patient information"
+                  style="push"
+                  tooltip="Update patient information">
+            </command>
+         </menu>
+         <menu
+               id="labMenu"
+               label="Laboratory">
+            <command
+                  commandId="edu.utah.cdmcc.commands.sodiumlab"
+                  icon="icons/function_assets.gif"
+                  label="Enter serum sodium"
+                  style="push">
+            </command>
+            <command
+                  commandId="edu.utah.cdmcc.commands.osmolalitylab"
+                  icon="icons/function_assets.gif"
+                  label="Enter serum osmolality"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="decisionMenu"
+               label="Decisions">
+                  <visibleWhen>
+                  	<with variable="activeWorkbenchWindow.activePerspective">
+                  		<equals value="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser"/>
+                  	</with>
+                  </visibleWhen>                         
+            <command
+                  commandId="edu.utah.cdmcc.commands.showRuleTrace"
+                  icon="icons/drools-query.GIF"
+                  label="Show rule trace"
+                  style="push"
+                  tooltip="Show detailed tracing of the rules that fired">            
+            </command>
+         </menu>
+         <menu
+               id="databaseMenu"
+               label="Database">
+                  <visibleWhen>
+                  	<with variable="activeWorkbenchWindow.activePerspective">
+                  		<equals value="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser"/>
+                  	</with>
+                  </visibleWhen>
+            <command
+                  commandId="edu.utah.cdmcc.commands.InitializeDatabase"
+                  icon="icons/error_ovr.gif"
+                  label="Initialize (ERASE!) Database"
+                  mnemonic="I"
+                  style="push"
+                  tooltip="Initialize the database.  This DESTROYS all current data.">                              
+                  <visibleWhen>
+                  	<with variable="activeWorkbenchWindow.activePerspective">
+                  		<equals value="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser"/>
+                  	</with>
+                  </visibleWhen>                 
+            </command>
+            <command
+                  commandId="edu.utah.cdmcc.commands.AddFakePatients" 
+                  icon="icons/edit.gif"
+                  label="Add fake patients"
+                  style="push"
+                  tooltip="Add fake patients to database">
+                  <visibleWhen>
+                  	<with variable="activeWorkbenchWindow.activePerspective">
+                  		<equals value="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser"/>
+                  	</with>                 
+                  </visibleWhen>
+            </command>
+            <command
+                  commandId="edu.utah.cdmcc.commands.addNewUser"
+                  icon="icons/edit.gif"
+                  label="Add new user"
+                  style="push"
+                  tooltip="Add new user to system">
+            </command>
+            <command
+                  commandId="edu.utah.cdmcc.commands.transferData"
+                  icon="icons/edit.gif"
+                  label="Transfer data to target"
+                  style="push"
+                  tooltip="Transfer data to target database">
+            </command>
+            <command
+                  commandId="edu.utah.cdmcc.commands.eraseTARGETDatabase"
+                  icon="icons/error_ovr.gif"
+                  label="Initialize (DESTROY) target (NON-LOCAL) database"
+                  style="push"
+                  tooltip="Destroy and initialize the target database (non-local destruction!)">
+            </command>
+         </menu>
+         <menu
+               id="windowMenu"
+               label="Window">
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  label="Show Views"
+                  style="pulldown"
+                  tooltip="Show views">
+                  <visibleWhen>
+                  	<with variable="activeWorkbenchWindow.activePerspective">
+                  		<equals value="edu.utah.cdmcc.decisionsupport.ventilator.perspective.administrativeUser"/>
+                  	</with>
+                  </visibleWhen>                  
+                  
+            </command>
+            <separator
+                  name="separator"
+                  visible="true">                              
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.window.resetPerspective"
+                  label="Reset perspective"
+                  style="push"
+                  tooltip="Reset perspective">
+            </command>
+         </menu>
+         <menu
+               id="helpMenu"
+               label="Help">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  icon="icons/32gif.gif"
+                  label="About Decision Support"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.help.quickStartAction"
+                  label="Welcome page"
+                  style="push">
+            </command>
+            <separator
+                  name="separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.help.displayHelp"
+                  icon="icons/help.gif"
+                  label="Show help contents"
+                  style="push">
+            </command>
+            <separator
+                  name="separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.cheatsheets.openCheatSheet"
+                  label="Decision Support Cheatsheets"
+                  style="push"
+                  tooltip="Helpful instructions on common tasks">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:edu.utah.cdmcc.decisionsupport.decision.table.viewer">
+         <command
+               commandId="edu.utah.cdmcc.commands.filterInvalidDecisionRecords"
+               icon="icons/filter-complete.gif"
+               label="Show or hide invalid decision records"
+               style="push"
+               tooltip="Show or hide decision records that have been checked invalid">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:edu.utah.cdmcc.decisionsupport.hypertonic.laboratory.view">
+         <command
+               commandId="edu.utah.cdmcc.commands.filterInvalidLaboratoryRecords"
+               icon="icons/filter-complete.gif"
+               label="Show or hide invalid laboratory records"
+               style="push"
+               tooltip="Show or hide laboratory records that have been checked invalid">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="edu.utah.cdmcc.decisionsupport.ventilator.application.ventilator"
+            description="Product file for pediatric mechanical ventilation."
+            name="Pediatric Mechanical Ventilation">
+         <property
+               name="appName"
+               value="Pediatric Mechanical Ventilation">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.gif">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/32gif.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="%aboutText">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="edu.utah.cdmcc.decisionsupport.ventilator.application.ventilator"
+            name="Pediatric Mechanical Ventilation">
+         <property
+               name="windowImages"
+               value="icons/32gif.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="%aboutText">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.gif">
+         </property>
+         <property
+               name="appName"
+               value="Pediatric Mechanical Ventilation">
+         </property>
+      </product>
+   </extension>
+   <extension
+         id="product1"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="edu.utah.cdmcc.decisionsupport.ventilator.application.ventilator"
+            name="Pediatric Mechanical Ventilation">
+         <property
+               name="windowImages"
+               value="icons/32gif.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="%aboutText">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.gif">
+         </property>
+         <property
+               name="appName"
+               value="Pediatric Mechanical Ventilation">
+         </property>
+      </product>
+   </extension>
+</plugin>

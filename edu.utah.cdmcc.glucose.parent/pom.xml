@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.utah.cdmcc</groupId>
+	<artifactId>edu.utah.cdmcc.glucose.parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Glucose Parent Project</name>
+	<description>Contains pom.xml to build glucose application as well as the other decision support tools.</description>
+
+	<properties>
+		<tycho-version>0.13.0</tycho-version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- enable tycho build extension -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>edu.utah.cdmcc</groupId>
+							<artifactId>edu.utah.cdmcc.indigo.target</artifactId>
+							<version>1.0.0-SNAPSHOT</version>
+							<classifier>indigo</classifier>
+						</artifact>
+					</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<modules>
+		<module>../edu.utah.cdmcc.encryption</module>
+		<module>../edu.utah.cdmcc.MySQLDriver</module>
+		<module>../Drools510Runtime</module>
+		<module>../edu.utah.cdmcc.hsqldb</module>
+		<module>../edu.utah.hibernate</module>
+		<module>../edu.utah.cdmcc.decisionsupport.objects.core</module>
+		<module>../edu.utah.cdmcc.decisionsupport.objects.core.tests</module>
+		<module>../glucose.objects.rules</module>
+		<module>../glucose.objects.rules.tests</module>
+		<module>../edu.utah.cdmcc.decisionsupport.application.core</module>
+		<module>../edu.utah.cdmcc.application.core.tests</module>
+		<module>../edu.utah.cdmcc.decisionsupport.glucose.application</module>
+		<module>../edu.utah.cdmcc.decisionsupport.glucose.application.tests</module>
+		<module>../edu.utah.cdmcc.glucose.swtbot.tests</module>
+		<module>../edu.utah.cdmcc.help.glucose</module>
+		<module>../edu.utah.cdmcc.feature.glucose</module>
+		<module>../edu.utah.cdmcc.glucose.repository</module>
+		<module>../edu.utah.cdmcc.indigo.target</module>
+		<module>../edu.utah.mockito</module>
+<!-- 		<module>../edu.utah.ventilator.pediatric.objects.rules</module> -->
+<!-- 		<module>../edu.utah.ventilator.pediatric.application</module> -->
+<!-- 		<module>../edu.utah.ventilator.pediatric.help</module> -->
+<!-- 		<module>../edu.utah.cdmcc.feature.pediatric.ventilator</module> -->
+<!-- 		<module>../edu.utah.cdmcc.ventilator.repository</module> -->
+		
+	</modules>
+
+
+</project>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="database utilities">
+	<topic label="About HSQLDB" href="html/utilities/hsqldb.html" />
+	<topic label="Other Databases" href="html/utilities/otherdatabase.html" />
+	<topic label="Initializing Database" href="html/utilities/initialize.html" /> 
+	<topic label="Deleting Records" href="html/utilities/delete.html"/> 
+	<topic label="Archiving Records" href="html/utilities/archive.html" />
+	<topic label="Exporting Records" href="html/utilities/export.html" /> 
+</toc>

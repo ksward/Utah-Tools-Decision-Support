@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hypertonic Saline Help Plug-in
+Bundle-SymbolicName: edu.utah.generic.help;singleton:=true
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.help.webapp,
+ org.eclipse.help.ui
+Bundle-Vendor: Michele Munkwitz, M.D.
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

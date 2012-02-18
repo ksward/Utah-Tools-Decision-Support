@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Getting Started">
+	<topic label="Overview of Subject" href="html/gettingstarted/overview.html" /> 
+	<topic label="Computerized Decision Support Protocols" href="html/gettingstarted/computers.html"> 
+		<topic label="Signal to Noise Problems in Clinical Trials" href="html/gettingstarted/signal_noise.html" />
+		<topic label="Mechanical Ventilator Protocols" href="html/gettingstarted/ventilators.html" /> 
+		<topic label="Fluid Management Protocols" href="html/gettingstarted/fluids.html" />
+		<topic label="Glucose and Insulin Protocols" href="html/gettingstarted/glucose.html" />
+	</topic>
+</toc>

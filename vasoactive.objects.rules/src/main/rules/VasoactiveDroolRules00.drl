@@ -1,0 +1,209 @@
+#created on: Dec 25, 2007
+package vasoactive.decision.rules  
+
+import vasoactive.decision.object.VasoactiveDecision;
+import vasoactive.decision.object.VasoactiveDecisionState;
+import java.util.GregorianCalendar;
+
+rule "Detect Target SystolicBloodPressure"
+	ruleflow-group "Assess"
+	when
+		decision : VasoactiveDecision()
+		decisionState : VasoactiveDecisionState(minimumSystolicBloodPressure == -1)
+	then
+		int targetSystolicBloodPressure = (int) Math.round((double) 70 + 2*(decision.getPatientAgeDays()/365.25));
+		int patientAgeDays = decision.getPatientAgeDays();
+		int tempMinimumSystolicBloodPressure=0;
+		if (patientAgeDays >= 0 && patientAgeDays < 30) {tempMinimumSystolicBloodPressure = 60;}
+		
+		else { 
+			if (patientAgeDays >= 30 && patientAgeDays < 365) {tempMinimumSystolicBloodPressure=70;}
+				else { 
+					if (patientAgeDays >= 365 && patientAgeDays < 365.25*10) {tempMinimumSystolicBloodPressure = targetSystolicBloodPressure;}
+						else {
+							if (patientAgeDays >= 365.25*10) {tempMinimumSystolicBloodPressure=90;}
+						}
+				}
+		}
+		modify(decisionState){	setMinimumSystolicBloodPressure(tempMinimumSystolicBloodPressure); }
+		modify(decisionState){	setWarningSystolicBloodPressure
+			(	(int) Math.round((double) tempMinimumSystolicBloodPressure - 0.25*tempMinimumSystolicBloodPressure));}
+		modify(decisionState){	setMaximumSystolicBloodPressure
+			(	(int) Math.round((double) tempMinimumSystolicBloodPressure + 0.25*tempMinimumSystolicBloodPressure ));}
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect SEVERE Hypotension"
+	ruleflow-group "Assess"
+	when
+		decision : VasoactiveDecision()
+		decisionState : VasoactiveDecisionState(decision.systolicBloodPressure >= 0,
+												decision.systolicBloodPressure < warningSystolicBloodPressure,
+												minimumSystolicBloodPressure != -1,
+												hypotensionLevel == 999)
+	then
+		decision.explain("The current blood pressure below target range (severe hypotension)");
+		modify(decisionState){setHypotensionLevel(VasoactiveDecisionState.SEVERE_HYPOTENSION);}
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect MILD Hypotension"
+	ruleflow-group "Assess"
+	when 
+		decision : VasoactiveDecision()
+		decisionState : VasoactiveDecisionState(decision.systolicBloodPressure >= warningSystolicBloodPressure,
+												decision.systolicBloodPressure < minimumSystolicBloodPressure,
+												minimumSystolicBloodPressure != -1,
+												hypotensionLevel == 999)
+	then
+		decision.explain("The current blood pressure is below target range (mild hypotension).");
+		modify(decisionState){setHypotensionLevel(VasoactiveDecisionState.MILD_HYPOTENSION);}
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect AdequateBP"
+	ruleflow-group "Assess"
+	when 
+		decision : VasoactiveDecision()
+		decisionState : VasoactiveDecisionState(decision.systolicBloodPressure >= minimumSystolicBloodPressure,
+												decision.systolicBloodPressure < maximumSystolicBloodPressure,
+												minimumSystolicBloodPressure != -1,
+												hypotensionLevel == 999)
+	then
+		modify(decisionState){setHypotensionLevel(VasoactiveDecisionState.ADEQUATE_BP);}
+		decision.explain("The current blood pressure is within target range.");
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect Hypertension"
+	ruleflow-group "Assess"
+	when 
+		decision : VasoactiveDecision()
+		decisionState : VasoactiveDecisionState(decision.systolicBloodPressure >= maximumSystolicBloodPressure,
+												hypotensionLevel == 999,
+												minimumSystolicBloodPressure != -1)
+	then
+		modify(decisionState){setHypotensionLevel(VasoactiveDecisionState.HYPERTENSION);}
+		decision.explain("The current blood pressure is above target range.");
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect need for pressor and recommend starting one for mild hypotension"
+	ruleflow-group "Action"
+	when
+		decision : VasoactiveDecision(dopamineInfusionRate==0.0)
+		decisionState : VasoactiveDecisionState(hypotensionLevel==VasoactiveDecisionState.MILD_HYPOTENSION &&
+						 recentAdjustment==false)
+	then
+		modify(decisionState){setRecentAdjustment(true);}
+		modify(decision){setRecommendedDopamineInfusionRate(5.0);}
+		decision.explain("The patient is hypotensive and not on a vasopressor.");
+		decision.advise("Please start dopamine at "+decision.getRecommendedDopamineInfusionRate()+" mcg/kg/min");
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect need for pressor and recommend starting one for severe hypotension"
+	ruleflow-group "Action"
+	when
+		decision : VasoactiveDecision(dopamineInfusionRate==0.0)
+		decisionState : VasoactiveDecisionState(hypotensionLevel==VasoactiveDecisionState.SEVERE_HYPOTENSION && recentAdjustment==false)
+	then
+		modify(decision){setRecommendedDopamineInfusionRate(10.0);}
+		modify(decisionState){setRecentAdjustment(true);}
+		decision.explain("The patient is severely hypotensive and not on a vasopressor.");
+		decision.advise("Please start dopamine at "+decision.getRecommendedDopamineInfusionRate()+" mcg/kg/min");
+		decision.advise("Notify LIP of severe hypotension.");
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect mild hypotension and adjust pre-existing dopamine infusion"
+	ruleflow-group "Action"
+	when	
+		decision : VasoactiveDecision(dopamineInfusionRate > 0)
+		decisionState : VasoactiveDecisionState(hypotensionLevel==VasoactiveDecisionState.MILD_HYPOTENSION && recentAdjustment==false)
+	then
+		double tempDripRate = decision.getDopamineInfusionRate()*1.25;
+		modify(decisionState){setRecentAdjustment(true);}
+		modify(decision){setRecommendedDopamineInfusionRate(decision.round(tempDripRate,1));}
+		if (decision.getRecommendedDopamineInfusionRate() > VasoactiveDecision.MAX_DOPAMINE_DRIP_RATE) {
+			decision.setRecommendedDopamineInfusionRate(VasoactiveDecision.MAX_DOPAMINE_DRIP_RATE);
+			decision.explain("You've reached the maximum recommendable dopamine rate");
+			decision.advise("Please set dopamine infusion rate to: "+VasoactiveDecision.MAX_DOPAMINE_DRIP_RATE+" mcg/kg/min.");
+			decision.advise("Contact the LIP for additional therapy recommendations.");
+		} 	
+		else { decision.explain("Patient's blood pressure is below the limits for normal ("+
+			decisionState.getMinimumSystolicBloodPressure()+
+				"). Dopamine Rate is currently set to "+decision.getDopamineInfusionRate()+" mcg/kg/min");
+			decision.advise("Please change dopamine rate to "+decision.getRecommendedDopamineInfusionRate()+" mcg/kg/min");
+		}
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect severe hypotension and adjust pre-existing dopamine infusion"
+	ruleflow-group "Action"
+	when
+		decision : VasoactiveDecision(dopamineInfusionRate > 0)
+		decisionState : VasoactiveDecisionState(hypotensionLevel==VasoactiveDecisionState.SEVERE_HYPOTENSION && recentAdjustment==false)
+	then
+		double tempDripRate = decision.getDopamineInfusionRate()*1.5;
+		modify(decisionState){setRecentAdjustment(true);}
+		modify(decision){setRecommendedDopamineInfusionRate(decision.round(tempDripRate,1));}
+		if (decision.getRecommendedDopamineInfusionRate() > VasoactiveDecision.MAX_DOPAMINE_DRIP_RATE) {
+			decision.setRecommendedDopamineInfusionRate(VasoactiveDecision.MAX_DOPAMINE_DRIP_RATE);
+			decision.explain("You've reached the maximum recommendable dopamine rate");
+			decision.advise("Please set dopamine infusion rate to: "+VasoactiveDecision.MAX_DOPAMINE_DRIP_RATE+" mcg/kg/min.");
+			decision.advise("Contact the LIP for additional therapy recommendations.");
+		} 	
+		else { decision.explain("Dopamine Rate is currently set to "+decision.getDopamineInfusionRate()+" mcg/kg/min");
+			   decision.advise("Increase dopamine infusion rate to:"+decision.getRecommendedDopamineInfusionRate());
+			   decision.advise("Notify the LIP of severe hypotension");				
+		}
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Detect hypertension and wean the pressor rapidly"
+	ruleflow-group "Action"
+	when
+		decisionState : VasoactiveDecisionState(hypotensionLevel==VasoactiveDecisionState.HYPERTENSION && recentAdjustment==false)
+		decision : VasoactiveDecision(dopamineInfusionRate > 0)
+	then
+		if (decision.getDopamineInfusionRate() <= 3.0) { 	
+			decision.setRecommendedDopamineInfusionRate(0.0);
+		} else {
+			if (decision.getDopamineInfusionRate() <= 5.0) {
+				decision.setRecommendedDopamineInfusionRate(3.0);
+			} 
+			else { 	
+				decision.setRecommendedDopamineInfusionRate(decision.getDopamineInfusionRate()
+					-decision.getDopamineInfusionRate()*0.25);
+			}
+		}
+		decision.setRecommendedDopamineInfusionRate(decision.round(decision.getRecommendedDopamineInfusionRate(),0));
+		decision.explain("Patient is hypertensive and on dopamine.  A wean is required.");
+		decision.advise("Please decrease dopamine infusion rate to: "+decision.getRecommendedDopamineInfusionRate()+" mcg/kg/min");
+		modify(decisionState){setRecentAdjustment(true);}
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end
+
+rule "Wean dopamine for adequate blood pressures"
+	ruleflow-group "Action"
+	when
+		decision : VasoactiveDecision (dopamineInfusionRate > 0)
+		decisionState : VasoactiveDecisionState(hypotensionLevel==VasoactiveDecisionState.ADEQUATE_BP && recentAdjustment==false)
+	then
+		if (decision.getDopamineInfusionRate() <= 3.0) { 	
+			decision.setRecommendedDopamineInfusionRate(0.0);
+		} else {
+			if (decision.getDopamineInfusionRate() <= 10.0) {
+				decision.setRecommendedDopamineInfusionRate(decision.getDopamineInfusionRate()-1);
+			} 
+			else { 	
+				decision.setRecommendedDopamineInfusionRate(decision.getDopamineInfusionRate()-2);
+			}
+		}
+		decision.setRecommendedDopamineInfusionRate(decision.round(decision.getRecommendedDopamineInfusionRate(),0));
+		decision.explain("Patient's blood pressure is adequate to wean dopamine.");
+		decision.advise("Please decrease dopamine drip rate to: "+decision.getRecommendedDopamineInfusionRate()+" mcg/kg/min");
+		modify(decisionState){setRecentAdjustment(true);}
+		System.out.println("[Rule] "+kcontext.getRule().getName());
+end

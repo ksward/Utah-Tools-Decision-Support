@@ -1,0 +1,2 @@
+This class is a java application, with a main procedure, that enables debugging the rules file with simple console output.  
+It is not necessary for the RCP to run, but seems useful to leave in place for developers.

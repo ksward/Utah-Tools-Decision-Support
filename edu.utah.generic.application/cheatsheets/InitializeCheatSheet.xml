@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+	title="Initializing (erasing) the Decision Support database">
+	<intro href="edu.utah.cdmcc.help.patientsView">
+		<description>
+			This cheat sheet will show you how to initialize
+			the Decision Support application database.
+		</description>
+	</intro>
+	<item title="Initialize the database">
+		<description>
+		To initialize, select Database -> Initialize (ERASE!) Database from the menu.
+		Read the warning dialog and click on the appropriate button.
+		</description>
+	</item>
+</cheatsheet>

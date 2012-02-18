@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Glucose Objects and Rules
+Bundle-SymbolicName: vasoactive.objects.rules;singleton:=true
+Bundle-Version: 1.0.0
+Export-Package: drools.engine,
+ glucose.preferences,
+ glucose.tests,
+ vasoactive.decision.object
+Require-Bundle: edu.utah.cdmcc.decisionsupport.objects.core,
+ org.eclipse.ui,
+ org.eclipse.core.runtime;bundle-version="3.4.0",
+ Drools501Final;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: J. Michael Dean, M.D.
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Activator: activator.DroolsGlucoseActivator
+Eclipse-RegisterBuddy: org.hibernate.eclipse,  Drools501Final
+Import-Package: org.eclipse.ui.views.properties
+

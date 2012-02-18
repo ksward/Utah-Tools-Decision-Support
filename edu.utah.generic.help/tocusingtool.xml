@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Usage">
+	<topic label="Entering New Patient Information" href="html/tasks/newpatient.html" />
+	<topic label="Editing Patient Information" href="html/tasks/editpatient.html" /> 
+	<topic label="Entering Clinical Information" href="html/tasks/clinicalinfo.html"/> 
+	<topic label="Calculate Decision Advice" href= "html/tasks/calculate.html"/>
+	<topic label="Accept or Decline Advice" href= "html/tasks/accept.html"/> 
+	<topic label="Charting without Advice" href="html/tasks/chart.html"/>
+	<topic label="Changing User Preferences" href="html/tasks/preferences.html"/>
+</toc>

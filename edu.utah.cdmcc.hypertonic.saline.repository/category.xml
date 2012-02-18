@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/edu.utah.cdmcc.feature.hypertonic.saline_1.0.0.qualifier.jar" id="edu.utah.cdmcc.feature.hypertonic.saline" version="1.0.0.qualifier">
+      <category name="hypertonic.category"/>
+   </feature>
+   <category-def name="hypertonic.category" label="Hypertonic Saline Category">
+      <description>
+         Hypertonic Saline Category
+      </description>
+   </category-def>
+</site>

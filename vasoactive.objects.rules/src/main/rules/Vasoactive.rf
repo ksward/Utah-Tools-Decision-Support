@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<process xmlns="http://drools.org/drools-5.0/process"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+         xs:schemaLocation="http://drools.org/drools-5.0/process drools-processes-5.0.xsd"
+         type="RuleFlow" name="flow" id="vasoactive.objects.rules.ruleflow" package-name="vasoactive.objects.rules" >
+
+  <header>
+  </header>
+
+  <nodes>
+    <start id="1" name="Start" x="24" y="26" width="80" height="40" />
+    <ruleSet id="2" name="Assessment Rules" x="104" y="100" width="120" height="61" ruleFlowGroup="Assess" />
+    <end id="3" name="End" x="196" y="310" width="80" height="40" />
+    <ruleSet id="4" name="Action Rules" x="109" y="197" width="119" height="53" ruleFlowGroup="Action" />
+  </nodes>
+
+  <connections>
+    <connection from="1" to="2" />
+    <connection from="4" to="3" />
+    <connection from="2" to="4" />
+  </connections>
+
+</process>

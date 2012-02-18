@@ -1,0 +1,178 @@
+package hypertonic.decision.rules  
+
+import hypertonic.decision.object.HypertonicSalineDecision;
+
+global Integer adultWeightLimit;  // You can use this in your rules
+
+//rule "Message for no ICP monitor"
+//@author("Michele Munkwitz") 
+//salience 1
+//no-loop
+
+//	when
+//		decision : HypertonicSalineDecision( intracranialPressure == null )
+		
+//	then
+//		explain("This patient has no ICP monitor, if this is not true, please enter the correct ICP");}
+// 		System.out.println(kcontext.getRule().getName());
+//end
+
+//rule "Message for no central line"
+//@author("Michele Munkwitz")
+//salience 49
+//no-loop
+
+//	when
+//		decision : HypertonicSalineDecision( centralVenousPressure == null )
+		
+//	then
+//		modify(decision){
+//		explain("This patient has no CVP entered, if this is not true please enter current CVP");}
+//		System.out.println(kcontext.getRule().getName());
+//end
+
+rule "No ICP monitor keep Na >= 145"
+@author("Michele Munkwitz")
+no-loop 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure == null, currentSodiumValue < 145, 
+		recommendedHypertonicSalineBolus > 0.0  )
+		
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
+		advise("Give "+ decision.getRecommendedHypertonicSalineBolus()+
+		" ml/kg ("+ decision.FormatZeroDecimal(decision.getPatientWeight()*decision.getRecommendedHypertonicSalineBolus())  +
+		" ml) 3% saline"),
+		explain("For a patient without ICP monitor recommended Na >145");}
+		System.out.println(kcontext.getRule().getName());
+		
+end
+
+rule "How much saline for Na <135 and No ICP monitoring"
+@author("Michele Munkwitz") 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure == null, currentSodiumValue < 135, 
+		recommendedHypertonicSalineBolus == 0.0  )
+		
+	then
+		modify(decision){setRecommendedHypertonicSalineBolus(5.0),
+		explain("The patient has no ICP monitor and Na < 135");}
+		
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "How much saline for Na 136-140 and No ICP monitoring"
+@author("Michele Munkwitz") 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure == null, currentSodiumValue < 141 && > 135, 
+		recommendedHypertonicSalineBolus == 0.0  )
+		
+	then
+		modify(decision){setRecommendedHypertonicSalineBolus(4.0),
+		explain("The patient has no ICP monitor and Na 136-140");}
+		
+		System.out.println(kcontext.getRule().getName());
+end
+
+
+rule "How much saline for Na 141-145 and No ICP monitoring"
+@author("Michele Munkwitz") 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure == null, currentSodiumValue < 145 && > 140, 
+		recommendedHypertonicSalineBolus == 0.0  )
+		
+	then
+		modify(decision){setRecommendedHypertonicSalineBolus(3.0),
+		explain("The patient has no ICP monitor and Na 141-145");}
+		
+		System.out.println(kcontext.getRule().getName());
+end
+
+
+rule "ICP monitor in place, ICP normal, keep Na >= 145"
+@author("Michele Munkwitz")
+no-loop 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure <= 20, currentSodiumValue < 145, 
+		recommendedHypertonicSalineBolus > 0.0  )
+		
+	then
+		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
+		advise("Give "+ decision.getRecommendedHypertonicSalineBolus()+
+		" ml/kg ("+ decision.FormatZeroDecimal(decision.getPatientWeight()*decision.getRecommendedHypertonicSalineBolus())  +
+		" ml) 3% saline"),
+		explain("For a patient with normal ICP recommended Na >145");}
+		System.out.println(kcontext.getRule().getName());
+		
+end
+
+rule "How much saline for Na < 135 and normal ICP)"
+@author("Michele Munkwitz") 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure <= 20, currentSodiumValue < 135, 
+		recommendedHypertonicSalineBolus == 0.0  )
+		
+	then
+		modify(decision){setRecommendedHypertonicSalineBolus(5.0),
+		explain("The patient has normal ICP and Na < 135");}
+		
+		System.out.println(kcontext.getRule().getName());
+end
+
+rule "How much saline for Na 136-140 and normal ICP"
+@author("Michele Munkwitz") 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure <= 20, currentSodiumValue < 141 && > 135, 
+		recommendedHypertonicSalineBolus == 0.0  )
+		
+	then
+		modify(decision){setRecommendedHypertonicSalineBolus(4.0),
+		explain("The patient has normal ICP and Na 136-140");}
+		
+		System.out.println(kcontext.getRule().getName());
+end
+
+
+rule "How much saline for Na 141-145 and normal ICP"
+@author("Michele Munkwitz") 
+
+	when
+		decision : HypertonicSalineDecision( intracranialPressure <= 20, currentSodiumValue < 145 && > 140, 
+		recommendedHypertonicSalineBolus == 0.0  )
+		
+	then
+		modify(decision){setRecommendedHypertonicSalineBolus(3.0),
+		explain("The patient has normal ICP  and Na 141-145");}
+		
+		System.out.println(kcontext.getRule().getName());
+end
+
+//rule "Increased ICP with Na below threshold, OSM below threshold, drip already in place"
+//@author("Michele Munkwitz")
+//no-loop 
+
+	//when
+		//decision : HypertonicSalineDecision( intracranialPressure > 20, currentSodiumValue < 165, currentOsmolalityValue < 360,
+		//currentHypertonicSalineDripRate > 0.1 && (currentHypertonicSalineDripRate*decision.getPatientWeight() 
+		//< decision.maxHypertonicSalineDripRate () ))
+		
+	//then
+		//modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
+		//advise("Increase 3% drip by 0.1 ml/kg/hr to a rate of ("+ decision.FormatTwoDecimal(decision.getcurrentHypertonicSalineDripRate + 0.1))" 
+		//+ "ml/kg/hr"),
+		//explain("For increased ICP with Na and OSM below threshold");}
+		//System.out.println(kcontext.getRule().getName());
+		
+//end
+
+
+
+
+//This is the end of the file

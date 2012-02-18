@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>edu.utah.cdmcc.glucose.parent</artifactId>
+		<relativePath>../edu.utah.cdmcc.glucose.parent/pom.xml</relativePath>
+		<groupId>edu.utah.cdmcc</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>edu.utah.cdmcc</groupId>
+	<artifactId>edu.utah.cdmcc.glucose.swtbot.tests</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>eclipse-test-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<useUIHarness>true</useUIHarness>
+					<useUIThread>false</useUIThread>
+					<testFailureIgnore>true</testFailureIgnore>
+					<!-- use our product and application to launch the tests -->
+					<product>edu.utah.cdmcc.decisionsupport.glucose.application.product</product>
+<!-- 					<application>edu.utah.cdmcc.decisionsupport.glucose.application.glucose</application> -->
+					<dependencies>
+						<dependency>
+							<!-- explicit dependency is only needed because SWTbot brings its 
+								own hamcrest bundle which conflicts with the one from junit in the eclipse 
+								platform -->
+							<type>p2-installable-unit</type>
+							<artifactId>org.hamcrest</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+					<testSuite>edu.utah.cdmcc.glucose.swtbot.tests</testSuite>
+					<testClass>tutorial.experiments.MyFirstTests</testClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- MacOS specific vm arguments for UI testing -->
+		<profile>
+			<id>osx</id>
+			<activation>
+				<property>
+					<name>java.vendor.url</name>
+					<value>http://www.apple.com/</value>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.eclipse.tycho</groupId>
+							<artifactId>tycho-surefire-plugin</artifactId>
+							<version>${tycho.version}</version>
+							<configuration>
+								<appArgLine>
+									-XstartOnFirstThread
+								</appArgLine>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+
+
+</project>

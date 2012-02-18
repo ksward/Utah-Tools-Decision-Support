@@ -1,0 +1,57 @@
+I have been thinking hard about how to represent panels of lab results - the 
+reason for this coming up is arterial blood gases, so I will illustrate the
+issues with the ABG.  For our purposes (ventilator at present) we will be
+using only the pCO2, pO2, and pH.  
+
+Obviously this issue might arise with laboratory panels of any type - serum
+electrolytes, urinalyses, coagulation panels, etc., so I want to get the
+representation right.
+
+There are several approaches.  First approach, which I think is wrong, is to
+simply ignore the panel aspect and record each component as a separate
+laboratory object.  This duplicates information but also fails to take any
+advantage of the fact that the components were actually measured on the
+same biologic sample, obtained at the same time, etc.  In addition, while each
+component will have its own LOINC id, we will be ignoring the concept of the
+panel.
+
+Second approach is to make a panel such as ABG as an subclass of Laboratory
+Object, and add individual components, each with their details.  These details
+include LOINC id, text result, numeric result, units, etc.  This probably will
+work, but it means that I will have a different representation for panels with
+different numbers of components.  This eventually will suck.
+
+Third approach is to make each component a separate entity, with a Hibernate id
+so that it can be referenced multiple times.  This could work, but since each
+entity is a subclass of Laboratory Object, the separate entities will get
+stored in the same database table.  Not sure if Hibernate will barf.  Then we
+would simply put the panel lab in as a laboratory entity, and also add the
+component labs.
+
+Fourth approach is to use Hibernate component mapping, which actually makes
+sense.  Each component of a panel must exist, and really we would never care
+about each component unless we had access to information at the panel level,
+such as the date and time of specimen collection, and a link back to a patient.
+So I could simply extend lab object for an ABG, and then could have component
+fields for each piece.  I would not need to duplicate the date and time, etc., 
+but each piece will need its own LOINC information, unit of measurement, text
+and numeric result, etc.  The disadvantage is that different types of panels
+will have different structures, but at least this is reduced from approach Two
+above because I will encapsulate most of the redundant fields in the component
+class.
+
+Fifth approach, which I am currently favoring, is to extend laboratory object
+for a panel lab, and have a Set of components that are included.  This would
+allow the panel lab object to be ANY kind of panel.  We would obviously use
+a discriminator of "panel", put in the appropriate LOINC id for what kind of
+panel it is, and then each of the component pieces would be added to the set
+of components.  The advantage of this approach is that panel objects will all
+be the same structure, and this will scale up to any kind of panel we like.
+
+We still have to figure out how to build a component in a way that the Java
+objects are sensible.  I actually have a Java object for each type of lab,
+and we need to interpret ABG at the component level.  Little issues like what
+kind of result (I always take the text result, and then if it is supposed to
+be a float value, the numeric result is a float, but if it is supposed to be
+an integer, then the numeric result is an integer, etc.)  Thus I may need to
+also construct an object that is a lab panel component object.

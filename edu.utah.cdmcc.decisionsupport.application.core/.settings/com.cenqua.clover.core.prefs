@@ -1,0 +1,3 @@
+#Thu Dec 31 17:41:34 MST 2009
+eclipse.preferences.version=1
+exclude_filter=src/com/swtdesigner/**, src/edu/utah/cdmcc/commands/StartHsqldbLocalServer.java, src/edu/utah/cdmcc/commands/StopHsqldbLocalServer.java

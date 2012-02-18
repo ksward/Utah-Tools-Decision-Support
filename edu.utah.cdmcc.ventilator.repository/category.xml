@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/edu.utah.cdmcc.feature.pediatric.ventilator_1.0.0.qualifier.jar" id="edu.utah.cdmcc.feature.pediatric.ventilator" version="1.0.0.qualifier">
+      <category name="edu.utah.cdmcc.ventilator.category"/>
+   </feature>
+   <category-def name="edu.utah.cdmcc.ventilator.category" label="Ventilator Category">
+      <description>
+         Ventilator Category
+      </description>
+   </category-def>
+</site>
