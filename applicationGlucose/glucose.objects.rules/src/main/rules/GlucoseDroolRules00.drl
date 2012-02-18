@@ -23,8 +23,8 @@ ruleflow-group "AboveRangeGroup"
 		setInsulinMode(insulinOnlyPerHour),
 		explain("The serum glucose concentration is above the targeted range.");
 		}
-		System.out.println(kcontext.getRule().getName());
-		System.out.println(insulinOnlyPerHour);
+		//System.out.println(kcontext.getRule().getName());
+		//System.out.println(insulinOnlyPerHour);
 end
 
 rule "Explain glucose within range"
@@ -51,7 +51,7 @@ ruleflow-group "BelowRangeGroup"
 		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
 			explain("The serum glucose concentration is below the targeted range but above the hypoglycemia threshold.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Explain mild hypoglycemia"	
@@ -65,7 +65,7 @@ ruleflow-group "BelowRangeGroup"
 			explain("The patient has mild hypoglycemia (serum glucose is " + 
 				decision.getSerumGlucoseConcentration() +" mg/dL).");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Explain moderate hypoglycemia"
@@ -79,7 +79,7 @@ ruleflow-group "BelowRangeGroup"
 			explain("The patient has moderate hypoglycemia (serum glucose is " + 
 				decision.getSerumGlucoseConcentration() +" mg/dL).");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Explain severe hypoglycemia"
@@ -92,7 +92,7 @@ ruleflow-group "BelowRangeGroup"
 			explain("The patient has severe hypoglycemia (serum glucose is " + 
 				decision.getSerumGlucoseConcentration() +" mg/dL).");
 			}	
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 //HYPOGLYCEMIA GROUP
@@ -112,7 +112,7 @@ ruleflow-group "Hypoglycemia"
 		explain( "Glucose bolus recommended because of extreme hypoglycemia (<= " 
 			+ severeHypoglycemiaLimit +" mg/dL).");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Glucose bolus for extreme hypoglycemia and above adult weight definition"
@@ -132,7 +132,7 @@ ruleflow-group "Hypoglycemia"
 			explain("The maximum recommended glucose bolus is "+ decision.formatOneDecimal(bolus)+
 				" grams when patient weight > "+adultWeightLimit+" kg.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Glucose bolus for moderate hypoglycemia"
@@ -151,7 +151,7 @@ ruleflow-group "Hypoglycemia"
 			explain("Glucose bolus recommended because of moderate hypoglycemia (between "
 						+severeHypoglycemiaLimit+" and "+moderateHypoglycemiaLimit+" mg/dL).");
 		}	
-		System.out.println(kcontext.getRule().getName());		
+		//System.out.println(kcontext.getRule().getName());		
 end
 
 rule "Glucose bolus for moderate hypoglycemia and above adult weight definition"
@@ -172,7 +172,7 @@ ruleflow-group "Hypoglycemia"
 			explain("The maximum recommended glucose bolus is "+ decision.formatOneDecimal(bolus)+
 				" grams when patient weight > "+adultWeightLimit+" kg.");
 		}	
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 
@@ -190,7 +190,7 @@ ruleflow-group "NoInsulin"
 		setRecommendedInsulinDripRate(0.0),
 		advise("Do not give any insulin at this time." );
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Serum glucose below range and insulin is off"
@@ -204,7 +204,7 @@ ruleflow-group "NoInsulin"
 		setRecommendedInsulinDripRate(0.0),
 		advise("Do not give any insulin at this time.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Serum glucose below range and on insulin"
@@ -218,7 +218,7 @@ ruleflow-group "NoInsulin"
 			setRecommendedInsulinDripRate(0.0),
 			advise("Turn OFF the insulin drip now.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 //Above range and insulin is off. Start insulin UNLESS feeds stopped.
@@ -237,7 +237,7 @@ ruleflow-group "StartInsulin"
 		    setRecommendedInsulinDripRate (0.0)
 		    //setRecommendedInsulinDripRate(adjustedRate)};
 		    };
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 //Adult start dose is given in units/hour and is adjusted for patient weight
@@ -259,7 +259,7 @@ ruleflow-group "StartInsulin"
 			explain("Computed dose is " + startingDose + " u/h"),
 			advise ("Start insulin at " + decision.formatOneDecimal(startingDose) + " units/hour.")
 		};
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 	end
 
 //Pediatric start dose is given in units/kg/hour
@@ -281,7 +281,7 @@ ruleflow-group "StartInsulin"
 			explain("Computed dose is " + startingDose + " u/kg/h"),
 			advise ("Start insulin at " + decision.formatTwoDecimals(startingDose) + " units/kg/hour.")
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 	end
 
 
@@ -306,8 +306,8 @@ ruleflow-group "AdjustInsulin"
 		setRecommendedInsulinDripRate(adjustedRate),
 		explain("Computed dose is " + decision.formatOneDecimal(adjustedRate) + " u/h");
 		}	
-		System.out.println(kcontext.getRule().getName());
-		System.out.println("Adult dose computed");	
+		//System.out.println(kcontext.getRule().getName());
+		//System.out.println("Adult dose computed");	
 end
 
 rule "Adjust insulin pediatric"
@@ -328,8 +328,8 @@ ruleflow-group "AdjustInsulin"
 		setRecommendedInsulinDripRate(adjustedRate),
 		explain("Computed dose is " + decision.formatTwoDecimals(adjustedRate) + " u/kg/h");
 		}	
-		System.out.println(kcontext.getRule().getName());	
-		System.out.println("Pediatric computed dose = " + adjustedRate);
+		//System.out.println(kcontext.getRule().getName());	
+		//System.out.println("Pediatric computed dose = " + adjustedRate);
 end
 
 
@@ -350,7 +350,7 @@ ruleflow-group "AdjustInsulin"
 		setRecommendedInsulinDripRate(adjustedRate),
 		explain("No change. Unable to compute a new insulin dose until there are at least two glucose values.");
 		}	
-		System.out.println(kcontext.getRule().getName());	
+		//System.out.println(kcontext.getRule().getName());	
 end
 
 
@@ -367,7 +367,7 @@ ruleflow-group "AdjustInsulin"
 		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
 		    explain("The insulin needs to be turned off for one hour after a decrease in feeds."),
 		    setRecommendedInsulinDripRate(adjustedRate)};
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 
@@ -389,7 +389,7 @@ then
 			setRecommendedInsulinDripRate(refinedRate),
 			explain("The new insulin dose is not allowed to be more than twice the current dose.");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Refine max dose adult"
@@ -407,7 +407,7 @@ then
 			setRecommendedInsulinDripRate(refinedRate),
 			explain("The computed insulin dose is greater than the maximum dose allowed by the protocol.");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Refine max dose pediatric"
@@ -425,7 +425,7 @@ then
 			setRecommendedInsulinDripRate(refinedRate),
 			explain("The computed insulin dose is greater than the maximum dose allowed by the protocol.");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Refine minimum dose adult"
@@ -443,7 +443,7 @@ then
 			setRecommendedInsulinDripRate(refinedRate),
 			explain("The computed insulin dose is below the minimum dose allowed by the protocol.");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Refine minimum dose pediatric"
@@ -461,7 +461,7 @@ then
 			setRecommendedInsulinDripRate(refinedRate),
 			explain("The computed insulin dose is below the minimum dose allowed by the protocol.");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 //check fast drop rule
@@ -478,7 +478,7 @@ salience 700
 		modify(decision){setMinutesToNextEvaluation(decision.ONE_HOUR),
 			explain("The serum glucose is falling faster than desired.");
 			}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 // AdviseExplain ruleflow group determines the verbiage of start insulin or adjust insulin messages
@@ -497,7 +497,7 @@ ruleflow-group "AdviseExplain"
 		modify(decision){
 		advise("Turn off the insulin drip.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Adjust insulin text TURN OFF pediatric"
@@ -512,7 +512,7 @@ ruleflow-group "AdviseExplain"
 		modify(decision){
 		advise("Turn off the insulin drip.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 //adult dosage is rounded to one decimal, so changes of less than .1 magnitude will round to same number
@@ -529,7 +529,7 @@ ruleflow-group "AdviseExplain"
 		advise("Maintain the insulin drip at " + 
 			decision.formatOneDecimal(decision.getCurrentInsulinDripRate()) + " units/hour.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Adjust insulin text MAINTAIN pediatric"
@@ -545,7 +545,7 @@ ruleflow-group "AdviseExplain"
 		advise("Maintain the insulin drip at " + 
 			decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " units/kg/hour.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Adjust insulin text INCREASE"
@@ -561,7 +561,7 @@ ruleflow-group "AdviseExplain"
 		advise("Increase the insulin drip from " + decision.formatOneDecimal(decision.getCurrentInsulinDripRate()) + " to " +
 			decision.formatOneDecimal(decision.getRecommendedInsulinDripRate()) + " units/hour.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Adjust insulin text INCREASE pediatric"
@@ -579,7 +579,7 @@ ruleflow-group "AdviseExplain"
 		advise("Increase the insulin drip from " + decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " to " +
 			decision.formatTwoDecimals(decision.getRecommendedInsulinDripRate()) + " units/kg/hour.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Adjust insulin text INCREASE pediatric pathologic"
@@ -597,7 +597,7 @@ ruleflow-group "AdviseExplain"
 		advise("Increase the insulin drip from " + decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " to " +
 			"0.6" + " units/kg/hour.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Adjust insulin text DECREASE"
@@ -614,7 +614,7 @@ ruleflow-group "AdviseExplain"
 		advise("Decrease the insulin drip from " + decision.formatOneDecimal(decision.getCurrentInsulinDripRate()) + " to " +
 			decision.formatOneDecimal(decision.getRecommendedInsulinDripRate()) + " units/hour.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Adjust insulin text DECREASE pediatric"
@@ -631,7 +631,7 @@ ruleflow-group "AdviseExplain"
 		advise("Decrease the insulin drip from " + decision.formatTwoDecimals(decision.getCurrentInsulinDripRate()) + " to " +
 			decision.formatTwoDecimals(decision.getRecommendedInsulinDripRate()) + " units/kg/hour.");
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Set timer if it has not already been assigned"
@@ -644,7 +644,7 @@ ruleflow-group "RefineTimer"
 		modify(decision){
 			setMinutesToNextEvaluation(decision.TWO_HOUR);
 		}
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Advise recheck glucose in one hour"
@@ -657,7 +657,7 @@ ruleflow-group "RefineTimer"
 		modify(decision){
 			advise("Recheck serum glucose in one hour.")
 		}	
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 rule "Advise recheck glucose in two hours"
@@ -670,7 +670,7 @@ ruleflow-group "RefineTimer"
 		modify(decision){
 			advise("Recheck serum glucose in two hours.");
 		}	
-		System.out.println(kcontext.getRule().getName());
+		//System.out.println(kcontext.getRule().getName());
 end
 
 /*___________ Simulation study broken rules at value of 276 see adjust insulin text increase______ */
