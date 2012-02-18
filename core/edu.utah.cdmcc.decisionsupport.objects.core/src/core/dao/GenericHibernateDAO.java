@@ -20,6 +20,7 @@ import core.hibernate.HibernateUtil;
  *
  * @see HibernateDAOFactory
  *
+ **
  * @author christian.bauer@jboss.com
  */
 public abstract class GenericHibernateDAO<T, ID extends Serializable>
