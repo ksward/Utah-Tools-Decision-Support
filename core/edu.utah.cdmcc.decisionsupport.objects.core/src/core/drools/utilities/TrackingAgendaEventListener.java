@@ -14,7 +14,7 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
 	public void afterActivationFired(AfterActivationFiredEvent event) {
 		rulesFiredList.add(event.getActivation().getRule().getName());
 		logger.debug("Rule fired: " + event.getActivation().getRule().getName());
-		System.err.println("Rule fired: " + event.getActivation().getRule().getName());
+		//System.err.println("Rule fired: " + event.getActivation().getRule().getName());
 	}
 
 	public boolean isRuleFired(String ruleName){
