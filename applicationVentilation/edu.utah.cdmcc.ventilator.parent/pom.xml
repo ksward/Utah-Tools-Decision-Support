@@ -39,22 +39,11 @@
 	</build>
 
 	<modules>
-		<module>../edu.utah.cdmcc.encryption</module>
-		<module>../edu.utah.cdmcc.MySQLDriver</module>
-		<module>../Drools510Runtime</module>
-		<module>../edu.utah.cdmcc.hsqldb</module>
-		<module>../edu.utah.hibernate</module>
-		<module>../edu.utah.cdmcc.decisionsupport.objects.core</module>
-		<module>../edu.utah.cdmcc.decisionsupport.objects.core.tests</module>
-		<module>../edu.utah.cdmcc.decisionsupport.application.core</module>
-		<module>../edu.utah.cdmcc.application.core.tests</module>
-		<module>../edu.utah.cdmcc.indigo.target</module>
 		<module>../edu.utah.ventilator.pediatric.objects.rules</module>
 		<module>../edu.utah.ventilator.pediatric.application</module>
 		<module>../edu.utah.ventilator.pediatric.help</module>
 		<module>../edu.utah.cdmcc.feature.pediatric.ventilator</module>
 		<module>../edu.utah.cdmcc.ventilator.repository</module>
-		<module>../edu.utah.mockito</module>
 
 	</modules>
 
