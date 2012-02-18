@@ -6,6 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Hypertonic Saline Parent Project</name>
+	<description>Contains pom.xml to build hypertonic saline application.</description>
 
 	<properties>
 		<tycho-version>0.13.0</tycho-version>
@@ -39,24 +40,13 @@
 	</build>
 
 	<modules>
-		<module>../edu.utah.cdmcc.encryption</module>
-		<module>../edu.utah.cdmcc.MySQLDriver</module>
-		<module>../Drools510Runtime</module>
-		<module>../edu.utah.cdmcc.hsqldb</module>
-		<module>../edu.utah.hibernate</module>
-		<module>../edu.utah.cdmcc.decisionsupport.objects.core</module>
-		<module>../edu.utah.cdmcc.decisionsupport.objects.core.tests</module>
-		<module>../edu.utah.cdmcc.decisionsupport.application.core</module>
-		<module>../edu.utah.cdmcc.application.core.tests</module>
-		<module>../edu.utah.cdmcc.indigo.target</module>
 		<module>../hypertonic.saline.objects.rules</module>
 		<module>../hypertonic.saline.objects.rules.tests</module>
 		<module>../edu.utah.cdmcc.decisionsupport.hypertonic.saline.application</module>
-<!-- 		<module>../edu.utah.cdmcc.decisionsupport.hypertonic.saline.application.tests</module> -->
+		<!-- <module>../edu.utah.cdmcc.decisionsupport.hypertonic.saline.application.tests</module> -->
 		<module>../edu.utah.cdmcc.help.hypertonic.saline</module>
 		<module>../edu.utah.cdmcc.feature.hypertonic.saline</module>
 		<module>../edu.utah.cdmcc.hypertonic.saline.repository</module>
-		<module>../edu.utah.mockito</module>
 
 	</modules>
 
