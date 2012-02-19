@@ -157,9 +157,9 @@ public class VentilatorPediatricGetPassiveDecisionDialog extends TitleAreaDialog
 	
 @Override
 protected void okPressed() {
-	decision.setRecommendedHypertonicSalineBolus(Double.valueOf(salineBolusText.getText()));
-	decision.setRecommendedHypertonicSalineDripRate(Double.valueOf(newSalineRateText.getText()));
-	decision.setRecommendedMannitolBolus(Double.valueOf(mannitolBolusText.getText()));
+//	decision.setRecommendedHypertonicSalineBolus(Double.valueOf(salineBolusText.getText()));
+//	decision.setRecommendedHypertonicSalineDripRate(Double.valueOf(newSalineRateText.getText()));
+//	decision.setRecommendedMannitolBolus(Double.valueOf(mannitolBolusText.getText()));
 	decision.setOtherComment(descriptionText.getText());
 	decision.setAdviceText("Click on the Accept Button below.  \nThank you for entering data.\n" +
 			"Please enter information again in two hours.");

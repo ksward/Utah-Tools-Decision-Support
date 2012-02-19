@@ -294,57 +294,7 @@ public class VentilatorPediatricDecisionPropertySource implements IPropertySourc
 		if (id.equals(PROPERTY_PATIENT_HEIGHT)) {
 			return decision.getPatientHeight().toString();
 		}
-		if (id.equals(PROPERTY_MAP)){
-			return decision.getMeanArterialPressure().toString();
-		}
-		if (id.equals(PROPERTY_ICP)){
-			if(decision.getIntracranialPressure()== VentilatorPediatricDecision.NOVALUEENTERED){
-				return("No value entered");
-			} else {
-				return decision.getIntracranialPressure().toString();
-			}
-		}
-		if (id.equals(PROPERTY_CVP)){
-			if(decision.getCentralVenousPressure()==VentilatorPediatricDecision.NOVALUEENTERED){
-				return("No value entered");
-			} else {
-				return decision.getCentralVenousPressure().toString();
-			}
-		}
-		if (id.equals(PROPERTY_CURRENT_SODIUM)){
-			return decision.getCurrentSodiumValue().toString();
-		}
-		if (id.equals(PROPERTY_CURRENT_SODIUM_DATE)){
-			return decision.getCurrentSodiumDateTime().getTime().toString();
-		}
-		if (id.equals(PROPERTY_CURRENT_OSMOLALITY)){
-			return decision.getCurrentOsmolalityValue().toString();
-		}
-		if (id.equals(PROPERTY_CURRENT_OSMOLALITY_DATE)){
-			return decision.getCurrentOsmolalityDateTime().getTime().toString();
-		}
-		if (id.equals(PROPERTY_PREVIOUS_SODIUM)){
-			return decision.getPreviousSodiumValue().toString();
-		}
-		if (id.equals(PROPERTY_PREVIOUS_SODIUM_DATE)){
-			return decision.getPreviousSodiumDateTime().getTime().toString();
-		}
-		if (id.equals(PROPERTY_PREVIOUS_OSMOLALITY)){
-			return decision.getPreviousOsmolalityValue().toString();
-		}
-		if (id.equals(PROPERTY_PREVIOUS_OSMOLALITY_DATE)){
-			return decision.getPreviousOsmolalityDateTime().getTime().toString();
-		}
-
-		if (id.equals(PROPERTY_REC_SALINE_RATE)){
-			return decision.getRecommendedHypertonicSalineDripRate().toString();
-		}
-		if (id.equals(PROPERTY_REC_SALINE_BOLUS)){
-			return decision.getRecommendedHypertonicSalineBolus().toString();
-		}
-		if (id.equals(PROPERTY_REC_MANNITOL_BOLUS)){
-			return decision.getRecommendedMannitolBolus().toString();
-		}
+		
 //		if (id.equals(PROPERTY_INSULIN)) {
 //			return ((Double)decision.getCurrentInsulinDripRate()).toString();
 //		}
