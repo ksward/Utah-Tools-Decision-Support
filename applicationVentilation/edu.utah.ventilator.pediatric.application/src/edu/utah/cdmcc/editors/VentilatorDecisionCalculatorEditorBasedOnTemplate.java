@@ -382,18 +382,76 @@ ILaboratoryListener{
 
 	private void populateBloodGasFields(){
 		ArterialBloodGasLaboratoryResult result = patientLabController.retrieveCurrentArterialBloodGasResult(getPatient());
-		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
-		if (result != null){
-			editorComposite.getpHText().setText(result.getPhValue().toString());			
-			editorComposite.getpHText_2().setText(result.getPhValue().toString());
-			editorComposite.getpHText_3().setText(result.getPhValue().toString());
-			editorComposite.getpHText_4().setText(result.getPhValue().toString());
-		} else {
-			editorComposite.getpHText().setText("Not available");			
-			editorComposite.getpHText_2().setText("Not available");
-			editorComposite.getpHText_3().setText("Not available");
-			editorComposite.getpHText_4().setText("Not available");
+		populatePhFields(result);
+		populatePco2Fields(result);
+		poulatePo2Fields(result);
+	}
 
+	private void poulatePo2Fields(ArterialBloodGasLaboratoryResult result) {
+		if (result != null){
+			editorComposite.getLblLastDate_PaO2().setText(result.getTimeOfABG());
+			editorComposite.getPaO2Text().setText(result.getPco2String());
+			editorComposite.getLblLastDate_PaO2_2().setText(result.getTimeOfABG());
+			editorComposite.getPaO2Text_2().setText(result.getPco2String());
+			editorComposite.getLblLastDate_PaO2_3().setText(result.getTimeOfABG());
+			editorComposite.getPaO2Text_3().setText(result.getPco2String());
+			editorComposite.getLblLastDate_PaO2_4().setText(result.getTimeOfABG());
+			editorComposite.getPaO2Text_4().setText(result.getPco2String());			
+		} else {		
+			editorComposite.getLblLastDate_PaO2().setText("Not available");
+			editorComposite.getPaO2Text().setText("Not available");	
+			editorComposite.getLblLastDate_PaO2_2().setText("Not available");
+			editorComposite.getPaO2Text_2().setText("Not available");
+			editorComposite.getLblLastDate_PaO2_3().setText("Not available");
+			editorComposite.getPaO2Text_3().setText("Not available");
+			editorComposite.getLblLastDate_PaO2_4().setText("Not available");
+			editorComposite.getPaO2Text_4().setText("Not available");
+		}
+		
+	}
+
+	private void populatePco2Fields(ArterialBloodGasLaboratoryResult result) {
+		if (result != null){
+			editorComposite.getLblLastDate_PCO2().setText(result.getTimeOfABG());
+			editorComposite.getpCO2Text().setText(result.getPco2String());
+			editorComposite.getLblLastDate_PCO2_2().setText(result.getTimeOfABG());
+			editorComposite.getpCO2Text_2().setText(result.getPco2String());
+			editorComposite.getLblLastDate_PCO2_3().setText(result.getTimeOfABG());
+			editorComposite.getpCO2Text_3().setText(result.getPco2String());
+			editorComposite.getLblLastDate_PCO2_4().setText(result.getTimeOfABG());
+			editorComposite.getpCO2Text_4().setText(result.getPco2String());			
+		} else {		
+			editorComposite.getLblLastDate_PCO2().setText("Not available");
+			editorComposite.getpCO2Text().setText("Not available");	
+			editorComposite.getLblLastDate_PCO2_2().setText("Not available");
+			editorComposite.getpCO2Text_2().setText("Not available");
+			editorComposite.getLblLastDate_PCO2_3().setText("Not available");
+			editorComposite.getpCO2Text_3().setText("Not available");
+			editorComposite.getLblLastDate_PCO2_4().setText("Not available");
+			editorComposite.getpCO2Text_4().setText("Not available");
+		}
+		
+	}
+
+	private void populatePhFields(ArterialBloodGasLaboratoryResult result) {
+		if (result != null){
+			editorComposite.getLblLastDate_pH().setText(result.getTimeOfABG());
+			editorComposite.getpHText().setText(result.getPhString());
+			editorComposite.getLblLastDate_pH_2().setText(result.getTimeOfABG());
+			editorComposite.getpHText_2().setText(result.getPhString());
+			editorComposite.getLblLastDate_pH_3().setText(result.getTimeOfABG());
+			editorComposite.getpHText_3().setText(result.getPhString());
+			editorComposite.getLblLastDate_pH_4().setText(result.getTimeOfABG());
+			editorComposite.getpHText_4().setText(result.getPhString());			
+		} else {		
+			editorComposite.getLblLastDate_pH().setText("Not available");
+			editorComposite.getpHText().setText("Not available");	
+			editorComposite.getLblLastDate_pH_2().setText("Not available");
+			editorComposite.getpHText_2().setText("Not available");
+			editorComposite.getLblLastDate_pH_3().setText("Not available");
+			editorComposite.getpHText_3().setText("Not available");
+			editorComposite.getLblLastDate_pH_4().setText("Not available");
+			editorComposite.getpHText_4().setText("Not available");
 		}
 	}
 	
@@ -494,6 +552,7 @@ ILaboratoryListener{
 
 	public void laboratoryChanged() {
 		System.out.println("Laboratory changed reached");
+		populateBloodGasFields();
 		//populateOsmolalityFields();
 		//populateSerumSodiumFields();
 		

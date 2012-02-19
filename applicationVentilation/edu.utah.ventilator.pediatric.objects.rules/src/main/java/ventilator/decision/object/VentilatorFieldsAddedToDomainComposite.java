@@ -231,6 +231,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPh.setText("pH:");
 		
 		pHText = new Text(composite_PC, SWT.BORDER);
+		pHText.setEditable(false);
 		pHText.setToolTipText("pH from the most recent Arterial Blood Gas");
 		pHText.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		pHText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -240,6 +241,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPaO2.setText("PaO2:");
 		
 		PaO2Text = new Text(composite_PC, SWT.BORDER);
+		PaO2Text.setEditable(false);
 		PaO2Text.setToolTipText("PaO2 from the most recent Arterial Blood Gas");
 		PaO2Text.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PaO2Text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -249,6 +251,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblpCO2.setText("pCO2:");
 		
 		pCO2Text = new Text(composite_PC, SWT.BORDER);
+		pCO2Text.setEditable(false);
 		pCO2Text.setToolTipText("pCO2 from the most recent Arterial Blood Gas");
 		pCO2Text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_PC, SWT.NONE);
@@ -345,7 +348,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		tbtmPressureRegulatedVc.setText("Pressure Regulated VC");
 		
 		Composite composite_PRVC = new Composite(ventilatorTabFolder, SWT.NONE);
-		composite_PRVC.setEnabled(false);
 		tbtmPressureRegulatedVc.setControl(composite_PRVC);
 		composite_PRVC.setLayout(new GridLayout(6, true));
 		
@@ -354,6 +356,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPh_2.setText("pH:");
 		
 		pHText_2 = new Text(composite_PRVC, SWT.BORDER);
+		pHText_2.setEditable(false);
 		pHText_2.setToolTipText("pH from the most recent Arterial Blood Gas");
 		pHText_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		pHText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -363,6 +366,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPaO2_2.setText("PaO2:");
 		
 		PaO2Text_2 = new Text(composite_PRVC, SWT.BORDER);
+		PaO2Text_2.setEditable(false);
 		PaO2Text_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PaO2Text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -371,6 +375,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblpCO2_2.setText("pCO2:");
 		
 		pCO2Text_2 = new Text(composite_PRVC, SWT.BORDER);
+		pCO2Text_2.setEditable(false);
 		pCO2Text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_PRVC, SWT.NONE);
 		
@@ -399,6 +404,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblFiO2_2.setText("FiO2:");
 		
 		FiO2Text_2 = new Text(composite_PRVC, SWT.BORDER);
+		FiO2Text_2.setEnabled(true);
 		FiO2Text_2.setToolTipText("FiO2 as a decimal number");
 		FiO2Text_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		FiO2Text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -408,6 +414,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblSpO2_2.setText("SpO2:");
 		
 		SpO2Text_2 = new Text(composite_PRVC, SWT.BORDER);
+		SpO2Text_2.setEnabled(true);
 		SpO2Text_2.setToolTipText("O2 sat from the pulse oximeter");
 		SpO2Text_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		SpO2Text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
@@ -417,6 +424,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblMAP_2.setText("MAP:");
 		
 		MAPText_2 = new Text(composite_PRVC, SWT.BORDER);
+		MAPText_2.setEnabled(true);
 		MAPText_2.setToolTipText("Mean Airway Pressure");
 		MAPText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -425,6 +433,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblVentilatorRate_2.setText("Ventilator Rate:");
 		
 		ventilatorRateText_2 = new Text(composite_PRVC, SWT.BORDER);
+		ventilatorRateText_2.setEnabled(true);
 		ventilatorRateText_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		ventilatorRateText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -433,6 +442,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblVtmlkg_2.setText("VT (ml/kg):");
 		
 		tidalVolumePerKgText_2 = new Text(composite_PRVC, SWT.BORDER);
+		tidalVolumePerKgText_2.setEnabled(true);
 		tidalVolumePerKgText_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		tidalVolumePerKgText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_PRVC, SWT.NONE);
@@ -443,6 +453,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPEEP_2.setText("PEEP:");
 		
 		PEEPText_2 = new Text(composite_PRVC, SWT.BORDER);
+		PEEPText_2.setEnabled(true);
 		PEEPText_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PEEPText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -451,6 +462,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPip_2.setText("PIP:");
 		
 		PIPText_2 = new Text(composite_PRVC, SWT.BORDER);
+		PIPText_2.setEnabled(true);
 		PIPText_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PIPText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_PRVC, SWT.NONE);
@@ -460,7 +472,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		tbtmHighFrequency.setText("High Frequency Oscillatory");
 		
 		Composite composite_HFOV = new Composite(ventilatorTabFolder, SWT.NONE);
-		composite_HFOV.setEnabled(false);
 		tbtmHighFrequency.setControl(composite_HFOV);
 		composite_HFOV.setLayout(new GridLayout(6, true));
 		
@@ -469,6 +480,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPh_3.setText("pH:");
 		
 		pHText_3 = new Text(composite_HFOV, SWT.BORDER);
+		pHText_3.setEditable(false);
 		pHText_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		pHText_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -477,6 +489,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblPaO2_3.setText("PaO2:");
 		
 		PaO2Text_3 = new Text(composite_HFOV, SWT.BORDER);
+		PaO2Text_3.setEditable(false);
 		PaO2Text_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PaO2Text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -485,6 +498,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblpCO2_3.setText("pCO2:");
 		
 		pCO2Text_3 = new Text(composite_HFOV, SWT.BORDER);
+		pCO2Text_3.setEditable(false);
 		pCO2Text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_HFOV, SWT.NONE);
 		
@@ -513,6 +527,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblFiO2_3.setText("FiO2:");
 		
 		FiO2Text_3 = new Text(composite_HFOV, SWT.BORDER);
+		FiO2Text_3.setEnabled(true);
 		FiO2Text_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		FiO2Text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -521,6 +536,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblSpO2_3.setText("SpO2:");
 		
 		SpO2Text_3 = new Text(composite_HFOV, SWT.BORDER);
+		SpO2Text_3.setEnabled(true);
 		SpO2Text_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		SpO2Text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -529,7 +545,8 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblMap_3.setText("MAP:");
 		
 		MAPText_3 = new Text(composite_HFOV, SWT.BORDER);
-		MAPText_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
+		MAPText_3.setEnabled(true);
+		MAPText_3.setBackground(org.eclipse.wb.swt.SWTResourceManager.getColor(255, 255, 153));
 		MAPText_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblFrequency_3 = new Label(composite_HFOV, SWT.NONE);
@@ -537,6 +554,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblFrequency_3.setText("Frequency (Hz):");
 		
 		FreqText_3 = new Text(composite_HFOV, SWT.BORDER);
+		FreqText_3.setEnabled(true);
 		FreqText_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		FreqText_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -545,6 +563,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblAmplitude_3.setText("Amplitude:");
 		
 		AmpText_3 = new Text(composite_HFOV, SWT.BORDER);
+		AmpText_3.setEnabled(true);
 		AmpText_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		AmpText_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_HFOV, SWT.NONE);
@@ -563,7 +582,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		
 		pHText_4 = new Text(composite_VolumeControl, SWT.BORDER);
 		pHText_4.setEditable(false);
-		pHText_4.setEnabled(false);
 		pHText_4.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		pHText_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -573,7 +591,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		
 		PaO2Text_4 = new Text(composite_VolumeControl, SWT.BORDER);
 		PaO2Text_4.setEditable(false);
-		PaO2Text_4.setEnabled(false);
 		PaO2Text_4.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PaO2Text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
@@ -582,7 +599,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblpCO2_4.setText("pCO2:");
 		
 		pCO2Text_4 = new Text(composite_VolumeControl, SWT.BORDER);
-		pCO2Text_4.setEnabled(false);
 		pCO2Text_4.setEditable(false);
 		pCO2Text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_VolumeControl, SWT.NONE);

@@ -1,5 +1,6 @@
 package core.laboratory.object;
 
+import java.text.DateFormat;
 import java.util.GregorianCalendar;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -34,6 +35,11 @@ public class ArterialBloodGasLaboratoryResult extends MultipleValueLaboratoryObj
 	}
 	
 	@Transient
+	public String getPhString(){
+		return getPhValue().toString();
+	}
+	
+	@Transient
 	public Integer getPo2Value(){
 		for (LaboratoryPanelComponent component : getComponents()) {
 			if (component.getLoincCode().equals(ArterialOxygenLaboratoryResult.LOINC_CODE)) {
@@ -44,6 +50,11 @@ public class ArterialBloodGasLaboratoryResult extends MultipleValueLaboratoryObj
 	}
 	
 	@Transient
+	public String getPo2String(){
+		return getPo2Value().toString();
+	}
+	
+	@Transient
 	public Integer getPco2Value(){
 		for (LaboratoryPanelComponent component : getComponents()) {
 			if (component.getLoincCode().equals(ArterialCarbonDioxideLaboratoryResult.LOINC_CODE)) {
@@ -51,6 +62,17 @@ public class ArterialBloodGasLaboratoryResult extends MultipleValueLaboratoryObj
 			}
 		}
 		return null;
+	}
+	
+	@Transient
+	public String getPco2String(){
+		return getPco2Value().toString();
+	}
+	
+	@Transient
+	public String getTimeOfABG(){
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
+		return df.format(getTimeOfSpecimenCollection().getTime());
 	}
 	
 	@Override
