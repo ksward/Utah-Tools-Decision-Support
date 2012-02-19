@@ -1,142 +1,15 @@
-package hypertonic.decision.rules  
+package ventilator.decision.rules  
 
 import ventilator.decision.object.VentilatorPediatricDecision;
 
-global Integer adultWeightLimit;  // You can use this in your rules
-
-rule "Message for passive"
+rule "Start up rule"
 @author("Kathy")
 lock-on-active 
 when
 	decision: VentilatorPediatricDecision()
 then
-	modify(decision){explain("This is running in passive mode");}
+	modify(decision){explain("Welcome.  No ventilator rules have been written yet.");}
 end
-
-rule "No ICP monitor keep Na >= 145"
-@author("Michele Munkwitz")
-no-loop 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure == null, currentSodiumValue < 145, 
-		recommendedHypertonicSalineBolus > 0.0  )
-		
-	then
-		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
-		advise("Give "+ decision.getRecommendedHypertonicSalineBolus()+
-		" ml/kg ("+ decision.FormatZeroDecimal(decision.getPatientWeight()*decision.getRecommendedHypertonicSalineBolus())  +
-		" ml) 3% saline"),
-		explain("For a patient without ICP monitor recommended Na >145");}
-		System.out.println(kcontext.getRule().getName());
-		
-end
-
-rule "How much saline for Na <135 and No ICP monitoring"
-@author("Michele Munkwitz") 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure == null, currentSodiumValue < 135, 
-		recommendedHypertonicSalineBolus == 0.0  )
-		
-	then
-		modify(decision){setRecommendedHypertonicSalineBolus(5.0),
-		explain("The patient has no ICP monitor and Na < 135");}
-		
-		System.out.println(kcontext.getRule().getName());
-end
-
-rule "How much saline for Na 136-140 and No ICP monitoring"
-@author("Michele Munkwitz") 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure == null, currentSodiumValue < 141 && > 135, 
-		recommendedHypertonicSalineBolus == 0.0  )
-		
-	then
-		modify(decision){setRecommendedHypertonicSalineBolus(4.0),
-		explain("The patient has no ICP monitor and Na 136-140");}
-		
-		System.out.println(kcontext.getRule().getName());
-end
-
-
-rule "How much saline for Na 141-145 and No ICP monitoring"
-@author("Michele Munkwitz") 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure == null, currentSodiumValue < 145 && > 140, 
-		recommendedHypertonicSalineBolus == 0.0  )
-		
-	then
-		modify(decision){setRecommendedHypertonicSalineBolus(3.0),
-		explain("The patient has no ICP monitor and Na 141-145");}
-		
-		System.out.println(kcontext.getRule().getName());
-end
-
-
-rule "ICP monitor in place, ICP normal, keep Na >= 145"
-@author("Michele Munkwitz")
-no-loop 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure <= 20, currentSodiumValue < 145, 
-		recommendedHypertonicSalineBolus > 0.0  )
-		
-	then
-		modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
-		advise("Give "+ decision.getRecommendedHypertonicSalineBolus()+
-		" ml/kg ("+ decision.FormatZeroDecimal(decision.getPatientWeight()*decision.getRecommendedHypertonicSalineBolus())  +
-		" ml) 3% saline"),
-		explain("For a patient with normal ICP recommended Na >145");}
-		System.out.println(kcontext.getRule().getName());
-		
-end
-
-rule "How much saline for Na < 135 and normal ICP)"
-@author("Michele Munkwitz") 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure <= 20, currentSodiumValue < 135, 
-		recommendedHypertonicSalineBolus == 0.0  )
-		
-	then
-		modify(decision){setRecommendedHypertonicSalineBolus(5.0),
-		explain("The patient has normal ICP and Na < 135");}
-		
-		System.out.println(kcontext.getRule().getName());
-end
-
-rule "How much saline for Na 136-140 and normal ICP"
-@author("Michele Munkwitz") 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure <= 20, currentSodiumValue < 141 && > 135, 
-		recommendedHypertonicSalineBolus == 0.0  )
-		
-	then
-		modify(decision){setRecommendedHypertonicSalineBolus(4.0),
-		explain("The patient has normal ICP and Na 136-140");}
-		
-		System.out.println(kcontext.getRule().getName());
-end
-
-
-rule "How much saline for Na 141-145 and normal ICP"
-@author("Michele Munkwitz") 
-
-	when
-		decision : VentilatorPediatricDecision( intracranialPressure <= 20, currentSodiumValue < 145 && > 140, 
-		recommendedHypertonicSalineBolus == 0.0  )
-		
-	then
-		modify(decision){setRecommendedHypertonicSalineBolus(3.0),
-		explain("The patient has normal ICP  and Na 141-145");}
-		
-		System.out.println(kcontext.getRule().getName());
-end
-
-
 
 
 //This is the end of the file
