@@ -10,8 +10,8 @@ import org.hibernate.validator.NotNull;
 public class SingleValueLaboratoryObject extends
 		BasicLaboratoryObject {
 
-	private String conventionalUnits;
-	private String conventionalTextResult;
+	private String conventionalUnits = "";
+	private String conventionalTextResult = "";
 	
 	public SingleValueLaboratoryObject() {
 	}
@@ -19,8 +19,6 @@ public class SingleValueLaboratoryObject extends
 	public SingleValueLaboratoryObject(String labelName){
 		this.timeOfSpecimenCollection = new GregorianCalendar();
 		this.loincCode = "LOINC";
-		this.conventionalUnits = "";
-		this.conventionalTextResult = "";
 		this.labelName = labelName;
 		this.valid = true;
 	}

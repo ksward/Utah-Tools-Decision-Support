@@ -16,10 +16,10 @@ import org.hibernate.validator.NotNull;
 @Embeddable
 public class LaboratoryPanelComponent {
 
-	private String loincCode;
-	private String labelName;
-	private String conventionalUnits;
-	private String conventionalTextResult;
+	private String loincCode = "unassigned";
+	private String labelName = "unlabeled";
+	private String conventionalUnits = "unassigned";
+	private String conventionalTextResult = "unassigned";
 	private MultipleValueLaboratoryObject parentPanel;
 	
 	public LaboratoryPanelComponent(){}

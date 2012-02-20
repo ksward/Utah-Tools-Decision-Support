@@ -35,10 +35,10 @@ public class BasicLaboratoryObject extends BaseEntity {
 	public static final String GETALLLABRESULTSBYPATIENTANDLOINC = "getAllLabResultsByPatientAndLoinc";
 	
 	protected GregorianCalendar timeOfSpecimenCollection;
-	protected String loincCode;
-	protected String labelName;
+	protected String loincCode = "unassigned";
+	protected String labelName = "unlabeled";
 	private Patient patient;
-	private String accountName;
+	protected String accountName = "unassigned";
 	
 	@NotNull
 	public GregorianCalendar getTimeOfSpecimenCollection() {

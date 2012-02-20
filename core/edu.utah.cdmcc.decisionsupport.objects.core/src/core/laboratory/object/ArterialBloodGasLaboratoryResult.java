@@ -25,6 +25,16 @@ public class ArterialBloodGasLaboratoryResult extends MultipleValueLaboratoryObj
 	}
 	
 	@Transient
+	public ArterialPhLaboratoryResult getPhComponent(){
+		for (LaboratoryPanelComponent component : getComponents()) {
+			if (component.getLoincCode().equals(ArterialPhLaboratoryResult.LOINC_CODE)) {
+				return (ArterialPhLaboratoryResult) component;
+			}
+		}
+		return null;	
+	}
+	
+	@Transient
 	public Double getPhValue() {
 		for (LaboratoryPanelComponent component : getComponents()) {
 			if (component.getLoincCode().equals(ArterialPhLaboratoryResult.LOINC_CODE)) {
@@ -40,6 +50,16 @@ public class ArterialBloodGasLaboratoryResult extends MultipleValueLaboratoryObj
 	}
 	
 	@Transient
+	public ArterialOxygenLaboratoryResult getPo2Component(){
+		for (LaboratoryPanelComponent component : getComponents()) {
+			if (component.getLoincCode().equals(ArterialOxygenLaboratoryResult.LOINC_CODE)) {
+				return (ArterialOxygenLaboratoryResult) component;
+			}
+		}
+		return null;	
+	}
+	
+	@Transient
 	public Integer getPo2Value(){
 		for (LaboratoryPanelComponent component : getComponents()) {
 			if (component.getLoincCode().equals(ArterialOxygenLaboratoryResult.LOINC_CODE)) {
@@ -52,6 +72,16 @@ public class ArterialBloodGasLaboratoryResult extends MultipleValueLaboratoryObj
 	@Transient
 	public String getPo2String(){
 		return getPo2Value().toString();
+	}
+	
+	@Transient
+	public ArterialCarbonDioxideLaboratoryResult getPco2Component(){
+		for (LaboratoryPanelComponent component : getComponents()) {
+			if (component.getLoincCode().equals(ArterialCarbonDioxideLaboratoryResult.LOINC_CODE)) {
+				return (ArterialCarbonDioxideLaboratoryResult) component;
+			}
+		}
+		return null;	
 	}
 	
 	@Transient
