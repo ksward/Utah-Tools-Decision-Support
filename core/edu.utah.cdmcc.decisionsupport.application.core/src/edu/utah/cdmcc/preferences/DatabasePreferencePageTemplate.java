@@ -9,6 +9,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.hibernate.Session;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import core.field.editors.LabelFieldEditor;
+import core.field.editors.PasswordFieldEditor;
 import core.field.editors.SpacerFieldEditor;
 import core.hibernate.HibernateUtil;
 import edu.utah.cdmcc.decisionsupport.controller.core.ApplicationControllers;
@@ -32,9 +33,9 @@ public class DatabasePreferencePageTemplate extends FieldEditorPreferencePage im
 		
 		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_DRIVER, "JDBC Driver",  getFieldEditorParent()));
 		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_CONNECTION_URL, "Connection URL",  getFieldEditorParent()));
-		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_DIALECT, "Hibernate Dialect",  getFieldEditorParent()));
-		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_USERNAME, "Username",  getFieldEditorParent()));
-		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_PASSWORD, "Password",  getFieldEditorParent()));
+//		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_DIALECT, "Hibernate Dialect",  getFieldEditorParent()));
+//		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_USERNAME, "Username",  getFieldEditorParent()));
+//		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_PASSWORD, "Password",  getFieldEditorParent()));
 		
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("Settings for mySQL database:", getFieldEditorParent()));
