@@ -174,20 +174,6 @@ ILaboratoryListener{
 		}
 	}
 
-//	private SodiumLaboratoryResult retrieveLatestSerumSodium() {
-//		IPatientDAO patientDAO = DAOFactory.instance(DAOFactory.HIBERNATE).getPatientDAO();
-//		patientDAO.getSession().beginTransaction();
-//		Query q = patientDAO.getSession().getNamedQuery(SodiumLaboratoryResult.GETALLVALIDSODIUMLABRESULTSBYPATIENT);
-//		q.setParameter("patient", this.getPatient());
-//		ArrayList<?> results = (ArrayList<?>) q.list();
-//		patientDAO.getSession().getTransaction().commit();
-//		if (results.size() == 0) {
-//			return null; // REMEMBER TO CHECK FOR NULLS IN CALLING ROUTINES
-//		} else {
-//			return (SodiumLaboratoryResult) results.get(0);
-//		}
-//	}
-
 	private void populateOsmolalityFields() {
 		System.out.println("In populateOsmolalityFields");
 		SerumOsmolalityLaboratoryResult result = patientLabController.retrieveCurrentOsmolalityLabResult(getPatient());
@@ -201,25 +187,6 @@ ILaboratoryListener{
 			editorComposite.getSerumOsmText().setText("Not available");
 		}
 	}
-	
-//	private SerumOsmolalityLaboratoryResult retrieveLatestSerumOsmolality() {
-//		System.out.println("Getting latest osmolality");
-//		IPatientDAO patientDAO = DAOFactory.instance(DAOFactory.HIBERNATE).getPatientDAO();
-//		patientDAO.getSession().beginTransaction();
-//		Query q = patientDAO.getSession().getNamedQuery(
-//				SerumOsmolalityLaboratoryResult.GETALLVALIDSERUMOSMOLALITYLABRESULTSBYPATIENT);
-//		q.setParameter("patient", this.getPatient());
-//		ArrayList<?> results = (ArrayList<?>) q.list();
-//		patientDAO.getSession().getTransaction().commit();
-//		if (results.size() == 0) {
-//			System.out.println("No results");
-//			return null; // REMEMBER TO CHECK FOR NULLS IN CALLING ROUTINES
-//		} else {
-//			System.out.println("Got results");
-//			System.out.println(results.get(0));
-//			return (SerumOsmolalityLaboratoryResult) results.get(0);
-//		}
-//	}
 
 	private void listenToObservationDateTimeChanges() {
 		editorComposite.getObsDateWidget().addSelectionListener(this);

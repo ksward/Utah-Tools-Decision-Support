@@ -46,8 +46,8 @@ import edu.utah.cdmcc.views.DecisionCalculatorEditorTemplate;
 /**
  * 
  * VentilatorDecisionCalculatorEditor is part of the Utah Decision Support
- * Tools. This is specific to pediatric ventilators; it currently contains
- * code to fire the rules engine (Drools). This now extends a generic template.
+ * Tools. This is specific to pediatric ventilators; it currently contains code
+ * to fire the rules engine (Drools). This now extends a generic template.
  * 
  * IN CASE I THINK ABOUT MOVING THIS AGAIN: Currently application.core is
  * independent of hypertonic.core and other domain specific plugins, and vice
@@ -60,16 +60,17 @@ import edu.utah.cdmcc.views.DecisionCalculatorEditorTemplate;
  * 
  */
 public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionCalculatorEditorTemplate implements
-ILaboratoryListener{
+		ILaboratoryListener {
 	public KnowledgeEngine decisionEngine;
 	private GregorianCalendar decisionTime;
 	protected StyledText emptyTrace;
 	public static String ID = "edu.utah.cdmcc.decisionsupport.ventilator.pediatric.editor.decisionCalculator";
 	private static Logger log = Logger.getLogger(VentilatorDecisionCalculatorEditorBasedOnTemplate.class);
 	private VentilatorFieldsAddedToDomainComposite editorComposite;
-	private ClassValidator<VentilatorPediatricDecision> salineValidator;
+	private ClassValidator<VentilatorPediatricDecision> ventilationValidator;
 	private InvalidValue[] validationMessages;
 	private IPatientLaboratoryController patientLabController = new VentilatorPediatricPatientLaboratories();
+
 	public VentilatorDecisionCalculatorEditorBasedOnTemplate() {
 		super();
 	}
@@ -108,7 +109,7 @@ ILaboratoryListener{
 
 	private void addContextHelp() {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(editorComposite, "edu.utah.cdmcc.help.glucose.editorView");
-		//TODO need to fix this plug in ID
+		// TODO need to fix this plug in ID
 	}
 
 	private void setupDomainSpecificPart() {
@@ -132,7 +133,7 @@ ILaboratoryListener{
 					e1.printStackTrace();
 				}
 			}
-		
+
 		});
 	}
 
@@ -155,12 +156,12 @@ ILaboratoryListener{
 		editorComposite.setDecisionFiredFlag(false);
 	}
 
-//	@Override
-//	public void setFocus() {
-//		if (editorComposite != null && !editorComposite.isDisposed()) {
-//			editorComposite.getObsDateWidget().setFocus();
-//		}
-//	}
+	// @Override
+	// public void setFocus() {
+	// if (editorComposite != null && !editorComposite.isDisposed()) {
+	// editorComposite.getObsDateWidget().setFocus();
+	// }
+	// }
 
 	public void dispose() {
 		ApplicationControllers.getPatientController().removePatientsListener(this);
@@ -182,22 +183,22 @@ ILaboratoryListener{
 	 * @throws Exception
 	 */
 	private void calculateDecision() {
-		
+
 		Boolean mode = Activator.getDefault().getPreferenceStore().getBoolean(StudyPreferenceConstants.ACTIVE_MODE);
 		if (mode == false && instantiateDecisionObject()) {
 			// Intercept without firing rule engine
 			decision.setUserAction(ClinicalDecision.PASSIVE);
 			this.getEditorSite().getActionBars().getStatusLineManager().setMessage("Asking clinician for actions ...");
-			VentilatorPediatricGetPassiveDecisionDialog dialog = new VentilatorPediatricGetPassiveDecisionDialog(getSite()
-					.getShell(), (VentilatorPediatricDecision) decision);
+			VentilatorPediatricGetPassiveDecisionDialog dialog = new VentilatorPediatricGetPassiveDecisionDialog(
+					getSite().getShell(), (VentilatorPediatricDecision) decision);
 			dialog.open();
 			ApplicationControllers.getDecisionController().fireDecisionChanged(decision);
 		} else {
 			if (mode == true && instantiateDecisionObject()) {
 				// Fire rules engine for decision
 				log.debug("Decision object successfully instantiated");
-				this.getEditorSite().getActionBars().getStatusLineManager().setMessage(
-						"Decision object instantiated ...");
+				this.getEditorSite().getActionBars().getStatusLineManager()
+						.setMessage("Decision object instantiated ...");
 				try {
 					log.debug("About to fire the rules engine");
 					fireDroolsRulesEngine();
@@ -211,37 +212,45 @@ ILaboratoryListener{
 		editorComposite.setDecisionFiredFlag(true);
 		editorComposite.enableCorrectButtonCombination();
 	}
-	
-	
+
 	private boolean checkValuesKludgeRoutine() {
-//		// This is a kludge because I cannot figure out how to make Hibernate validation
-//		// work on the HypertonicDecisionObject.
-//		if(((VentilatorDecision) decision).getCurrentHypertonicSalineDripRate() > 10){
-//			String errorMessage = "Hypertonic saline drip rate may not exceed 10.0";
-//			MessageDialog.openError(null, "Error in decision data entry", errorMessage);
-//			editorComposite.getCurrentHypertonicSalineDripRateText().setFocus();
-//			return false;
-//		}
-//		if(((VentilatorDecision) decision).getMeanArterialPressure() > 200){
-//			String errorMessage = "Mean arterial pressure may not exceed 200.";
-//			MessageDialog.openError(null, "Error in decision data entry", errorMessage);
-//			editorComposite.getMAPText().setFocus();
-//			return false;
-//		}
-//		if (((VentilatorDecision) decision).getIntracranialPressure() != null){
-//		if(((VentilatorDecision) decision).getIntracranialPressure() > 100){
-//			String errorMessage = "Intracranial pressure may not exceed 100.";
-//			MessageDialog.openError(null, "Error in decision data entry", errorMessage);
-//			editorComposite.getICPText().setFocus();
-//			return false;
-//		}}
-//		if (((VentilatorDecision) decision).getCentralVenousPressure() != null){
-//		if(((VentilatorDecision) decision).getCentralVenousPressure() > 25){
-//			String errorMessage = "Central venous pressure may not exceed 25.";
-//			MessageDialog.openError(null, "Error in decision data entry", errorMessage);
-//			editorComposite.getCVPText().setFocus();
-//			return false;
-//		}}
+		// // This is a kludge because I cannot figure out how to make Hibernate
+		// validation
+		// // work on the HypertonicDecisionObject.
+		// if(((VentilatorDecision)
+		// decision).getCurrentHypertonicSalineDripRate() > 10){
+		// String errorMessage =
+		// "Hypertonic saline drip rate may not exceed 10.0";
+		// MessageDialog.openError(null, "Error in decision data entry",
+		// errorMessage);
+		// editorComposite.getCurrentHypertonicSalineDripRateText().setFocus();
+		// return false;
+		// }
+		// if(((VentilatorDecision) decision).getMeanArterialPressure() > 200){
+		// String errorMessage = "Mean arterial pressure may not exceed 200.";
+		// MessageDialog.openError(null, "Error in decision data entry",
+		// errorMessage);
+		// editorComposite.getMAPText().setFocus();
+		// return false;
+		// }
+		// if (((VentilatorDecision) decision).getIntracranialPressure() !=
+		// null){
+		// if(((VentilatorDecision) decision).getIntracranialPressure() > 100){
+		// String errorMessage = "Intracranial pressure may not exceed 100.";
+		// MessageDialog.openError(null, "Error in decision data entry",
+		// errorMessage);
+		// editorComposite.getICPText().setFocus();
+		// return false;
+		// }}
+		// if (((VentilatorDecision) decision).getCentralVenousPressure() !=
+		// null){
+		// if(((VentilatorDecision) decision).getCentralVenousPressure() > 25){
+		// String errorMessage = "Central venous pressure may not exceed 25.";
+		// MessageDialog.openError(null, "Error in decision data entry",
+		// errorMessage);
+		// editorComposite.getCVPText().setFocus();
+		// return false;
+		// }}
 		return true;
 	}
 
@@ -300,29 +309,29 @@ ILaboratoryListener{
 			}
 			this.getPatient().addDecision(decision);
 			log.debug("Decision added to decisions collection object in the patient");
-		
 
-		IPatientDAO patientDAO = DAOFactory.instance(DAOFactory.HIBERNATE).getPatientDAO();
-		try {
-			log.debug("About to get a hibernate transaction to start the charting");
-			patientDAO.getSession().setFlushMode(org.hibernate.FlushMode.MANUAL);
-			patientDAO.getSession().beginTransaction();
-			patientDAO.updatePatientValues(this.getPatient());
-			patientDAO.getSession().flush();
-			patientDAO.getSession().getTransaction().commit();
-			patientDAO.getSession().setFlushMode(org.hibernate.FlushMode.AUTO);
-			log.debug("Transaction committed");
-		} catch (HibernateException e) {
-			log.debug("Charting failed with Hibernate exception: " + e);
-			e.printStackTrace();
+			IPatientDAO patientDAO = DAOFactory.instance(DAOFactory.HIBERNATE).getPatientDAO();
+			try {
+				log.debug("About to get a hibernate transaction to start the charting");
+				patientDAO.getSession().setFlushMode(org.hibernate.FlushMode.MANUAL);
+				patientDAO.getSession().beginTransaction();
+				patientDAO.updatePatientValues(this.getPatient());
+				patientDAO.getSession().flush();
+				patientDAO.getSession().getTransaction().commit();
+				patientDAO.getSession().setFlushMode(org.hibernate.FlushMode.AUTO);
+				log.debug("Transaction committed");
+			} catch (HibernateException e) {
+				log.debug("Charting failed with Hibernate exception: " + e);
+				e.printStackTrace();
+			}
+
+			ApplicationControllers.getDecisionController().fireDecisionStored(decision);
+			this.getEditorSite().getActionBars().getStatusLineManager().setMessage("Decision stored in database ...");
+			decision = null;
+			setDecisionFiredFlagOff();
+			editorComposite.enableCorrectButtonCombination();
 		}
-
-		ApplicationControllers.getDecisionController().fireDecisionStored(decision);
-		this.getEditorSite().getActionBars().getStatusLineManager().setMessage("Decision stored in database ...");
-		decision = null;
-		setDecisionFiredFlagOff();
-		editorComposite.enableCorrectButtonCombination();
-	}}
+	}
 
 	/**
 	 * Populates a decision object so that it can be fed to the rules engine
@@ -334,41 +343,49 @@ ILaboratoryListener{
 		// Check if a decision already instantiated because do not want to
 		// overwrite this. If rules were fired, then there is a decision object.
 		if (decision == null) {
-			
-			//prepareObservationDateTimeValues();
+
+			// prepareObservationDateTimeValues();
 			decision = new VentilatorPediatricDecision(decisionTime);
-			//populateDomainSpecificDecisionFieldsFromEditor();
+			// populateDomainSpecificDecisionFieldsFromEditor();
 			populateClinicalDecisionFromPatient();
 			if (ApplicationControllers.getUserController().getCurrentUser() != null) {
 				decision.setAccountName(ApplicationControllers.getUserController().getCurrentUser().getAccountName());
 			}
-			//return validateHypertonicSalineDecisionWithHibernate();
+			// return validateHypertonicSalineDecisionWithHibernate();
 			return checkValuesKludgeRoutine();
 		}
 		return checkValuesKludgeRoutine();
 	}
 
-//	private void prepareObservationDateTimeValues() {
-//		decisionTime = new GregorianCalendar(editorComposite.getObsDateWidget().getYear(), editorComposite
-//				.getObsDateWidget().getMonth(), editorComposite.getObsDateWidget().getDay(), editorComposite
-//				.getObsTimeWidget().getHours(), editorComposite.getObsTimeWidget().getMinutes());
-//	}
-//
-//	private void populateDomainSpecificDecisionFieldsFromEditor() {
-//		if(editorComposite.getCurrentHypertonicSalineDripRateText().getText().length()>0){
-//					((VentilatorDecision) decision).setCurrentHypertonicSalineDripRate(Double.valueOf(editorComposite
-//				.getCurrentHypertonicSalineDripRateText().getText()));
-//		} 
-//		if(editorComposite.getCVPText().getText().length()>0){
-//		((VentilatorDecision) decision).setCentralVenousPressure(Integer.valueOf(editorComposite.getCVPText()
-//				.getText()));}
-//		if(editorComposite.getMAPText().getText().length()>0){
-//		((VentilatorDecision) decision).setMeanArterialPressure(Integer.valueOf(editorComposite.getMAPText()
-//				.getText()));}
-//		if(editorComposite.getICPText().getText().length()>0){
-//		((VentilatorDecision) decision).setIntracranialPressure(Integer.valueOf(editorComposite.getICPText()
-//				.getText()));}
-//	}
+	// private void prepareObservationDateTimeValues() {
+	// decisionTime = new
+	// GregorianCalendar(editorComposite.getObsDateWidget().getYear(),
+	// editorComposite
+	// .getObsDateWidget().getMonth(),
+	// editorComposite.getObsDateWidget().getDay(), editorComposite
+	// .getObsTimeWidget().getHours(),
+	// editorComposite.getObsTimeWidget().getMinutes());
+	// }
+	//
+	// private void populateDomainSpecificDecisionFieldsFromEditor() {
+	// if(editorComposite.getCurrentHypertonicSalineDripRateText().getText().length()>0){
+	// ((VentilatorDecision)
+	// decision).setCurrentHypertonicSalineDripRate(Double.valueOf(editorComposite
+	// .getCurrentHypertonicSalineDripRateText().getText()));
+	// }
+	// if(editorComposite.getCVPText().getText().length()>0){
+	// ((VentilatorDecision)
+	// decision).setCentralVenousPressure(Integer.valueOf(editorComposite.getCVPText()
+	// .getText()));}
+	// if(editorComposite.getMAPText().getText().length()>0){
+	// ((VentilatorDecision)
+	// decision).setMeanArterialPressure(Integer.valueOf(editorComposite.getMAPText()
+	// .getText()));}
+	// if(editorComposite.getICPText().getText().length()>0){
+	// ((VentilatorDecision)
+	// decision).setIntracranialPressure(Integer.valueOf(editorComposite.getICPText()
+	// .getText()));}
+	// }
 
 	private void populateClinicalDecisionFromPatient() {
 		decision.setPatient(getPatient());
@@ -377,18 +394,20 @@ ILaboratoryListener{
 		decision.setPatientWeight(getPatient().getWeight());
 		decision.userAction = ClinicalDecision.PENDING;
 		populateLabValuesFromPatient();
-		//((VentilatorDecision) decision).setPreviousObservationTime(populatePreviousObservationTime());
+		// ((VentilatorDecision)
+		// decision).setPreviousObservationTime(populatePreviousObservationTime());
 	}
 
-	private void populateBloodGasFields(){
-		ArterialBloodGasLaboratoryResult result = patientLabController.retrieveCurrentArterialBloodGasResult(getPatient());
+	private void populateBloodGasFields() {
+		ArterialBloodGasLaboratoryResult result = patientLabController
+				.retrieveCurrentArterialBloodGasResult(getPatient());
 		populatePhFields(result);
 		populatePco2Fields(result);
-		poulatePo2Fields(result);
+		populatePo2Fields(result);
 	}
 
-	private void poulatePo2Fields(ArterialBloodGasLaboratoryResult result) {
-		if (result != null){
+	private void populatePo2Fields(ArterialBloodGasLaboratoryResult result) {
+		if (result != null) {
 			editorComposite.getLblLastDate_PaO2().setText(result.getTimeOfABG());
 			editorComposite.getPaO2Text().setText(result.getPco2String());
 			editorComposite.getLblLastDate_PaO2_2().setText(result.getTimeOfABG());
@@ -396,10 +415,10 @@ ILaboratoryListener{
 			editorComposite.getLblLastDate_PaO2_3().setText(result.getTimeOfABG());
 			editorComposite.getPaO2Text_3().setText(result.getPco2String());
 			editorComposite.getLblLastDate_PaO2_4().setText(result.getTimeOfABG());
-			editorComposite.getPaO2Text_4().setText(result.getPco2String());			
-		} else {		
+			editorComposite.getPaO2Text_4().setText(result.getPco2String());
+		} else {
 			editorComposite.getLblLastDate_PaO2().setText("Not available");
-			editorComposite.getPaO2Text().setText("Not available");	
+			editorComposite.getPaO2Text().setText("Not available");
 			editorComposite.getLblLastDate_PaO2_2().setText("Not available");
 			editorComposite.getPaO2Text_2().setText("Not available");
 			editorComposite.getLblLastDate_PaO2_3().setText("Not available");
@@ -407,11 +426,11 @@ ILaboratoryListener{
 			editorComposite.getLblLastDate_PaO2_4().setText("Not available");
 			editorComposite.getPaO2Text_4().setText("Not available");
 		}
-		
+
 	}
 
 	private void populatePco2Fields(ArterialBloodGasLaboratoryResult result) {
-		if (result != null){
+		if (result != null) {
 			editorComposite.getLblLastDate_PCO2().setText(result.getTimeOfABG());
 			editorComposite.getpCO2Text().setText(result.getPco2String());
 			editorComposite.getLblLastDate_PCO2_2().setText(result.getTimeOfABG());
@@ -419,10 +438,10 @@ ILaboratoryListener{
 			editorComposite.getLblLastDate_PCO2_3().setText(result.getTimeOfABG());
 			editorComposite.getpCO2Text_3().setText(result.getPco2String());
 			editorComposite.getLblLastDate_PCO2_4().setText(result.getTimeOfABG());
-			editorComposite.getpCO2Text_4().setText(result.getPco2String());			
-		} else {		
+			editorComposite.getpCO2Text_4().setText(result.getPco2String());
+		} else {
 			editorComposite.getLblLastDate_PCO2().setText("Not available");
-			editorComposite.getpCO2Text().setText("Not available");	
+			editorComposite.getpCO2Text().setText("Not available");
 			editorComposite.getLblLastDate_PCO2_2().setText("Not available");
 			editorComposite.getpCO2Text_2().setText("Not available");
 			editorComposite.getLblLastDate_PCO2_3().setText("Not available");
@@ -430,11 +449,11 @@ ILaboratoryListener{
 			editorComposite.getLblLastDate_PCO2_4().setText("Not available");
 			editorComposite.getpCO2Text_4().setText("Not available");
 		}
-		
+
 	}
 
 	private void populatePhFields(ArterialBloodGasLaboratoryResult result) {
-		if (result != null){
+		if (result != null) {
 			editorComposite.getLblLastDate_pH().setText(result.getTimeOfABG());
 			editorComposite.getpHText().setText(result.getPhString());
 			editorComposite.getLblLastDate_pH_2().setText(result.getTimeOfABG());
@@ -442,10 +461,10 @@ ILaboratoryListener{
 			editorComposite.getLblLastDate_pH_3().setText(result.getTimeOfABG());
 			editorComposite.getpHText_3().setText(result.getPhString());
 			editorComposite.getLblLastDate_pH_4().setText(result.getTimeOfABG());
-			editorComposite.getpHText_4().setText(result.getPhString());			
-		} else {		
+			editorComposite.getpHText_4().setText(result.getPhString());
+		} else {
 			editorComposite.getLblLastDate_pH().setText("Not available");
-			editorComposite.getpHText().setText("Not available");	
+			editorComposite.getpHText().setText("Not available");
 			editorComposite.getLblLastDate_pH_2().setText("Not available");
 			editorComposite.getpHText_2().setText("Not available");
 			editorComposite.getLblLastDate_pH_3().setText("Not available");
@@ -454,47 +473,59 @@ ILaboratoryListener{
 			editorComposite.getpHText_4().setText("Not available");
 		}
 	}
-	
+
 	private GregorianCalendar populatePreviousObservationTime() {
 		IPatientDecisionController patientDecisionController = new VentilatorPediatricPatientDecisions();
 		return patientDecisionController.retrievePreviousObservationDateTime(getPatient());
 	}
 
 	private void populateLabValuesFromPatient() {
-//		SerumOsmolalityLaboratoryResult recentOsm, previousOsm;
-//		SodiumLaboratoryResult recentNA, previousNA;
-		//IPatientLaboratoryController patientLabController = new VentilatorPatientLaboratories();
+		// SerumOsmolalityLaboratoryResult recentOsm, previousOsm;
+		// SodiumLaboratoryResult recentNA, previousNA;
+		// IPatientLaboratoryController patientLabController = new
+		// VentilatorPatientLaboratories();
 
-//		recentOsm = patientLabController.retrieveCurrentOsmolalityLabResult(getPatient());
-//		previousOsm = patientLabController.retrievePreviousOsmolalityLabResult(getPatient());
-//		recentNA = patientLabController.retrieveCurrentSodiumLabResult(getPatient());
-//		previousNA = patientLabController.retrievePreviousSodiumLabResult(getPatient());
-//		if (recentNA != VentilatorDecision.NOCURRENTSODIUM) {
-//			((VentilatorDecision) decision).setCurrentSodiumValue(recentNA.getNumericResult());
-//			((VentilatorDecision) decision).setCurrentSodiumDateTime(recentNA.getTimeOfSpecimenCollection());
-//		}
-//		if (previousNA != VentilatorDecision.NOPREVIOUSSODIUM) {
-//			((VentilatorDecision) decision).setPreviousSodiumValue(previousNA.getNumericResult());
-//			((VentilatorDecision) decision).setPreviousSodiumDateTime(previousNA.getTimeOfSpecimenCollection());
-//		}
-//		if (recentOsm != VentilatorDecision.NOCURRENTOSMOLALITY) {
-//			((VentilatorDecision) decision).setCurrentOsmolalityValue(recentOsm.getNumericResult());
-//			((VentilatorDecision) decision).setCurrentOsmolalityDateTime(recentOsm.getTimeOfSpecimenCollection());
-//		}
-//		if (previousOsm != VentilatorDecision.NOPREVIOUSOSMOLALITY) {
-//			((VentilatorDecision) decision).setPreviousOsmolalityValue(previousOsm.getNumericResult());
-//			((VentilatorDecision) decision).setPreviousOsmolalityDateTime(previousOsm
-//					.getTimeOfSpecimenCollection());
-//		}
+		// recentOsm =
+		// patientLabController.retrieveCurrentOsmolalityLabResult(getPatient());
+		// previousOsm =
+		// patientLabController.retrievePreviousOsmolalityLabResult(getPatient());
+		// recentNA =
+		// patientLabController.retrieveCurrentSodiumLabResult(getPatient());
+		// previousNA =
+		// patientLabController.retrievePreviousSodiumLabResult(getPatient());
+		// if (recentNA != VentilatorDecision.NOCURRENTSODIUM) {
+		// ((VentilatorDecision)
+		// decision).setCurrentSodiumValue(recentNA.getNumericResult());
+		// ((VentilatorDecision)
+		// decision).setCurrentSodiumDateTime(recentNA.getTimeOfSpecimenCollection());
+		// }
+		// if (previousNA != VentilatorDecision.NOPREVIOUSSODIUM) {
+		// ((VentilatorDecision)
+		// decision).setPreviousSodiumValue(previousNA.getNumericResult());
+		// ((VentilatorDecision)
+		// decision).setPreviousSodiumDateTime(previousNA.getTimeOfSpecimenCollection());
+		// }
+		// if (recentOsm != VentilatorDecision.NOCURRENTOSMOLALITY) {
+		// ((VentilatorDecision)
+		// decision).setCurrentOsmolalityValue(recentOsm.getNumericResult());
+		// ((VentilatorDecision)
+		// decision).setCurrentOsmolalityDateTime(recentOsm.getTimeOfSpecimenCollection());
+		// }
+		// if (previousOsm != VentilatorDecision.NOPREVIOUSOSMOLALITY) {
+		// ((VentilatorDecision)
+		// decision).setPreviousOsmolalityValue(previousOsm.getNumericResult());
+		// ((VentilatorDecision)
+		// decision).setPreviousOsmolalityDateTime(previousOsm
+		// .getTimeOfSpecimenCollection());
+		// }
 	}
 
 	@SuppressWarnings("unused")
 	private boolean validateHypertonicSalineDecisionWithHibernate() {
-		//TODO This routine fails - no invalid messages come back
+		// TODO This routine fails - no invalid messages come back
 		// Need to figure this out.
-		salineValidator = new ClassValidator<VentilatorPediatricDecision>(
-				VentilatorPediatricDecision.class);
-		validationMessages = salineValidator.getInvalidValues((VentilatorPediatricDecision) decision);
+		ventilationValidator = new ClassValidator<VentilatorPediatricDecision>(VentilatorPediatricDecision.class);
+		validationMessages = ventilationValidator.getInvalidValues((VentilatorPediatricDecision) decision);
 		if (validationMessages.length == 0) {
 			return true;
 		} else {
@@ -522,9 +553,10 @@ ILaboratoryListener{
 			declineDecision();
 			return;
 		}
-//		if (e.widget.equals(editorComposite.getObsDateWidget()) || e.widget.equals(editorComposite.getObsTimeWidget())) {
-//			clearDecision();
-//		}
+		if (e.widget.equals(editorComposite.getObservationDate())
+				|| e.widget.equals(editorComposite.getObservationTime())) {
+			clearDecision();
+		}
 	}
 
 	public void modifyText(final ModifyEvent e) {
@@ -540,11 +572,11 @@ ILaboratoryListener{
 	}
 
 	public void focusLost(final FocusEvent e) {
-		//if (e.widget.equals(editorComposite.getObsDateWidget())) {
+		if (e.widget.equals(editorComposite.getObservationDate())) {
 			// TODO Check to make sure birthdate preceded the observation date
 			// and put up a dialog if this is not the case, and then clear
 			// the observation date field so buttons will behave correctly.
-		//}
+		}
 	}
 
 	public void widgetDefaultSelected(SelectionEvent e) {
@@ -553,14 +585,14 @@ ILaboratoryListener{
 	public void laboratoryChanged() {
 		System.out.println("Laboratory changed reached");
 		populateBloodGasFields();
-		//populateOsmolalityFields();
-		//populateSerumSodiumFields();
-		
 	}
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-		
+		if (editorComposite != null && !editorComposite.isDisposed()) {
+			editorComposite.getObservationDate().setFocus();
+
+		}
 	}
+
 }

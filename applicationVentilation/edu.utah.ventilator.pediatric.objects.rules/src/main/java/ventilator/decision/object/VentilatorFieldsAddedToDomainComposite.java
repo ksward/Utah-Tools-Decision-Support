@@ -267,6 +267,9 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblLastDate_pH.setText("Last Date");
 		new Label(composite_PC, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
+		
 		lblLastDate_PaO2 = new Label(composite_PC, SWT.NONE);
 		lblLastDate_PaO2.setToolTipText("time of the most recent PaO2 measurement");
 		lblLastDate_PaO2.setLayoutData(gd_bloodGasDateTime);
@@ -274,6 +277,8 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblLastDate_PaO2.setText("Last Date");
 		new Label(composite_PC, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
 		lblLastDate_PCO2 = new Label(composite_PC, SWT.NONE);
 		lblLastDate_PCO2.setToolTipText("time of the most recent PCO2 measurement");
 		lblLastDate_PCO2.setLayoutData(gd_bloodGasDateTime);
@@ -383,6 +388,9 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		pCO2Text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_PRVC, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
+		
 		lblLastDate_pH_2 = new Label(composite_PRVC, SWT.NONE);
 		lblLastDate_pH_2.setToolTipText("time of the most recent pH measurement");
 		lblLastDate_pH_2.setLayoutData(gd_bloodGasDateTime);
@@ -390,12 +398,18 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblLastDate_pH_2.setFont(SWTResourceManager.getFont("Lucida Grande", 8, SWT.NORMAL));
 		new Label(composite_PRVC, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
+		
 		lblLastDate_PaO2_2 = new Label(composite_PRVC, SWT.NONE);
 		lblLastDate_PaO2_2.setToolTipText("time of the most recent PaO2 measurement");
 		lblLastDate_PaO2_2.setLayoutData(gd_bloodGasDateTime);
 		lblLastDate_PaO2_2.setText("Last Date");
 		lblLastDate_PaO2_2.setFont(SWTResourceManager.getFont("Lucida Grande", 8, SWT.NORMAL));
 		new Label(composite_PRVC, SWT.NONE);
+		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
 		
 		lblLastDate_PCO2_2 = new Label(composite_PRVC, SWT.NONE);
 		lblLastDate_PCO2_2.setToolTipText("time of the most recent PCO2 measurement");
@@ -506,6 +520,9 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		pCO2Text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_HFOV, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
+		
 		lblLastDate_pH_3 = new Label(composite_HFOV, SWT.NONE);
 		lblLastDate_pH_3.setToolTipText("time of the most recent pH measurement");
 		lblLastDate_pH_3.setLayoutData(gd_bloodGasDateTime);
@@ -513,12 +530,18 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		lblLastDate_pH_3.setFont(SWTResourceManager.getFont("Lucida Grande", 8, SWT.NORMAL));
 		new Label(composite_HFOV, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
+		
 		lblLastDate_PaO2_3 = new Label(composite_HFOV, SWT.NONE);
 		lblLastDate_PaO2_3.setToolTipText("time of the most recent PaO2 measurement");
 		lblLastDate_PaO2_3.setLayoutData(gd_bloodGasDateTime);
 		lblLastDate_PaO2_3.setText("Last Date");
 		lblLastDate_PaO2_3.setFont(SWTResourceManager.getFont("Lucida Grande", 8, SWT.NORMAL));
 		new Label(composite_HFOV, SWT.NONE);
+		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
 		
 		lblLastDate_PCO2_3 = new Label(composite_HFOV, SWT.NONE);
 		lblLastDate_PCO2_3.setToolTipText("time of the most recent PCO2 measurement");
@@ -607,17 +630,26 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		pCO2Text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(composite_VolumeControl, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
+		
 		lblLastDate_pH_4 = new Label(composite_VolumeControl, SWT.NONE);
 		lblLastDate_pH_4.setLayoutData(gd_bloodGasDateTime);
 		lblLastDate_pH_4.setText("Last Date");
 		lblLastDate_pH_4.setFont(SWTResourceManager.getFont("Lucida Grande", 8, SWT.NORMAL));
 		new Label(composite_VolumeControl, SWT.NONE);
 		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
+		
 		lblLastDate_PaO2_4 = new Label(composite_VolumeControl, SWT.NONE);
 		lblLastDate_PaO2_4.setLayoutData(gd_bloodGasDateTime);
 		lblLastDate_PaO2_4.setText("Last Date");
 		lblLastDate_PaO2_4.setFont(SWTResourceManager.getFont("Lucida Grande", 8, SWT.NORMAL));
 		new Label(composite_VolumeControl, SWT.NONE);
+		
+		gd_bloodGasDateTime = new GridData(SWT.FILL, SWT.TOP, true, false, 1,1);
+		gd_bloodGasDateTime.widthHint = 75;
 		
 		lblLastDate_PCO2_4 = new Label(composite_VolumeControl, SWT.NONE);
 		lblLastDate_PCO2_4.setLayoutData(gd_bloodGasDateTime);
