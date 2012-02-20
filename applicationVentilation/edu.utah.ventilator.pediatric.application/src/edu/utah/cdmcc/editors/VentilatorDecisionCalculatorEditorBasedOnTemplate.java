@@ -1,6 +1,5 @@
 package edu.utah.cdmcc.editors;
 
-import java.text.DateFormat;
 import java.util.GregorianCalendar;
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionException;
@@ -32,9 +31,6 @@ import core.decision.object.ClinicalDecision;
 import core.drools.utilities.RulesEngineException;
 import core.hibernate.HibernateValidationHandler;
 import core.laboratory.object.ArterialBloodGasLaboratoryResult;
-import core.laboratory.object.ArterialCarbonDioxideLaboratoryResult;
-import core.laboratory.object.ArterialOxygenLaboratoryResult;
-import core.laboratory.object.ArterialPhLaboratoryResult;
 import core.multiple.object.controllers.IPatientDecisionController;
 import drools.engine.KnowledgeEngine;
 import edu.utah.cdmcc.decisionsupport.application.core.Activator;
@@ -393,7 +389,7 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		decision.setPatientHeight(getPatient().getHeight());
 		decision.setPatientWeight(getPatient().getWeight());
 		decision.userAction = ClinicalDecision.PENDING;
-		populateLabValuesFromPatient();
+		populateDecisionWithLabValuesFromPatient();
 		// ((VentilatorDecision)
 		// decision).setPreviousObservationTime(populatePreviousObservationTime());
 	}
@@ -409,13 +405,13 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 	private void populatePo2Fields(ArterialBloodGasLaboratoryResult result) {
 		if (result != null) {
 			editorComposite.getLblLastDate_PaO2().setText(result.getTimeOfABG());
-			editorComposite.getPaO2Text().setText(result.getPco2String());
+			editorComposite.getPaO2Text().setText(result.getPo2String());
 			editorComposite.getLblLastDate_PaO2_2().setText(result.getTimeOfABG());
-			editorComposite.getPaO2Text_2().setText(result.getPco2String());
+			editorComposite.getPaO2Text_2().setText(result.getPo2String());
 			editorComposite.getLblLastDate_PaO2_3().setText(result.getTimeOfABG());
-			editorComposite.getPaO2Text_3().setText(result.getPco2String());
+			editorComposite.getPaO2Text_3().setText(result.getPo2String());
 			editorComposite.getLblLastDate_PaO2_4().setText(result.getTimeOfABG());
-			editorComposite.getPaO2Text_4().setText(result.getPco2String());
+			editorComposite.getPaO2Text_4().setText(result.getPo2String());
 		} else {
 			editorComposite.getLblLastDate_PaO2().setText("Not available");
 			editorComposite.getPaO2Text().setText("Not available");
@@ -479,7 +475,7 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		return patientDecisionController.retrievePreviousObservationDateTime(getPatient());
 	}
 
-	private void populateLabValuesFromPatient() {
+	private void populateDecisionWithLabValuesFromPatient() {
 		// SerumOsmolalityLaboratoryResult recentOsm, previousOsm;
 		// SodiumLaboratoryResult recentNA, previousNA;
 		// IPatientLaboratoryController patientLabController = new
