@@ -4,16 +4,35 @@ import static org.junit.Assert.*;
 import java.util.GregorianCalendar;
 import org.junit.Before;
 import org.junit.Test;
+
+import core.laboratory.object.BasicLaboratoryObject;
 import core.laboratory.object.SerumGlucoseLaboratoryResult;
 import core.laboratory.object.SerumOsmolalityLaboratoryResult;
 import core.laboratory.object.SerumSodiumLaboratoryResult;
+import core.laboratory.object.SingleValueLaboratoryObject;
 import core.patient.object.Patient;
 
 public class TestExperimentalSingleValueClasses {
 
 	private Patient patient;
 
+	@Test
+	public void testBasicLaboratoryObjectConstructorFillsLabelAndAccountName(){
+		BasicLaboratoryObject lab = new BasicLaboratoryObject();
+		assertEquals("Single lab should be called unlabeled","unlabeled",lab.getLabelName());
+		assertEquals("Unassigned account should be called unassigned","unassigned", lab.getAccountName());
+	}
+	@Test
+	public void testSingleValueLabObjectConstructorWithoutParameters(){
+		SingleValueLaboratoryObject lab = new SingleValueLaboratoryObject();
+		assertEquals("Single lab should be called unlabeled","unlabeled",lab.getLabelName());
+	}
 	
+	@Test
+	public void testSingleValueLabObjectHasAccountValue(){
+		SingleValueLaboratoryObject lab = new SingleValueLaboratoryObject();
+		assertEquals("Unassigned account should be called unassigned","unassigned", lab.getAccountName());
+	}
 
 	@Test
 	public void testInsertExperimentalGlucoseResult(){
