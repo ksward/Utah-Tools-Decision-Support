@@ -197,14 +197,15 @@ public class GetBloodGasResultDialog extends TitleAreaDialog {
 	};	
 	
 	private void checkButtonEnablement(){
-		if (!(phText.getText().length() == 0 || pco2Text.getText().length() == 0)){
+		if (!(phText.getText().length() == 0 || pco2Text.getText().length() == 0 || po2Text.getText().length() == 0)){
 			getButton(IDialogConstants.OK_ID).setEnabled(true);
 		}
 		checkPhRange();
 		checkPco2Range();
-		if (!(po2Text.getText().length() == 0)){
-			checkPo2Range();
-		}
+		checkPo2Range();
+		// TODO I need to make the entry of pO2 optional because venous and capillary gases are used
+		// This is tricky because if any component of the gas panel is empty it throws a wrench into
+		// the display routines that expect an intact Text object or a real Integer object for value.
 	}
 	
 	private GregorianCalendar calculateDate() {
