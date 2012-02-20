@@ -4,12 +4,12 @@ import java.sql.SQLException;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.hibernate.Session;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import core.field.editors.LabelFieldEditor;
-import core.field.editors.PasswordFieldEditor;
 import core.field.editors.SpacerFieldEditor;
 import core.hibernate.HibernateUtil;
 import edu.utah.cdmcc.decisionsupport.controller.core.ApplicationControllers;
@@ -18,6 +18,9 @@ import edu.utah.cdmcc.exceptions.UtahToolboxException.ErrorCode;
 import edu.utah.cdmcc.preferences.DatabasePreferenceConstants;
 
 public class DatabasePreferencePageTemplate extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+	
+	private StringFieldEditor localPassword;
+	private StringFieldEditor targetPassword;
 	
 	public DatabasePreferencePageTemplate() {
 		super(GRID);
@@ -33,9 +36,6 @@ public class DatabasePreferencePageTemplate extends FieldEditorPreferencePage im
 		
 		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_DRIVER, "JDBC Driver",  getFieldEditorParent()));
 		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_CONNECTION_URL, "Connection URL",  getFieldEditorParent()));
-//		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_DIALECT, "Hibernate Dialect",  getFieldEditorParent()));
-//		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_USERNAME, "Username",  getFieldEditorParent()));
-//		addField(new StringFieldEditor(DatabasePreferenceConstants.HSQLDB_DATABASE_PASSWORD, "Password",  getFieldEditorParent()));
 		
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("Settings for mySQL database:", getFieldEditorParent()));
@@ -45,7 +45,7 @@ public class DatabasePreferencePageTemplate extends FieldEditorPreferencePage im
 		addField(new StringFieldEditor(DatabasePreferenceConstants.MYSQL_DATABASE_CONNECTION_URL, "Connection URL",  getFieldEditorParent()));
 		addField(new StringFieldEditor(DatabasePreferenceConstants.MYSQL_DATABASE_DIALECT, "Hibernate Dialect",  getFieldEditorParent()));
 		addField(new StringFieldEditor(DatabasePreferenceConstants.MYSQL_DATABASE_USERNAME, "Username",  getFieldEditorParent()));
-		addField(new StringFieldEditor(DatabasePreferenceConstants.MYSQL_DATABASE_PASSWORD, "Password",  getFieldEditorParent()));
+		addLocalPasswordField();
 		
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
 		addField(new LabelFieldEditor("--------------------------------------------------", getFieldEditorParent()));
@@ -57,9 +57,35 @@ public class DatabasePreferencePageTemplate extends FieldEditorPreferencePage im
 		addField(new StringFieldEditor(DatabasePreferenceConstants.TARGET_DATABASE_CONNECTION_URL, "Connection URL",  getFieldEditorParent()));
 		addField(new StringFieldEditor(DatabasePreferenceConstants.TARGET_DATABASE_DIALECT, "Hibernate Dialect",  getFieldEditorParent()));
 		addField(new StringFieldEditor(DatabasePreferenceConstants.TARGET_DATABASE_USERNAME, "Username",  getFieldEditorParent()));
-		addField(new StringFieldEditor(DatabasePreferenceConstants.TARGET_DATABASE_PASSWORD, "Password",  getFieldEditorParent()));
+		addTargetPasswordField();
 	}
 
+	private void addLocalPasswordField() {
+		localPassword = new StringFieldEditor(
+				DatabasePreferenceConstants.MYSQL_DATABASE_PASSWORD,
+				"Password", getFieldEditorParent()) {
+			@Override
+			protected void doFillIntoGrid(Composite parent, int numColumns) {
+				super.doFillIntoGrid(parent, numColumns);
+				getTextControl().setEchoChar('*');
+			}
+		};
+		addField(localPassword);
+	}
+
+	private void addTargetPasswordField() {
+		targetPassword = new StringFieldEditor(
+				DatabasePreferenceConstants.TARGET_DATABASE_PASSWORD,
+				"Password", getFieldEditorParent()) {
+			@Override
+			protected void doFillIntoGrid(Composite parent, int numColumns) {
+				super.doFillIntoGrid(parent, numColumns);
+				getTextControl().setEchoChar('*');
+			}
+		};
+		addField(targetPassword);
+	}
+	
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(ApplicationControllers.getApplication().getPreferenceStore());
 		setDescription("Preference settings for decision support database:");
