@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 import org.hibernate.validator.Max;
 import org.hibernate.validator.Min;
+import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Range;
+
 import core.decision.object.ClinicalDecision;
 import core.laboratory.object.SerumOsmolalityLaboratoryResult;
 import core.laboratory.object.SerumSodiumLaboratoryResult;
@@ -232,8 +235,7 @@ public class HypertonicSalineDecision extends ClinicalDecision {
 	 * @return intracranialPressure
 	 */
 	@Column(nullable = true)
-	@Min(value = 0)
-	@Max(value = 100)
+	@Range(min = 0, max = 120)
 	public Integer getIntracranialPressure() {
 		return intracranialPressure;
 	}
@@ -253,8 +255,8 @@ public class HypertonicSalineDecision extends ClinicalDecision {
 	 * 
 	 * @return meanArterialPressure
 	 */
-	@Min(value = 0)
-	@Max(value = 200)
+	@NotNull
+	@Range(min = 30, max = 200)
 	public Integer getMeanArterialPressure() {
 		return meanArterialPressure;
 	}
@@ -270,8 +272,7 @@ public class HypertonicSalineDecision extends ClinicalDecision {
 	}
 
 	@Column(nullable = true)
-	@Min(value = 0)
-	@Max(value = 25)
+	@Range(min = 0, max = 50)
 	public Integer getCentralVenousPressure() {
 		return centralVenousPressure;
 	}
@@ -280,8 +281,8 @@ public class HypertonicSalineDecision extends ClinicalDecision {
 		this.centralVenousPressure = centralVenousPressure;
 	}
 
-	@Min(value = 0)
-	@Max(value = 10)
+	@NotNull
+	@Range(min = 0, max = 10)
 	public Double getCurrentHypertonicSalineDripRate() {
 		return currentHypertonicSalineDripRate;
 	}
