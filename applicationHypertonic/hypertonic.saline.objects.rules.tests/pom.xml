@@ -31,7 +31,7 @@
 				<configuration>
 					<testSuite>hypertonic.saline.objects.rules.tests</testSuite>
 					<testClass>saline.core.tests.SalineObjectsNoDatabaseSuite</testClass>
-					<testFailureIgnore>true</testFailureIgnore>			
+					<testFailureIgnore>false</testFailureIgnore>			
 				</configuration>
 			</plugin>
 		</plugins>
