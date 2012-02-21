@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	TestHypertonicConstructors.class,
 	TestHypertonicCalculationFunctions.class,
 	TestHypertonicDecisionAddToPatient.class,
-	KnowledgeEngineTest.class
+	KnowledgeEngineTest.class,
+	TestHypertonicDecisionValidator.class
 })
 
 public class SalineObjectsNoDatabaseSuite {
