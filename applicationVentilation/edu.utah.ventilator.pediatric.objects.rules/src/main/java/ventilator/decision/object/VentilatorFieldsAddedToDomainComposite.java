@@ -108,7 +108,9 @@ public class VentilatorFieldsAddedToDomainComposite extends
 	private Label lblLastDate_pH_4;
 	private Label lblLastDate_PaO2_4;
 	private Label lblLastDate_PCO2_4;
-	protected boolean oxygenChangeAlreadyPropagated = false;
+//	protected boolean oxygenChangeAlreadyPropagated = false;
+//	protected boolean saturationChangeAlreadyPropagated = false;
+//	protected boolean meanAirwayChangeAlreadyPropagated = false;
 
 	public VentilatorFieldsAddedToDomainComposite(Composite parent, int style) {
 		super(parent, style);
@@ -334,7 +336,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		FiO2Text.addFocusListener(new FocusListener() {		
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (!oxygenChangeAlreadyPropagated)
+//				if (!oxygenChangeAlreadyPropagated)
 					fireOxygenChanged(FiO2Text.getText());
 			}
 
@@ -354,6 +356,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		SpO2Text.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		SpO2Text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		SpO2Text.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		SpO2Text.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		SpO2Text.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!saturationChangeAlreadyPropagated )
+					fireSaturationChanged(SpO2Text.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblMap = new Label(composite_PC, SWT.NONE);
 		lblMap.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
@@ -365,6 +390,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		MAPText.setToolTipText("Mean Airway Pressure");
 		MAPText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		MAPText.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		MAPText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		MAPText.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!meanAirwayChangeAlreadyPropagated)
+					fireAirwayPressureChanged(MAPText.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblVentilatorRate = new Label(composite_PC, SWT.NONE);
 		lblVentilatorRate.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
@@ -515,7 +563,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		FiO2Text_2.addFocusListener(new FocusListener() {		
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (!oxygenChangeAlreadyPropagated)
+//				if (!oxygenChangeAlreadyPropagated)
 					fireOxygenChanged(FiO2Text_2.getText());
 			}
 
@@ -535,6 +583,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		SpO2Text_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		SpO2Text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 1, 1));
+		SpO2Text_2.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		SpO2Text_2.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		SpO2Text_2.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!saturationChangeAlreadyPropagated )
+					fireSaturationChanged(SpO2Text_2.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblMAP_2 = new Label(composite_PRVC, SWT.NONE);
 		lblMAP_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
@@ -546,6 +617,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		MAPText_2.setToolTipText("Mean Airway Pressure");
 		MAPText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		MAPText_2.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		MAPText_2.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		MAPText_2.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!meanAirwayChangeAlreadyPropagated)
+					fireAirwayPressureChanged(MAPText_2.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblVentilatorRate_2 = new Label(composite_PRVC, SWT.NONE);
 		lblVentilatorRate_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
@@ -696,7 +790,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		FiO2Text_3.addFocusListener(new FocusListener() {		
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (!oxygenChangeAlreadyPropagated)
+//				if (!oxygenChangeAlreadyPropagated)
 					fireOxygenChanged(FiO2Text_3.getText());
 			}
 
@@ -715,6 +809,30 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		SpO2Text_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		SpO2Text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 1, 1));
+		SpO2Text_3.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		SpO2Text_3.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		SpO2Text_3.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!saturationChangeAlreadyPropagated )
+					fireSaturationChanged(SpO2Text_3.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
+		
 
 		Label lblMap_3 = new Label(composite_HFOV, SWT.NONE);
 		lblMap_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
@@ -727,6 +845,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				255, 255, 153));
 		MAPText_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		MAPText_3.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		MAPText_3.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		MAPText_3.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!meanAirwayChangeAlreadyPropagated)
+					fireAirwayPressureChanged(MAPText_3.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblFrequency_3 = new Label(composite_HFOV, SWT.NONE);
 		lblFrequency_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
@@ -845,7 +986,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		FiO2Text_4.addFocusListener(new FocusListener() {		
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (!oxygenChangeAlreadyPropagated)
+//				if (!oxygenChangeAlreadyPropagated)
 					fireOxygenChanged(FiO2Text_4.getText());
 			}
 
@@ -863,6 +1004,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		SpO2Text_4.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		SpO2Text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 1, 1));
+		SpO2Text_4.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		SpO2Text_4.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		SpO2Text_4.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!saturationChangeAlreadyPropagated )
+					fireSaturationChanged(SpO2Text_4.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblMAP_4 = new Label(composite_VolumeControl, SWT.NONE);
 		lblMAP_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
@@ -872,6 +1036,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		MAPText_4 = new Text(composite_VolumeControl, SWT.BORDER);
 		MAPText_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		MAPText_4.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		MAPText_4.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		MAPText_4.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+//				if (!meanAirwayChangeAlreadyPropagated)
+					fireAirwayPressureChanged(MAPText_4.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblVentilatorRate_4 = new Label(composite_VolumeControl, SWT.NONE);
 		lblVentilatorRate_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
@@ -922,14 +1109,36 @@ public class VentilatorFieldsAddedToDomainComposite extends
 
 	}
 
+	protected void fireAirwayPressureChanged(String text) {
+		System.out.println("In mean airway changed");
+//		meanAirwayChangeAlreadyPropagated = true;
+		MAPText.setText(text);
+		MAPText_2.setText(text);
+		MAPText_3.setText(text);
+		MAPText_4.setText(text);
+//		meanAirwayChangeAlreadyPropagated = false;
+		
+	}
+
+	protected void fireSaturationChanged(String text) {
+		System.out.println("In fire saturation changed");
+//		saturationChangeAlreadyPropagated = true;
+		SpO2Text.setText(text);
+		SpO2Text_2.setText(text);
+		SpO2Text_3.setText(text);
+		SpO2Text_4.setText(text);
+//		saturationChangeAlreadyPropagated = false;
+		
+	}
+
 	private void fireOxygenChanged(String text) {
 		System.out.println("In fire oxygen changed");
-		oxygenChangeAlreadyPropagated = true;
+//		oxygenChangeAlreadyPropagated = true;
 		FiO2Text.setText(text);
 		FiO2Text_2.setText(text);
 		FiO2Text_3.setText(text);
 		FiO2Text_4.setText(text);
-		oxygenChangeAlreadyPropagated = false;
+//		oxygenChangeAlreadyPropagated = false;
 	}
 
 	private void clearModeGroupButtons() {
