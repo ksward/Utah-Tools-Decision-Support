@@ -1,5 +1,6 @@
 package edu.utah.cdmcc.editors;
 
+import java.text.DecimalFormat;
 import java.util.GregorianCalendar;
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionException;
@@ -31,6 +32,7 @@ import core.decision.object.ClinicalDecision;
 import core.drools.utilities.RulesEngineException;
 import core.hibernate.HibernateValidationHandler;
 import core.laboratory.object.ArterialBloodGasLaboratoryResult;
+import core.listener.interfaces.IGuiListener;
 import core.multiple.object.controllers.IPatientDecisionController;
 import drools.engine.KnowledgeEngine;
 import edu.utah.cdmcc.decisionsupport.application.core.Activator;
@@ -56,7 +58,7 @@ import edu.utah.cdmcc.views.DecisionCalculatorEditorTemplate;
  * 
  */
 public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionCalculatorEditorTemplate implements
-		ILaboratoryListener {
+		ILaboratoryListener, IGuiListener {
 	public KnowledgeEngine decisionEngine;
 	private GregorianCalendar decisionTime;
 	protected StyledText emptyTrace;
@@ -83,6 +85,7 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		setupGeneralDecisionPart(parent);
 		setupDomainSpecificPart();
 		populateBloodGasFields();
+		populateTidalVolumeCalculatedLabels(); //TODO this is NOT the right place for this because will not ever exist
 	}
 
 	private void setupGeneralDecisionPart(final Composite parent) {
@@ -96,6 +99,7 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		ApplicationControllers.getDecisionController().addDecisionFiredListener(editorComposite);
 		ApplicationControllers.getDatabaseController().addDatabaseChangedListener(this);
 		ApplicationControllers.getLaboratoryController().addLaboratoryChangedListener(this);
+		editorComposite.addGuiFieldsChangeListener(this);
 		addContextHelp();
 	}
 
@@ -144,7 +148,12 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		editorComposite.getAcceptButton().addSelectionListener(this);
 		editorComposite.getDeclineButton().addSelectionListener(this);
 		editorComposite.getBtnNewAbg().addSelectionListener(this);
-
+	}
+	
+	private void listenToTidalVolumeChanges(){
+		//TODO need to figure out how to listen for changes in tidal volume on the composite
+		// so that the editor can fix the calculated cc/kg labels on the composite which
+		// requires the patient's weight.
 	}
 
 	@Override
@@ -164,6 +173,7 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		ApplicationControllers.getDecisionController().removeDecisionFiredListener(editorComposite);
 		ApplicationControllers.getDatabaseController().removeDatabaseChangedListener(this);
 		ApplicationControllers.getLaboratoryController().removeLaboratoryChangedListener(this);
+		editorComposite.removeGuiFieldsChangeListener(this);
 		super.dispose();
 	}
 
@@ -470,6 +480,21 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		}
 	}
 
+	private void populateTidalVolumeCalculatedLabels(){
+		Double patientWeight = getPatient().getWeight();
+		DecimalFormat formatter = new DecimalFormat("###.##");
+		if (editorComposite.getTidalVolumeText().getText().length()>0){
+			Double tidalPerKg = new Double(editorComposite.getTidalVolumeText().getText())/patientWeight;
+			editorComposite.getTidalVolumePerKgLabel().setText((formatter.format(tidalPerKg)) + " ml/kg");
+			editorComposite.getTidalVolumePerKgLabel2().setText((formatter.format(tidalPerKg)) + " ml/kg");
+			editorComposite.getTidalVolumePerKgLabel4().setText((formatter.format(tidalPerKg)) + " ml/kg");
+		} else {
+			editorComposite.getTidalVolumePerKgLabel().setText("Calculated ml/kg");
+			editorComposite.getTidalVolumePerKgLabel2().setText("Calculated ml/kg");
+			editorComposite.getTidalVolumePerKgLabel4().setText("Calculated ml/kg");
+		}
+	}
+	
 	private GregorianCalendar populatePreviousObservationTime() {
 		IPatientDecisionController patientDecisionController = new VentilatorPediatricPatientDecisions();
 		return patientDecisionController.retrievePreviousObservationDateTime(getPatient());
@@ -589,6 +614,12 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 			editorComposite.getObservationDate().setFocus();
 
 		}
+	}
+
+	@Override
+	public void guiFieldsChanged(Composite composite) {
+		populateTidalVolumeCalculatedLabels();
+		
 	}
 
 }

@@ -3,10 +3,15 @@ package ventilator.decision.object;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.swt.widgets.Composite;
 
+import core.decision.object.ClinicalDecision;
 import core.decision.object.DomainFieldsCompositeAdded;
+import core.decision.object.IDecisionListener;
 import core.field.validators.Verify;
+import core.listener.interfaces.IGuiListener;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
@@ -31,6 +36,9 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.DateTime;
 import com.swtdesigner.SWTResourceManager;
+
+//import edu.utah.cdmcc.decisionsupport.controller.core.DecisionController;
+
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.custom.CTabFolder;
@@ -39,7 +47,7 @@ import org.eclipse.swt.custom.StyledText;
 
 @SuppressWarnings("unused")
 public class VentilatorFieldsAddedToDomainComposite extends
-		DomainFieldsCompositeAdded {
+		DomainFieldsCompositeAdded{
 
 	private DateTime observationTime;
 	private Label observationTimeLabel;
@@ -108,6 +116,11 @@ public class VentilatorFieldsAddedToDomainComposite extends
 	private Label lblLastDate_pH_4;
 	private Label lblLastDate_PaO2_4;
 	private Label lblLastDate_PCO2_4;
+	private Label tidalVolumePerKgLabel;
+	private Label tidalVolumePerKgLabel4;
+	private Label tidalVolumePerKgLabel2;
+	private ListenerList guiFieldsChangedListeners;
+	static Logger log = Logger.getLogger(VentilatorFieldsAddedToDomainComposite.class);
 
 	public VentilatorFieldsAddedToDomainComposite(Composite parent, int style) {
 		super(parent, style);
@@ -474,7 +487,10 @@ public class VentilatorFieldsAddedToDomainComposite extends
 			}
 		});
 		
-		new Label(composite_PC, SWT.NONE);
+		tidalVolumePerKgLabel = new Label(composite_PC, SWT.NONE);
+		tidalVolumePerKgLabel.setFont(org.eclipse.wb.swt.SWTResourceManager.getFont("Lucida Grande", 9, SWT.NORMAL));
+		tidalVolumePerKgLabel.setText("(Calculated ml/kg)");
+		tidalVolumePerKgLabel.setToolTipText("Calculated ml/kg");
 		new Label(composite_PC, SWT.NONE);
 
 		Label lblPeep = new Label(composite_PC, SWT.NONE);
@@ -793,7 +809,9 @@ public class VentilatorFieldsAddedToDomainComposite extends
 			}
 		});
 		
-		new Label(composite_PRVC, SWT.NONE);
+		tidalVolumePerKgLabel2 = new Label(composite_PRVC, SWT.NONE);
+		tidalVolumePerKgLabel2.setFont(org.eclipse.wb.swt.SWTResourceManager.getFont("Lucida Grande", 9, SWT.NORMAL));
+		tidalVolumePerKgLabel2.setText("(Calculated ml/kg)");
 		new Label(composite_PRVC, SWT.NONE);
 
 		Label lblPEEP_2 = new Label(composite_PRVC, SWT.NONE);
@@ -1304,7 +1322,9 @@ public class VentilatorFieldsAddedToDomainComposite extends
 			}
 		});
 		
-		new Label(composite_VolumeControl, SWT.NONE);
+		tidalVolumePerKgLabel4 = new Label(composite_VolumeControl, SWT.NONE);
+		tidalVolumePerKgLabel4.setText("(Calculated ml/kg)");
+		tidalVolumePerKgLabel4.setFont(org.eclipse.wb.swt.SWTResourceManager.getFont("Lucida Grande", 9, SWT.NORMAL));
 		new Label(composite_VolumeControl, SWT.NONE);
 
 		Label lblPEEP_4 = new Label(composite_VolumeControl, SWT.NONE);
@@ -1368,15 +1388,14 @@ public class VentilatorFieldsAddedToDomainComposite extends
 	private void fireVentilatorRateChanged(String text) {
 		ventilatorRateText.setText(text);
 		ventilatorRateText_2.setText(text);
-		ventilatorRateText_4.setText(text);
-		
+		ventilatorRateText_4.setText(text);		
 	}
 	
 	private void fireTidalVolumeChanged(String text){
 		tidalVolumeText.setText(text);
 		tidalVolumeText_2.setText(text);
-		tidalVolumeText_4.setText(text);
-	
+		tidalVolumeText_4.setText(text);	
+		fireGuiFieldsChanged(this);
 	}
 	
 	private void firePeepChanged(String text){
@@ -1451,6 +1470,10 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		// ventilatorModeGroup.setFocus ();
 	}
 
+	// Getters that are included below are used by the editor containing this composite
+	// to adjust labels in the composite.  For example, the composite does not know
+	// anything about blood gas times, patient weight, etc.
+	
 	public Button getBtnNewAbg() {
 		return btnNewAbg;
 	}
@@ -1557,5 +1580,116 @@ public class VentilatorFieldsAddedToDomainComposite extends
 
 	public Label getLblLastDate_PCO2_4() {
 		return lblLastDate_PCO2_4;
+	}
+
+	public Label getTidalVolumePerKgLabel() {
+		return tidalVolumePerKgLabel;
+	}
+
+	public Label getTidalVolumePerKgLabel4() {
+		return tidalVolumePerKgLabel4;
+	}
+
+	public Label getTidalVolumePerKgLabel2() {
+		return tidalVolumePerKgLabel2;
+	}
+
+	
+	// Getters below allow access to the values entered in the GUI
+	// Because of value propagation between tabs, we only need
+	// to provide access to the first version of each one.  For
+	// example, the ventilator rate is the same on all tabs
+	// because we fire ventilatorRateChanged and make them the same.
+	
+	public Text getFiO2Text() {
+		return FiO2Text;
+	}
+
+	public Text getMAPText() {
+		return MAPText;
+	}
+
+	public Text getSpO2Text() {
+		return SpO2Text;
+	}
+
+	public Text getVentilatorRateText() {
+		return ventilatorRateText;
+	}
+
+	public Text getTidalVolumeText() {
+		return tidalVolumeText;
+	}
+
+	public Text getPEEPText() {
+		return PEEPText;
+	}
+
+	public Text getPIPText() {
+		return PIPText;
+	}
+
+	public Text getFreqText_3() {
+		return FreqText_3;
+	}
+
+	public Text getAmpText_3() {
+		return AmpText_3;
+	}
+
+	public Text getPlateauPressureText_4() {
+		return PlateauPressureText_4;
+	}
+
+	public Button getBtnPressureControl() {
+		return btnPressureControl;
+	}
+
+	public Button getBtnPrvc() {
+		return btnPrvc;
+	}
+
+	public Button getBtnHfov() {
+		return btnHfov;
+	}
+
+	public Button getBtnVolumeControl() {
+		return btnVolumeControl;
+	}
+
+	public ListenerList getGuiFieldsChangedListeners() {
+		return guiFieldsChangedListeners;
+	}
+
+	public void setGuiFieldsChangedListeners(ListenerList guiFieldsChangedListeners) {
+		this.guiFieldsChangedListeners = guiFieldsChangedListeners;
+	}
+
+	public void addGuiFieldsChangeListener(final IGuiListener listener) {
+		log.debug("Adding GUI change listener: " + listener);
+		if (guiFieldsChangedListeners == null) {
+			guiFieldsChangedListeners = new ListenerList();
+		}
+		guiFieldsChangedListeners.add(listener);
+	}
+	
+	public void removeGuiFieldsChangeListener(final IGuiListener listener) {
+		log.debug("Removing decision listener: "+listener);
+		if (guiFieldsChangedListeners != null) {
+			guiFieldsChangedListeners.remove(listener);
+			if (guiFieldsChangedListeners.isEmpty())
+				guiFieldsChangedListeners = null;
+		}
+	}
+	
+	public void fireGuiFieldsChanged(final VentilatorFieldsAddedToDomainComposite composite) {
+		System.out.println("Firing GUI fields changed in composite: "+composite);
+		if (guiFieldsChangedListeners == null)
+			return;
+		Object[] rls = guiFieldsChangedListeners.getListeners();
+		for (Object o : rls) {
+			IGuiListener listener = (IGuiListener) o;
+			listener.guiFieldsChanged(composite);
+		}
 	}
 }
