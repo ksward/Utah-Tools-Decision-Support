@@ -54,7 +54,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 	private Text MAPText;
 	private Text SpO2Text;
 	private Text ventilatorRateText;
-	private Text tidalVolumePerKgText;
+	private Text tidalVolumeText;
 	private Text PEEPText;
 	private Text PIPText;
 	private Text pHText_2;
@@ -64,7 +64,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 	private Text MAPText_2;
 	private Text SpO2Text_2;
 	private Text ventilatorRateText_2;
-	private Text tidalVolumePerKgText_2;
+	private Text tidalVolumeText_2;
 	private Text PEEPText_2;
 	private Text PIPText_2;
 	private Text pHText_3;
@@ -82,7 +82,7 @@ public class VentilatorFieldsAddedToDomainComposite extends
 	private Text SpO2Text_4;
 	private Text MAPText_4;
 	private Text ventilatorRateText_4;
-	private Text tidalVolumePerKgText_4;
+	private Text tidalVolumeText_4;
 	private Text PEEPText_4;
 	private Text PlateauPressureText_4;
 	private CTabFolder ventilatorTabFolder;
@@ -108,9 +108,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 	private Label lblLastDate_pH_4;
 	private Label lblLastDate_PaO2_4;
 	private Label lblLastDate_PCO2_4;
-//	protected boolean oxygenChangeAlreadyPropagated = false;
-//	protected boolean saturationChangeAlreadyPropagated = false;
-//	protected boolean meanAirwayChangeAlreadyPropagated = false;
 
 	public VentilatorFieldsAddedToDomainComposite(Composite parent, int style) {
 		super(parent, style);
@@ -336,7 +333,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		FiO2Text.addFocusListener(new FocusListener() {		
 			@Override
 			public void focusLost(FocusEvent e) {
-//				if (!oxygenChangeAlreadyPropagated)
 					fireOxygenChanged(FiO2Text.getText());
 			}
 
@@ -371,7 +367,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		SpO2Text.addFocusListener(new FocusListener() {		
 			@Override
 			public void focusLost(FocusEvent e) {
-//				if (!saturationChangeAlreadyPropagated )
 					fireSaturationChanged(SpO2Text.getText());
 			}
 
@@ -405,7 +400,6 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		MAPText.addFocusListener(new FocusListener() {		
 			@Override
 			public void focusLost(FocusEvent e) {
-//				if (!meanAirwayChangeAlreadyPropagated)
 					fireAirwayPressureChanged(MAPText.getText());
 			}
 
@@ -425,16 +419,61 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				153));
 		ventilatorRateText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false, 1, 1));
+		ventilatorRateText.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		ventilatorRateText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		ventilatorRateText.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					fireVentilatorRateChanged(ventilatorRateText.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblVtmlkg = new Label(composite_PC, SWT.NONE);
 		lblVtmlkg.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
 				false, 1, 1));
-		lblVtmlkg.setText("VT (ml/kg):");
+		lblVtmlkg.setText("VT (total ml):");
 
-		tidalVolumePerKgText = new Text(composite_PC, SWT.BORDER);
-		tidalVolumePerKgText.setEnabled(true);
-		tidalVolumePerKgText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+		tidalVolumeText = new Text(composite_PC, SWT.BORDER);
+		tidalVolumeText.setEnabled(true);
+		tidalVolumeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false, 1, 1));
+		tidalVolumeText.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		tidalVolumeText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		tidalVolumeText.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					fireTidalVolumeChanged(tidalVolumeText.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
+		
 		new Label(composite_PC, SWT.NONE);
 		new Label(composite_PC, SWT.NONE);
 
@@ -448,6 +487,28 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		PEEPText.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PEEPText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		PEEPText.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		PEEPText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		PEEPText.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					firePeepChanged(PEEPText.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblPip = new Label(composite_PC, SWT.NONE);
 		lblPip.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
@@ -459,6 +520,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		PIPText.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PIPText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		PIPText.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		PIPText.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		PIPText.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					firePipChanged(PIPText.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
+		
 		new Label(composite_PC, SWT.NONE);
 		new Label(composite_PC, SWT.NONE);
 
@@ -652,18 +736,63 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				255, 153));
 		ventilatorRateText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false, 1, 1));
+		ventilatorRateText_2.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		ventilatorRateText_2.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		ventilatorRateText_2.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					fireVentilatorRateChanged(ventilatorRateText_2.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblVtmlkg_2 = new Label(composite_PRVC, SWT.NONE);
 		lblVtmlkg_2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
 				false, 1, 1));
-		lblVtmlkg_2.setText("VT (ml/kg):");
+		lblVtmlkg_2.setText("VT (total ml):");
 
-		tidalVolumePerKgText_2 = new Text(composite_PRVC, SWT.BORDER);
-		tidalVolumePerKgText_2.setEnabled(true);
-		tidalVolumePerKgText_2.setBackground(SWTResourceManager.getColor(255,
+		tidalVolumeText_2 = new Text(composite_PRVC, SWT.BORDER);
+		tidalVolumeText_2.setEnabled(true);
+		tidalVolumeText_2.setBackground(SWTResourceManager.getColor(255,
 				255, 153));
-		tidalVolumePerKgText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+		tidalVolumeText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false, 1, 1));
+		tidalVolumeText_2.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		tidalVolumeText_2.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		tidalVolumeText_2.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					fireTidalVolumeChanged(tidalVolumeText_2.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
+		
 		new Label(composite_PRVC, SWT.NONE);
 		new Label(composite_PRVC, SWT.NONE);
 
@@ -688,6 +817,29 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		PIPText_2.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PIPText_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		PIPText_2.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		PIPText_2.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		PIPText_2.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					firePipChanged(PIPText_2.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
+		
 		new Label(composite_PRVC, SWT.NONE);
 		new Label(composite_PRVC, SWT.NONE);
 
@@ -879,6 +1031,18 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		FreqText_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		FreqText_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 1, 1));
+		FreqText_3.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		FreqText_3.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
 
 		Label lblAmplitude_3 = new Label(composite_HFOV, SWT.NONE);
 		lblAmplitude_3.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
@@ -890,6 +1054,19 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		AmpText_3.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		AmpText_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				1, 1));
+		AmpText_3.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		AmpText_3.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		
 		new Label(composite_HFOV, SWT.NONE);
 		new Label(composite_HFOV, SWT.NONE);
 
@@ -1070,17 +1247,63 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				255, 153));
 		ventilatorRateText_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false, 1, 1));
+		ventilatorRateText_4.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		ventilatorRateText_4.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		ventilatorRateText_4.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					fireVentilatorRateChanged(ventilatorRateText_4.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblVtmlkg_4 = new Label(composite_VolumeControl, SWT.NONE);
 		lblVtmlkg_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
 				false, 1, 1));
-		lblVtmlkg_4.setText("VT (ml/kg):");
+		lblVtmlkg_4.setText("VT (total ml):");
 
-		tidalVolumePerKgText_4 = new Text(composite_VolumeControl, SWT.BORDER);
-		tidalVolumePerKgText_4.setBackground(SWTResourceManager.getColor(255,
+		tidalVolumeText_4 = new Text(composite_VolumeControl, SWT.BORDER);
+		tidalVolumeText_4.setBackground(SWTResourceManager.getColor(255,
 				255, 153));
-		tidalVolumePerKgText_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
+		tidalVolumeText_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false, 1, 1));
+		
+		tidalVolumeText_4.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		tidalVolumeText_4.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		tidalVolumeText_4.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					fireTidalVolumeChanged(tidalVolumeText_4.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
+		
 		new Label(composite_VolumeControl, SWT.NONE);
 		new Label(composite_VolumeControl, SWT.NONE);
 
@@ -1093,6 +1316,28 @@ public class VentilatorFieldsAddedToDomainComposite extends
 		PEEPText_4.setBackground(SWTResourceManager.getColor(255, 255, 153));
 		PEEPText_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 1, 1));
+		PEEPText_4.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		PEEPText_4.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();
+				
+			}
+		});
+		PEEPText_4.addFocusListener(new FocusListener() {		
+			@Override
+			public void focusLost(FocusEvent e) {
+					firePeepChanged(PEEPText_4.getText());
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+			}
+		});
 
 		Label lblPlateauPressure = new Label(composite_VolumeControl, SWT.NONE);
 		lblPlateauPressure.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER,
@@ -1104,49 +1349,78 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				255, 153));
 		PlateauPressureText_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
 				true, false, 1, 1));
+		PlateauPressureText_4.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				Verify.verifyIntegerText(e);
+			}
+		});
+		PlateauPressureText_4.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				clearAdvice();
+				enableCorrectButtonCombination();		
+			}
+		});
 		new Label(composite_VolumeControl, SWT.NONE);
 		new Label(composite_VolumeControl, SWT.NONE);
 
 	}
 
-	protected void fireAirwayPressureChanged(String text) {
-		System.out.println("In mean airway changed");
-//		meanAirwayChangeAlreadyPropagated = true;
+	private void fireVentilatorRateChanged(String text) {
+		ventilatorRateText.setText(text);
+		ventilatorRateText_2.setText(text);
+		ventilatorRateText_4.setText(text);
+		
+	}
+	
+	private void fireTidalVolumeChanged(String text){
+		tidalVolumeText.setText(text);
+		tidalVolumeText_2.setText(text);
+		tidalVolumeText_4.setText(text);
+	
+	}
+	
+	private void firePeepChanged(String text){
+		PEEPText.setText(text);
+		PEEPText_2.setText(text);
+		PEEPText_4.setText(text);
+	}
+	
+	private void firePipChanged(String text){
+		PIPText.setText(text);
+		PIPText_2.setText(text);
+	}
+
+	private void fireAirwayPressureChanged(String text) {
 		MAPText.setText(text);
 		MAPText_2.setText(text);
 		MAPText_3.setText(text);
-		MAPText_4.setText(text);
-//		meanAirwayChangeAlreadyPropagated = false;
-		
+		MAPText_4.setText(text);	
 	}
 
-	protected void fireSaturationChanged(String text) {
-		System.out.println("In fire saturation changed");
-//		saturationChangeAlreadyPropagated = true;
+	private void fireSaturationChanged(String text) {
 		SpO2Text.setText(text);
 		SpO2Text_2.setText(text);
 		SpO2Text_3.setText(text);
-		SpO2Text_4.setText(text);
-//		saturationChangeAlreadyPropagated = false;
-		
+		SpO2Text_4.setText(text);	
 	}
 
 	private void fireOxygenChanged(String text) {
-		System.out.println("In fire oxygen changed");
-//		oxygenChangeAlreadyPropagated = true;
 		FiO2Text.setText(text);
 		FiO2Text_2.setText(text);
 		FiO2Text_3.setText(text);
 		FiO2Text_4.setText(text);
-//		oxygenChangeAlreadyPropagated = false;
 	}
 
+	
+	
+	
 	private void clearModeGroupButtons() {
 		btnHfov.setSelection(false);
 		btnPressureControl.setSelection(false);
 		btnVolumeControl.setSelection(false);
 		btnPrvc.setSelection(false);
 	}
+	
 
 	private void createDateTimeRefreshButton(Composite composite) {
 		Button btnRefreshDateTime = new Button(composite, SWT.NONE);
