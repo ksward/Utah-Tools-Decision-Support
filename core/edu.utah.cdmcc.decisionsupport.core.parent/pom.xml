@@ -8,7 +8,7 @@
 	<name>Decision Support Core Parent</name>
 	<description>Contains pom.xml to build decision support core modules.</description>
 
-		<properties>
+	<properties>
 		<tycho-version>0.13.0</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
