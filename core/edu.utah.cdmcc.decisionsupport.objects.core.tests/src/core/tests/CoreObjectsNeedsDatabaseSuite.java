@@ -21,7 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 })
 
-public class CoreObjectsNeedsDatabaseSuite {
+final public class CoreObjectsNeedsDatabaseSuite {
 
 	private CoreObjectsNeedsDatabaseSuite(){};
 	
