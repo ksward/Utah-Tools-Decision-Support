@@ -616,7 +616,7 @@ public class VentilatorDecisionCalculatorEditorBasedOnTemplate extends DecisionC
 		}
 	}
 
-	@Override
+
 	public void guiFieldsChanged(Composite composite) {
 		populateTidalVolumeCalculatedLabels();
 		

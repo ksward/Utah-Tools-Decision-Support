@@ -245,12 +245,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(inspiredO2Text_4);
 		inspiredO2Text_4.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireOxygenChanged(inspiredO2Text_4.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -264,12 +264,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(saturationO2Text_4);
 		saturationO2Text_4.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireSaturationChanged(saturationO2Text_4.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -281,12 +281,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				SWT.CENTER, true, false, 1, 1));
 		addListenersToTextField(meanAirwayPressureText_4);
 		meanAirwayPressureText_4.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireAirwayPressureChanged(meanAirwayPressureText_4.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -300,12 +300,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(ventilatorRateText_4);
 		ventilatorRateText_4.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireVentilatorRateChanged(ventilatorRateText_4.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -319,12 +319,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(tidalVolumeText_4);
 		tidalVolumeText_4.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireTidalVolumeChanged(tidalVolumeText_4.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -344,12 +344,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(peepText_4);
 		peepText_4.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				firePeepChanged(peepText_4.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -449,12 +449,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(inspiredO2Text_3);
 		inspiredO2Text_3.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireOxygenChanged(inspiredO2Text_3.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -469,12 +469,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(saturationO2Text_3);
 		saturationO2Text_3.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireSaturationChanged(saturationO2Text_3.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -490,12 +490,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				SWT.CENTER, true, false, 1, 1));
 		addListenersToTextField(meanAirwayPressureText_3);
 		meanAirwayPressureText_3.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireAirwayPressureChanged(meanAirwayPressureText_3.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -613,12 +613,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(inspiredO2Text_2);
 		inspiredO2Text_2.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireOxygenChanged(inspiredO2Text_2.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -633,12 +633,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(saturationO2Text_2);
 		saturationO2Text_2.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireSaturationChanged(saturationO2Text_2.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -652,12 +652,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				SWT.CENTER, true, false, 1, 1));
 		addListenersToTextField(meanAirwayPressureText_2);
 		meanAirwayPressureText_2.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireAirwayPressureChanged(meanAirwayPressureText_2.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -671,12 +671,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(ventilatorRateText_2);
 		ventilatorRateText_2.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireVentilatorRateChanged(ventilatorRateText_2.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -690,12 +690,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(tidalVolumeText_2);
 		tidalVolumeText_2.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireTidalVolumeChanged(tidalVolumeText_2.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -715,12 +715,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(peepText_2);
 		peepText_2.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				firePeepChanged(peepText_2.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -737,12 +737,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				1, 1));
 		addListenersToTextField(pipText_2);
 		pipText_2.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				firePipChanged(pipText_2.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -830,12 +830,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(inspiredO2Text);
 		inspiredO2Text.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireOxygenChanged(inspiredO2Text.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -850,12 +850,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(saturationO2Text);
 		saturationO2Text.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireSaturationChanged(saturationO2Text.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -869,12 +869,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(meanAirwayPressureText);
 		meanAirwayPressureText.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireAirwayPressureChanged(meanAirwayPressureText.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -888,12 +888,12 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				true, false, 1, 1));
 		addListenersToTextField(ventilatorRateText);
 		ventilatorRateText.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireVentilatorRateChanged(ventilatorRateText.getText());
 			}
 
-			@Override
+			
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -906,12 +906,11 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				false, 1, 1));
 		addListenersToTextField(tidalVolumeText);
 		tidalVolumeText.addFocusListener(new FocusListener() {
-			@Override
+			
 			public void focusLost(FocusEvent e) {
 				fireTidalVolumeChanged(tidalVolumeText.getText());
 			}
 
-			@Override
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -932,12 +931,9 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				1, 1));
 		addListenersToTextField(peepText);
 		peepText.addFocusListener(new FocusListener() {
-			@Override
 			public void focusLost(FocusEvent e) {
 				firePeepChanged(peepText.getText());
 			}
-
-			@Override
 			public void focusGained(FocusEvent e) {
 			}
 		});
@@ -954,12 +950,10 @@ public class VentilatorFieldsAddedToDomainComposite extends
 				1, 1));
 		addListenersToTextField(pipText);
 		pipText.addFocusListener(new FocusListener() {
-			@Override
 			public void focusLost(FocusEvent e) {
 				firePipChanged(pipText.getText());
 			}
 
-			@Override
 			public void focusGained(FocusEvent e) {
 			}
 		});

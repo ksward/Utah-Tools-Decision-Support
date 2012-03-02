@@ -13,7 +13,6 @@ import core.patient.object.Patient;
 public class VentilatorPediatricPatientLaboratories implements IPatientLaboratoryController {
 	static Logger logger = Logger.getLogger(VentilatorPediatricPatientLaboratories.class);
 
-	@Override
 	public ArterialBloodGasLaboratoryResult retrieveCurrentArterialBloodGasResult(
 			Patient patient) {
 		ArrayList<?> results = retrieveArterialBloodGasArray(patient);
@@ -24,7 +23,6 @@ public class VentilatorPediatricPatientLaboratories implements IPatientLaborator
 		}
 	}
 
-	@Override
 	public ArterialBloodGasLaboratoryResult retrievePreviousArterialBloodGasResult(
 			Patient patient) {
 		ArrayList<?> results = retrieveArterialBloodGasArray(patient);
