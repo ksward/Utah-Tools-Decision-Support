@@ -21,8 +21,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 })
 
-final public class CoreObjectsNeedsDatabaseSuite {
+ public final class CoreObjectsNeedsDatabaseSuite {
 
+	public static final String PORT = "9001";
+	
 	private CoreObjectsNeedsDatabaseSuite(){};
 	
 	@BeforeClass
@@ -43,20 +45,20 @@ final public class CoreObjectsNeedsDatabaseSuite {
 	}
 	
 	private static void startHSQLDB() {
-		final String PORT = "9001";
 		String[] args1 = { "-database", "testData", "-port",
 				PORT, "-no_system_exit", "true" };
 		Server.main(args1);
 	}
 
-	private static void stopHSQLDBServer() throws ClassNotFoundException, SQLException {
+	private static void stopHSQLDBServer() throws ClassNotFoundException,
+			SQLException {
 		Class.forName("org.hsqldb.jdbcDriver");
 		String url = "jdbc:hsqldb:hsql://localhost:9001";
-		Connection con = DriverManager.getConnection(url, "sa", "");
 		String sql = "SHUTDOWN";
+		Connection con = DriverManager.getConnection(url, "sa", "");
 		Statement stmt = con.createStatement();
-		stmt.executeUpdate(sql);
-		con.close();
+		stmt.executeUpdate(sql);		
 		stmt.close();
+		con.close();
 	}
 }
