@@ -23,6 +23,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 public class CoreObjectsNeedsDatabaseSuite {
 
+	private CoreObjectsNeedsDatabaseSuite(){};
+	
 	@BeforeClass
 	public static void setUp() throws Exception {
 		startHSQLDB();
@@ -41,8 +43,9 @@ public class CoreObjectsNeedsDatabaseSuite {
 	}
 	
 	private static void startHSQLDB() {
+		final String PORT = "9001";
 		String[] args1 = { "-database", "testData", "-port",
-				String.valueOf(9001), "-no_system_exit", "true" };
+				PORT, "-no_system_exit", "true" };
 		Server.main(args1);
 	}
 
@@ -53,6 +56,7 @@ public class CoreObjectsNeedsDatabaseSuite {
 		String sql = "SHUTDOWN";
 		Statement stmt = con.createStatement();
 		stmt.executeUpdate(sql);
+		con.close();
 		stmt.close();
 	}
 }
