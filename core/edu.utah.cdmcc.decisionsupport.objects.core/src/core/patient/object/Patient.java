@@ -129,7 +129,7 @@ public class Patient extends ModelObject{
 	public int getDeltaAgeYears(final GregorianCalendar date) {
 		long millisBetween = Math.abs(getBirthdate().getTimeInMillis()
 				- date.getTimeInMillis());
-		return (int) Math.round((millisBetween / (1000 * 60 * 60 * 24)) / 365);
+		return (int) ((millisBetween / (1000 * 60 * 60 * 24)) / 365);
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class Patient extends ModelObject{
 	public int getDeltaAgeDays(final GregorianCalendar date) {
 		long millisBetween = Math.abs(getBirthdate().getTimeInMillis()
 				- date.getTimeInMillis());
-		return (int) Math.round((millisBetween / (1000 * 60 * 60 * 24)));
+		return (int) (millisBetween / (1000 * 60 * 60 * 24));
 	}
 
 	public void setBirthdate(final GregorianCalendar birthdate) {
@@ -329,7 +329,7 @@ public class Patient extends ModelObject{
 				);
 	}
 
-	public int hashcode() {
+	public int hashCode() {
 		int result = 17;
 		result = 37 * result + this.getName().hashCode();
 		result = 37 * result + this.getStudyID().hashCode();
