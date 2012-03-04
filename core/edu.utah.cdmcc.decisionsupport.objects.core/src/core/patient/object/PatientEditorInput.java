@@ -66,7 +66,7 @@ public class PatientEditorInput implements IEditorInput {
 		return patient.equals(other.patient);
 	}
 	
-	public int hashcode(){
+	public int hashCode(){
 		return patient.hashCode();
 	}
 }

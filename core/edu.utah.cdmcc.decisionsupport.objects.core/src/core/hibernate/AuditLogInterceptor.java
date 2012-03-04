@@ -10,18 +10,13 @@ import org.hibernate.Session;
 import org.hibernate.event.ReplicateEvent;
 import org.hibernate.type.Type;
 
+@SuppressWarnings({ "rawtypes", "unused" })
 public class AuditLogInterceptor extends EmptyInterceptor {
 	private static final long serialVersionUID = 1L;
-	@SuppressWarnings("unused")
 	private Session session;
-	@SuppressWarnings("unused")
 	private String userId;
-	
-	@SuppressWarnings({ "rawtypes", "unused" })
 	private Set inserts = new HashSet();
-	@SuppressWarnings({ "rawtypes", "unused" })
 	private Set updates = new HashSet();
-	@SuppressWarnings({ "rawtypes", "unused" })
 	private Set deletes = new HashSet();
 	
 	public void setSession(Session session) {
@@ -59,13 +54,11 @@ public class AuditLogInterceptor extends EmptyInterceptor {
 	}
 	
 	//called before commit into database
-	@SuppressWarnings("rawtypes")
 	public void preFlush(Iterator iterator) {
 		System.out.println("preFlush");
 	}	
  
 	//called after committed into database
-	@SuppressWarnings("rawtypes")
 	public void postFlush(Iterator iterator) {
 		System.out.println("postFlush");
 	}

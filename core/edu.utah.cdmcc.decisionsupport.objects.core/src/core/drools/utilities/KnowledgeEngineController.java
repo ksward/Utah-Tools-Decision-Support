@@ -26,7 +26,7 @@ public class KnowledgeEngineController {
 			.newKnowledgeBuilder();
 	protected TrackingProcessEventListener trackingProcessEventListener = new TrackingProcessEventListener();
 	protected TrackingAgendaEventListener trackingAgendaEventListener = new TrackingAgendaEventListener();
-	protected WorkingMemoryInMemoryLogger traceRulesLogger;
+	protected WorkingMemoryInMemoryLogger traceRulesLogger = new WorkingMemoryInMemoryLogger();
 
 	protected void knowledgeEngineFromDRL(String rulesFile) {
 	kbuilder.add(ResourceFactory.newClassPathResource(("/" + rulesFile),
