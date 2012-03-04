@@ -63,6 +63,7 @@ public class KnowledgeEngine extends KnowledgeEngineController {
 		session.addEventListener(trackingProcessEventListener);
 		session.addEventListener(trackingAgendaEventListener);
 		// The following values are defaults and are expected by the JUnit core.tests
+		session.setGlobal("insulinOnlyPerHour", "adult");
 		session.setGlobal("severeHypoglycemiaLimit", 40);
 		session.setGlobal("moderateHypoglycemiaLimit", 60);
 		session.setGlobal("mildHypoglycemiaLimit", 80);

@@ -31,18 +31,18 @@ public class TestInsulinDosing {
 		decision = null;
 	}
 	
-	@Ignore
+
 	@Test
-	public void testStartingInsulinGlucose200(){
+	public void testStartingInsulinPerHourGlucose200(){
 		decision.setSerumGlucoseConcentration(200);
 		GlucoseObjectsEngineNeededSuite.getEngine().testFireRules(decision);
 		assertEquals("Failed starting dose of insulin", 
 				factor*decision.getPatientWeight()*decision.getSerumGlucoseConcentration(), decision.getRecommendedInsulinDripRate(),0);
 	}
 	
-	@Ignore
+
 	@Test
-	public void testStartingInsulinGlucose300(){
+	public void testStartingInsulinPerHourGlucose300(){
 		decision.setSerumGlucoseConcentration(300);
 		GlucoseObjectsEngineNeededSuite.getEngine().testFireRules(decision);
 		assertEquals("Failed starting dose of insulin", 
@@ -50,9 +50,9 @@ public class TestInsulinDosing {
 
 	}
 	
-	@Ignore
+
 	@Test
-	public void testStartingInsulinGlucose400(){
+	public void testStartingInsulinPerHourGlucose400(){
 		decision.setSerumGlucoseConcentration(400);
 		GlucoseObjectsEngineNeededSuite.getEngine().testFireRules(decision);
 		assertEquals("Failed starting dose of insulin", 
@@ -60,9 +60,9 @@ public class TestInsulinDosing {
 
 	}
 	
-	@Ignore
+
 	@Test
-	public void testStartingInsulinGlucose111(){
+	public void testStartingInsulinPerHourGlucose111(){
 		decision.setSerumGlucoseConcentration(111);
 		GlucoseObjectsEngineNeededSuite.getEngine().testFireRules(decision);
 		assertEquals("Failed starting dose of insulin", 
