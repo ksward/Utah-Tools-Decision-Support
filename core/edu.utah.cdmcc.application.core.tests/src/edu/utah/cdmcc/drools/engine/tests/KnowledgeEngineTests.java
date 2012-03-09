@@ -1,5 +1,6 @@
 package edu.utah.cdmcc.drools.engine.tests;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
@@ -12,7 +13,9 @@ import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
+import org.drools.runtime.StatefulKnowledgeSession;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import core.drools.utilities.TrackingAgendaEventListener;
 import core.drools.utilities.TrackingProcessEventListener;
@@ -22,6 +25,7 @@ public class KnowledgeEngineTests {
 
 	private KnowledgeBase kbase;
 	private KnowledgeBuilder builder;
+	private StatefulKnowledgeSession session;
 	private KnowledgeEngineInitializer initializer;
 
 	@Before
@@ -36,8 +40,15 @@ public class KnowledgeEngineTests {
 	}
 	
 	@Test
-	public void testKnowledgeBaseIsInitiallyEmpty(){
-		kbase = initializer.getKnowledgeBase();
+	public void testGetStatefulKnowledgeSessionFromInitializer(){
+		session = initializer.getStatefulKnowledgeSession();
+		assertNotNull("Stateful knowledge session should not be null", session);
+	}
+	
+	@Test
+	public void testKnowledgeBuilderIsInitiallyEmpty(){
+		builder = initializer.getKnowledgeBuilder();
+		assertTrue("Builder should be initially empty",builder.getKnowledgePackages().isEmpty());
 	}
 
 	@Test
@@ -175,5 +186,29 @@ public class KnowledgeEngineTests {
 		initializer.addExcelTableResource("/InvalidSample.xls");
 	}
 	
+	@Test
+	public void testAddPackagesToKnowledgeBase() throws Exception{
+		initializer.addExcelTableResource("/ValidSample.xls");
+		initializer.addDrlResource("/ValidSample.drl");
+		initializer.addPackagesToKnowledgeBase();
+		kbase = initializer.getKnowledgeBase();
+		assertEquals("Knowledge base should have one package added",2,kbase.getKnowledgePackages().size());
+	}
 	
+	@Ignore
+	@Test
+	public void testAddResourcesTwiceShouldFail() throws Exception{
+		initializer.addDrlResource("/ValidSample.drl");
+		initializer.addDrlResource("/ValidSample.drl");
+		initializer.addDrlResource("/ValidSample.drl");
+		builder = initializer.getKnowledgeBuilder();
+		assertEquals("There should only be one package", 1, builder
+				.getKnowledgePackages().size());
+		assertEquals(
+				"Package should have been added without errors.\n"
+						+ builder.getErrors(), 0, builder.getErrors().size());
+		if (builder.getKnowledgePackages().iterator().hasNext()){
+			//System.out.println(builder.getKnowledgePackages().iterator().);
+		}
+	}
 }
