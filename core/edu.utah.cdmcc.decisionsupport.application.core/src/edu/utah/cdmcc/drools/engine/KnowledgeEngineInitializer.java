@@ -2,6 +2,7 @@ package edu.utah.cdmcc.drools.engine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -13,7 +14,9 @@ import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderErrors;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
+import org.drools.definition.KnowledgePackage;
 import org.drools.io.ResourceFactory;
+import org.drools.runtime.StatefulKnowledgeSession;
 
 import core.drools.utilities.TrackingAgendaEventListener;
 import core.drools.utilities.TrackingProcessEventListener;
@@ -23,9 +26,10 @@ public class KnowledgeEngineInitializer {
 	private KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
 	private KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
 			.newKnowledgeBuilder();
-	protected TrackingProcessEventListener trackingProcessEventListener = new TrackingProcessEventListener();
-	protected TrackingAgendaEventListener trackingAgendaEventListener = new TrackingAgendaEventListener();
-	protected WorkingMemoryInMemoryLogger traceRulesLogger = new WorkingMemoryInMemoryLogger();
+	private StatefulKnowledgeSession session = kbase.newStatefulKnowledgeSession();
+	private TrackingProcessEventListener trackingProcessEventListener = new TrackingProcessEventListener();
+	private TrackingAgendaEventListener trackingAgendaEventListener = new TrackingAgendaEventListener();
+	private WorkingMemoryInMemoryLogger traceRulesLogger = new WorkingMemoryInMemoryLogger();
 
 	public KnowledgeBase getKnowledgeBase() {
 		return kbase;
@@ -35,6 +39,10 @@ public class KnowledgeEngineInitializer {
 		return kbuilder;
 	}
 
+	public StatefulKnowledgeSession getStatefulKnowledgeSession(){
+		return session;
+	}
+	
 	public TrackingProcessEventListener getTrackingProcessEventListener() {
 		return trackingProcessEventListener;
 	}
@@ -98,6 +106,11 @@ public class KnowledgeEngineInitializer {
 				droolsArtifactFile);
 		checkForIoException(droolsArtifactFile, inputStream);
 		return inputStream;
+	}
+
+	public void addPackagesToKnowledgeBase() {
+		Collection<KnowledgePackage> pkgs = kbuilder.getKnowledgePackages();
+		kbase.addKnowledgePackages(pkgs);
 	}
 	
 }
