@@ -6,12 +6,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import edu.utah.cdmcc.drools.engine.tests.KnowledgeEngineTests;
+
 @RunWith(Suite.class)
 @SuiteClasses({
 	TestPatientFunctions.class,
 	TestExperimentalSingleValueClasses.class,
 	TestPatientValidator.class,
-	TestExperimentalMultiValueClasses.class
+	TestExperimentalMultiValueClasses.class,
+	KnowledgeEngineTests.class
 //	TestNamedQueriesAccessible.class,
 //	TestPatientAdditionValidationDeletionJUnit4.class,
 //	TestUpdatePatient.class
