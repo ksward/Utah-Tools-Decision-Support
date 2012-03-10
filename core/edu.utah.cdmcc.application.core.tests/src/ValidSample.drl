@@ -1,8 +1,0 @@
-package edu.utah.cdmcc.drools.engine.tests.two
- 
-rule "Hello World"
-    when       
-    then
-        System.out.println("Hello world");
-end
-
