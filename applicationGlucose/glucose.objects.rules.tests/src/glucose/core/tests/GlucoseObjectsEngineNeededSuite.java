@@ -16,6 +16,7 @@ import drools.engine.KnowledgeEngine;
 		TestInsulinDosing.class,
 		TestGiveGlucose.class, 
 		TestDetectWeightClassification.class,
+		TestCoreKnowledgeEngineInitializerFromGlucose.class,
 		TestGlucosePreferencePageConstruction.class })
 		
 public class GlucoseObjectsEngineNeededSuite {
