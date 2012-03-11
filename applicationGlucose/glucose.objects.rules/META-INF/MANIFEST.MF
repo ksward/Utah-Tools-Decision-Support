@@ -3,7 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Glucose Objects and Rules
 Bundle-SymbolicName: glucose.objects.rules;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Export-Package: drools.engine,
+Export-Package: activator,
+ drools.debug,
+ drools.engine,
  glucose.decision.object,
  glucose.preferences
 Require-Bundle: edu.utah.cdmcc.decisionsupport.objects.core,
@@ -11,11 +13,12 @@ Require-Bundle: edu.utah.cdmcc.decisionsupport.objects.core,
  org.eclipse.core.runtime;bundle-version="3.4.0",
  Drools510Runtime;bundle-version="1.0.0",
  edu.utah.hibernate;bundle-version="1.0.0",
- org.eclipse.ui.views;bundle-version="3.6.0"
+ org.eclipse.ui.views;bundle-version="3.6.0",
+ edu.utah.cdmcc.hsqldb;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: J. Michael Dean, M.D.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: activator.Activator
-Eclipse-RegisterBuddy: org.hibernate.eclipse,  Drools510Runtime, edu.utah.cdmcc.decisionsupport.objects.core
+Eclipse-RegisterBuddy: Drools510Runtime, edu.utah.cdmcc.decisionsupport.objects.core, edu.utah.cdmcc.hsqldb
 Eclipse-ExtensibleAPI: true
 
