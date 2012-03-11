@@ -16,6 +16,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: J. Michael Dean, M.D.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: activator.Activator
-Eclipse-RegisterBuddy: org.hibernate.eclipse,  Drools510Runtime
+Eclipse-RegisterBuddy: org.hibernate.eclipse,  Drools510Runtime, edu.utah.cdmcc.decisionsupport.objects.core
 Eclipse-ExtensibleAPI: true
 
