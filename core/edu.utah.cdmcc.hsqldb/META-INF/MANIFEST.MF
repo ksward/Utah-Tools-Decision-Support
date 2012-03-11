@@ -35,3 +35,5 @@ Export-Package: org.hsqldb;
    javax.swing.table,
    javax.swing.event"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-BuddyPolicy: registered
+
