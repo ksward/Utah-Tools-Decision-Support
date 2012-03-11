@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="antlr-runtime.jar"/>
+	<classpathentry exported="true" kind="lib" path="drools-compiler.jar"/>
+	<classpathentry exported="true" kind="lib" path="drools-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="drools-decisiontables.jar"/>
+	<classpathentry exported="true" kind="lib" path="drools-jsr94.jar"/>
+	<classpathentry exported="true" kind="lib" path="drools-templates.jar"/>
+	<classpathentry exported="true" kind="lib" path="droolsjbpm-ide-common.jar"/>
+	<classpathentry exported="true" kind="lib" path="jbpm-bpmn2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jbpm-flow-builder.jar"/>
+	<classpathentry exported="true" kind="lib" path="jbpm-flow.jar"/>
+	<classpathentry exported="true" kind="lib" path="jsr94.jar"/>
+	<classpathentry exported="true" kind="lib" path="junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="jxl.jar"/>
+	<classpathentry exported="true" kind="lib" path="knowledge-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="knowledge-internal-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="mvel2.jar"/>
+	<classpathentry exported="true" kind="lib" path="org.eclipse.jdt.core_3.7.1.v_B76_R37x.jar"/>
+	<classpathentry exported="true" kind="lib" path="xmlpull.jar"/>
+	<classpathentry exported="true" kind="lib" path="xpp3_min.jar"/>
+	<classpathentry exported="true" kind="lib" path="xstream.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
