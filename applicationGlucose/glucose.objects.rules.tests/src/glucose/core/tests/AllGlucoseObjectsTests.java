@@ -23,7 +23,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-				GlucoseObjectsEngineNeededSuite.class
+				GlucoseObjectsEngineNeededSuite.class//,
+				//GlucoseObjectsNeedDatabaseSuite.class
 	
 				})
 /**
