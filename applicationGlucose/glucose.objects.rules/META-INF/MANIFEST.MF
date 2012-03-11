@@ -11,14 +11,14 @@ Export-Package: activator,
 Require-Bundle: edu.utah.cdmcc.decisionsupport.objects.core,
  org.eclipse.ui,
  org.eclipse.core.runtime;bundle-version="3.4.0",
- Drools510Runtime;bundle-version="1.0.0",
  edu.utah.hibernate;bundle-version="1.0.0",
  org.eclipse.ui.views;bundle-version="3.6.0",
- edu.utah.cdmcc.hsqldb;bundle-version="1.0.0"
+ edu.utah.cdmcc.hsqldb;bundle-version="1.0.0",
+ Drools540BetaRuntime;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: J. Michael Dean, M.D.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: activator.Activator
-Eclipse-RegisterBuddy: Drools510Runtime, edu.utah.cdmcc.decisionsupport.objects.core, edu.utah.cdmcc.hsqldb
+Eclipse-RegisterBuddy: Drools540BetaRuntime, edu.utah.cdmcc.decisionsupport.objects.core, edu.utah.cdmcc.hsqldb
 Eclipse-ExtensibleAPI: true
 
