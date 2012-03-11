@@ -10,6 +10,3 @@ when
 then
 	modify(decision){explain("Welcome.  No ventilator rules have been written yet.");}
 end
-
-
-//This is the end of the file
