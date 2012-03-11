@@ -5,8 +5,8 @@ Bundle-SymbolicName: edu.utah.cdmcc.decisionsupport.objects.core.tests
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: edu.utah.cdmcc.decisionsupport.objects.core;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: core.tests
-Require-Bundle: org.junit;bundle-version="4.8.2",
- edu.utah.mockito;bundle-version="1.0.0"
+Export-Package: edu.utah.cdmcc.decisionsupport.objects.core.tests
+Require-Bundle: edu.utah.mockito;bundle-version="1.0.0",
+ org.junit;bundle-version="4.8.0"
 
 
