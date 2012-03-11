@@ -16,19 +16,16 @@ public class CustomAgendaEventListener implements AgendaEventListener {
 	private static final Logger logger = Logger.getLogger(CustomAgendaEventListener.class);
 	private List<String> rulesFiredList = new ArrayList<String>();
 	
-	@Override
 	public void activationCancelled(ActivationCancelledEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void activationCreated(ActivationCreatedEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void afterActivationFired(AfterActivationFiredEvent event) {
 		rulesFiredList.add(event.getActivation().getRule().getName());
 		logger.info("Rule fired: " + event.getActivation().getRule().getName());
@@ -36,7 +33,6 @@ public class CustomAgendaEventListener implements AgendaEventListener {
 	}
 
 
-	@Override
 	public void beforeActivationFired(BeforeActivationFiredEvent arg0) {
 		// TODO Auto-generated method stub
 
@@ -55,13 +51,11 @@ public class CustomAgendaEventListener implements AgendaEventListener {
 		rulesFiredList.clear();
 	}
 
-	@Override
 	public void agendaGroupPopped(AgendaGroupPoppedEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void agendaGroupPushed(AgendaGroupPushedEvent arg0) {
 		// TODO Auto-generated method stub
 		
