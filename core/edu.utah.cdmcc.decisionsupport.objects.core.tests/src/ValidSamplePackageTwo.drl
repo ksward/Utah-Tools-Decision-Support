@@ -1,0 +1,15 @@
+package edu.utah.cdmcc.drools.engine.tests.two
+
+global Integer severeHypoglycemiaLimit;
+global Integer moderateHypoglycemiaLimit;
+global Integer mildHypoglycemiaLimit;
+global Integer lowerRangeLimit;
+global Integer upperRangeLimit;
+global Integer adultWeightLimit;    /*limit dextrose bolus to 1 or .5 amp*/
+global String insulinOnlyPerHour;   /*adult or pediatric*/
+ 
+rule "Hello World"
+    when       
+    then
+        System.out.println("Hello world");
+end

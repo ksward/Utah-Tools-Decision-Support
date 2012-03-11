@@ -1,8 +1,9 @@
 package edu.utah.cdmcc.drools.engine.tests;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.InputStream;
 import org.drools.KnowledgeBase;
@@ -15,9 +16,8 @@ import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import core.drools.utilities.TrackingAgendaEventListener;
+import core.drools.utilities.CustomAgendaEventListener;
 import core.drools.utilities.TrackingProcessEventListener;
 import edu.utah.cdmcc.drools.engine.KnowledgeEngineInitializer;
 
@@ -66,7 +66,7 @@ public class KnowledgeEngineTests {
 
 	@Test
 	public void testGetAgendaListener() {
-		TrackingAgendaEventListener listener = initializer
+		CustomAgendaEventListener listener = initializer
 				.getTrackingAgendaEventListener();
 		assertNotNull("Agenda tracker should not be null", listener);
 	}
@@ -80,7 +80,7 @@ public class KnowledgeEngineTests {
 
 	@Test
 	public void testAccessRulesArtifactFiles() {
-		InputStream inputStream = getClass().getResourceAsStream("/ValidSample.drl");
+		InputStream inputStream = getClass().getResourceAsStream("/ValidSamplePackageOne.drl");
 		assertNotNull("File: ValidSample.drl not found in classpath", inputStream);
 		inputStream = getClass().getResourceAsStream("/ValidSample.xls");
 		assertNotNull("File: ValidSample.xls not found in classpath", inputStream);
@@ -90,7 +90,7 @@ public class KnowledgeEngineTests {
 
 	@Test
 	public void testAddDrlResourceToKnowledgeBase() {
-		InputStream inputStream = getClass().getResourceAsStream("/ValidSample.drl");
+		InputStream inputStream = getClass().getResourceAsStream("/ValidSamplePackageOne.drl");
 		builder = initializer.getKnowledgeBuilder();
 		builder.add(ResourceFactory.newInputStreamResource(inputStream),
 				ResourceType.DRL);
@@ -126,7 +126,7 @@ public class KnowledgeEngineTests {
 
 	@Test
 	public void testAddDrlResourceViaInitializer() throws Exception {
-		initializer.addDrlResource("/ValidSample.drl");
+		initializer.addDrlResource("/ValidSamplePackageOne.drl");
 		builder = initializer.getKnowledgeBuilder();
 		assertEquals("Drl should have been added", 1, builder
 				.getKnowledgePackages().size());
@@ -187,28 +187,72 @@ public class KnowledgeEngineTests {
 	}
 	
 	@Test
-	public void testAddPackagesToKnowledgeBase() throws Exception{
+	public void testAddSamePackageResourcesToKnowledgeBase() throws Exception{
 		initializer.addExcelTableResource("/ValidSample.xls");
-		initializer.addDrlResource("/ValidSample.drl");
+		initializer.addDrlResource("/ValidSamplePackageOne.drl");
 		initializer.addPackagesToKnowledgeBase();
 		kbase = initializer.getKnowledgeBase();
-		assertEquals("Knowledge base should have one package added",2,kbase.getKnowledgePackages().size());
+		assertEquals("Knowledge base should have only one package added",1,kbase.getKnowledgePackages().size());
 	}
 	
-	@Ignore
 	@Test
-	public void testAddResourcesTwiceShouldFail() throws Exception{
-		initializer.addDrlResource("/ValidSample.drl");
-		initializer.addDrlResource("/ValidSample.drl");
-		initializer.addDrlResource("/ValidSample.drl");
-		builder = initializer.getKnowledgeBuilder();
-		assertEquals("There should only be one package", 1, builder
-				.getKnowledgePackages().size());
-		assertEquals(
-				"Package should have been added without errors.\n"
-						+ builder.getErrors(), 0, builder.getErrors().size());
-		if (builder.getKnowledgePackages().iterator().hasNext()){
-			//System.out.println(builder.getKnowledgePackages().iterator().);
-		}
+	public void testAddDifferentPackageResourcesToKnowledgeBase() throws Exception{
+		initializer.addExcelTableResource("/ValidSample.xls");
+		initializer.addDrlResource("/ValidSamplePackageTwo.drl");
+		initializer.addPackagesToKnowledgeBase();
+		kbase = initializer.getKnowledgeBase();
+		assertEquals("Knowledge base should have two packages added",2,kbase.getKnowledgePackages().size());
+	}
+	
+	@Test
+	public void testFireRulesViaInitializer() throws Exception{
+		initializer.addDrlResource("/ValidSamplePackageTwo.drl");
+		initializer.addPackagesToKnowledgeBase();
+		StatefulKnowledgeSession session = initializer.getStatefulKnowledgeSession();
+		session.addEventListener(initializer.getTrackingAgendaEventListener());
+		session.fireAllRules();	
+		assertTrue("Hello world rule should have fired",initializer.getTrackingAgendaEventListener().isRuleFired("Hello World"));
+		assertFalse("Nonsense rule should never have fired because does not exist",initializer.getTrackingAgendaEventListener().isRuleFired("Nonsense Rule"));
+	}
+	
+//	@Test
+//	public void testAgainFireRulesViaInitializer() throws Exception{
+//		initializer.addDrlResource("/ValidSamplePackageTwo.drl");
+//		initializer.addPackagesToKnowledgeBase();
+//		initializer.addTrackingAgendaEventListenerToSession();
+//		StatefulKnowledgeSession session = initializer.getStatefulKnowledgeSession();
+//		session.fireAllRules();	
+//		assertTrue("Hello world rule should have fired",initializer.getTrackingAgendaEventListener().isRuleFired("Hello World"));
+//		assertFalse("Nonsense rule should never have fired because does not exist",initializer.getTrackingAgendaEventListener().isRuleFired("Nonsense Rule"));
+//	}
+	
+	@Test
+	public void testAddTrackingAgendaListenerToSession() throws Exception{
+		initializer.addDrlResource("/ValidSamplePackageTwo.drl");
+		initializer.addPackagesToKnowledgeBase();
+		assertEquals("Process listener should not yet have been added to session",
+				0,initializer.getStatefulKnowledgeSession().getProcessEventListeners().size());
+		initializer.addTrackingAgendaEventListenerToSession();
+		assertEquals("Process listener should  have been added to session",
+				0,initializer.getStatefulKnowledgeSession().getProcessEventListeners().size());				
+	}
+	
+	@Test
+	public void testAddWorkingMemoryInMemoryLoggerToSession() throws Exception {
+		initializer.addDrlResource("/ValidSamplePackageTwo.drl");
+		initializer.addPackagesToKnowledgeBase();
+		StatefulKnowledgeSession session = initializer.getStatefulKnowledgeSession();
+		WorkingMemoryInMemoryLogger traceRulesLogger = new WorkingMemoryInMemoryLogger(session);
+		session.fireAllRules();
+		assertTrue("Logger should contain trace of Hello World",traceRulesLogger.getEvents().contains("Hello World"));
+	}
+	
+	@Test 
+	public void testInsertGlobalsIntoSession() throws Exception {
+		initializer.addDrlResource("/ValidSamplePackageTwo.drl");
+		initializer.addPackagesToKnowledgeBase();
+		StatefulKnowledgeSession session = initializer.getStatefulKnowledgeSession();
+		session.setGlobal("insulinOnlyPerHour", "adult");
+		assertEquals("Should return value for global insulinOnlyPerHour","adult",session.getGlobal("insulinOnlyPerHour"));
 	}
 }
