@@ -154,25 +154,3 @@ rule "How much saline for Na 141-145 and normal ICP"
 		System.out.println(kcontext.getRule().getName());
 end
 
-//rule "Increased ICP with Na below threshold, OSM below threshold, drip already in place"
-//@author("Michele Munkwitz")
-//no-loop 
-
-	//when
-		//decision : HypertonicSalineDecision( intracranialPressure > 20, currentSodiumValue < 165, currentOsmolalityValue < 360,
-		//currentHypertonicSalineDripRate > 0.1 && (currentHypertonicSalineDripRate*decision.getPatientWeight() 
-		//< decision.maxHypertonicSalineDripRate () ))
-		
-	//then
-		//modify(decision){setMinutesToNextEvaluation(decision.TWO_HOUR),
-		//advise("Increase 3% drip by 0.1 ml/kg/hr to a rate of ("+ decision.FormatTwoDecimal(decision.getcurrentHypertonicSalineDripRate + 0.1))" 
-		//+ "ml/kg/hr"),
-		//explain("For increased ICP with Na and OSM below threshold");}
-		//System.out.println(kcontext.getRule().getName());
-		
-//end
-
-
-
-
-//This is the end of the file
