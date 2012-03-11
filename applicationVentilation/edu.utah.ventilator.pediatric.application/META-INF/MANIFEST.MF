@@ -22,11 +22,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  edu.utah.cdmcc.decisionsupport.application.core;bundle-version="1.0.0",
  edu.utah.cdmcc.decisionsupport.objects.core;bundle-version="1.0.0",
- Drools510Runtime;bundle-version="1.0.0",
  edu.utah.ventilator.pediatric.objects.rules;bundle-version="1.0.0",
- edu.utah.hibernate;bundle-version="1.0.0"
-Eclipse-RegisterBuddy: edu.utah.hibernate, Drools510Runtime
+ edu.utah.hibernate;bundle-version="1.0.0",
+ Drools540BetaRuntime;bundle-version="1.0.0",
+ edu.utah.cdmcc.hsqldb;bundle-version="1.0.0"
+Eclipse-RegisterBuddy: edu.utah.hibernate, Drools540BetaRuntime
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.hsqldb
 

@@ -26,12 +26,6 @@
          unpack="false"/>
 
    <plugin
-         id="Drools510Runtime"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="edu.utah.cdmcc.decisionsupport.application.core"
          download-size="0"
          install-size="0"
@@ -646,5 +640,11 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="Drools540BetaRuntime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
