@@ -46,7 +46,7 @@
 					<testFailureIgnore>false</testFailureIgnore>
 					<testSuite>edu.utah.cdmcc.decisionsupport.objects.core.tests</testSuite>
 					<!-- <testClass>core.tests.TestPatientFunctions</testClass> -->
-					<testClass>core.tests.CoreObjectsTestSuiteWithMocks</testClass>
+					<testClass>edu.utah.cdmcc.decisionsupport.objects.core.tests.CoreObjectsTestSuiteWithMocks</testClass>
 
 				</configuration>
 			</plugin>
