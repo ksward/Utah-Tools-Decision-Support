@@ -3,7 +3,6 @@ package edu.utah.cdmcc.drools.engine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.audit.WorkingMemoryInMemoryLogger;
@@ -17,21 +16,24 @@ import org.drools.builder.ResourceType;
 import org.drools.definition.KnowledgePackage;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
-
-import core.drools.utilities.TrackingAgendaEventListener;
+import core.drools.utilities.CustomAgendaEventListener;
 import core.drools.utilities.TrackingProcessEventListener;
 
 public class KnowledgeEngineInitializer {
 
-	private KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+	private KnowledgeBase kbase;
 	private KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
 			.newKnowledgeBuilder();
-	private StatefulKnowledgeSession session = kbase.newStatefulKnowledgeSession();
+	
 	private TrackingProcessEventListener trackingProcessEventListener = new TrackingProcessEventListener();
-	private TrackingAgendaEventListener trackingAgendaEventListener = new TrackingAgendaEventListener();
+	private CustomAgendaEventListener trackingAgendaEventListener = new CustomAgendaEventListener();
 	private WorkingMemoryInMemoryLogger traceRulesLogger = new WorkingMemoryInMemoryLogger();
 
 	public KnowledgeBase getKnowledgeBase() {
+		if (kbase == null){
+			kbase = KnowledgeBaseFactory.newKnowledgeBase();
+			addPackagesToKnowledgeBase();
+		}
 		return kbase;
 	}
 
@@ -40,14 +42,14 @@ public class KnowledgeEngineInitializer {
 	}
 
 	public StatefulKnowledgeSession getStatefulKnowledgeSession(){
-		return session;
+		return getKnowledgeBase().newStatefulKnowledgeSession();
 	}
 	
 	public TrackingProcessEventListener getTrackingProcessEventListener() {
 		return trackingProcessEventListener;
 	}
 
-	public TrackingAgendaEventListener getTrackingAgendaEventListener() {
+	public CustomAgendaEventListener getTrackingAgendaEventListener() {
 		return trackingAgendaEventListener;
 	}
 
@@ -110,7 +112,13 @@ public class KnowledgeEngineInitializer {
 
 	public void addPackagesToKnowledgeBase() {
 		Collection<KnowledgePackage> pkgs = kbuilder.getKnowledgePackages();
-		kbase.addKnowledgePackages(pkgs);
+		getKnowledgeBase().addKnowledgePackages(pkgs);
 	}
+
+	public void addTrackingAgendaEventListenerToSession() {
+		getStatefulKnowledgeSession().addEventListener(getTrackingAgendaEventListener());
+		
+	}
+
 	
 }
