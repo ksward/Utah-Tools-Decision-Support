@@ -56,7 +56,7 @@
 		<!-- CLASSES TO BE MAPPED BY HIBERNATE -->
         <mapping class="core.patient.object.Patient" />
         <mapping class="core.decision.object.ClinicalDecision" />
-        <mapping class="hypertonic.decision.object.GlucoseDecision" />
+        <mapping class="glucose.decision.object.GlucoseDecision" />
  	    <mapping class="core.laboratory.object.BasicLaboratoryObject"/>
  	    <mapping class="core.laboratory.object.SingleValueLaboratoryObject"/>
  	    <mapping class="core.laboratory.object.SerumGlucoseLaboratoryResult"/>
