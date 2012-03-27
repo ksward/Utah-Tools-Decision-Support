@@ -9,7 +9,7 @@
 	<description>Contains pom.xml to build glucose application as well as the other decision support tools.</description>
 
 	<properties>
-		<tycho-version>0.14.0</tycho-version>
+		<tycho-version>0.14.1</tycho-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
@@ -67,7 +67,7 @@
 		<module>../glucose.objects.rules.tests</module>
 		<module>../edu.utah.cdmcc.decisionsupport.glucose.application</module>
 		<module>../edu.utah.cdmcc.decisionsupport.glucose.application.tests</module>
-		<module>../edu.utah.cdmcc.glucose.swtbot.tests</module>
+<!-- 		<module>../edu.utah.cdmcc.glucose.swtbot.tests</module> -->
 		<module>../edu.utah.cdmcc.help.glucose</module>
 		<module>../edu.utah.cdmcc.feature.glucose</module>
 		<module>../edu.utah.cdmcc.glucose.repository</module>

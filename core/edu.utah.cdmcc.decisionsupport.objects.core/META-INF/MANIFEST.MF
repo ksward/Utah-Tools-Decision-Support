@@ -21,6 +21,7 @@ Export-Package: com.swtdesigner,
  edu.utah.cdmcc.drools.engine,
  edu.utah.cdmcc.exceptions
 Eclipse-BuddyPolicy: registered
+Eclipse-RegisterBuddy: edu.utah.hibernate
 Eclipse-ExtensibleAPI: true
 Require-Bundle: org.eclipse.swt;visibility:=reexport,
  edu.utah.cdmcc.MySQLDriver;bundle-version="1.0.0";visibility:=reexport,

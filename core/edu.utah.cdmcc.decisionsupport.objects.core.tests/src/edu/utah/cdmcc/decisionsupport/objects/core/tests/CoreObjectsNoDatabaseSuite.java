@@ -6,9 +6,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	TestPatientFunctions.class,
-	DemographicCompositeTests.class//,
+	TestPatientFunctions.class//,
+	//DemographicCompositeTests.class,
 	//DecisionAddedCompositeTest.class
+	//TODO I can make this work if I make sure it runs on the right UI Thread like SWTbot tests
 	
 })
 
