@@ -23,12 +23,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({CoreObjectsNeedsDatabaseSuite.class,
-				CoreObjectsNoDatabaseSuite.class})
-/**
- * The following is permissible (individual core.tests instead of suites):
-@SuiteClasses({NeedsDatabaseSuite.class,
-				TestPatientFunctions.class,
-				TestGlucoseLaboratoryObject.class})
-*/				
+				CoreObjectsNoDatabaseSuite.class})				
 public class AllCoreObjectTests {
 }

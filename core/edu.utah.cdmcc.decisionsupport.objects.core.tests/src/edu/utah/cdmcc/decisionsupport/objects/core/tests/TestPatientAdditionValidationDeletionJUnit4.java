@@ -69,6 +69,7 @@ public class TestPatientAdditionValidationDeletionJUnit4 {
 		assertEquals("Record addition ", 1, newRecordCount);
 	}
 
+	//TODO This skipped test creates a dialog so cannot run in the thread
 //	@Test
 //	public void testDuplicateStudyIDDetection(){
 //		IPatientDAO patientDAO = DAOFactory.instance(DAOFactory.HIBERNATE).getPatientDAO();

@@ -65,7 +65,7 @@
 	<modules>
 		<module>../edu.utah.cdmcc.encryption</module>
 		<module>../edu.utah.cdmcc.MySQLDriver</module>
-		<module>../Drools510Runtime</module>
+<!-- 		<module>../Drools510Runtime</module> -->
 		<module>../Drools540BetaRuntime</module>
 		<module>../edu.utah.cdmcc.hsqldb</module>
 		<module>../edu.utah.hibernate</module>

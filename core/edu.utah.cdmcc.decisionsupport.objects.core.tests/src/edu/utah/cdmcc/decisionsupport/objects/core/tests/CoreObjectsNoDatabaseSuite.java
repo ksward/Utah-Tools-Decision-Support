@@ -6,6 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
+	KnowledgeEngineTests.class,
+	TestPatientValidator.class,
 	TestPatientFunctions.class//,
 	//DemographicCompositeTests.class,
 	//DecisionAddedCompositeTest.class
