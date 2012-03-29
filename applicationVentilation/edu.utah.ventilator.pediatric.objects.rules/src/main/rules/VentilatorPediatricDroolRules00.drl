@@ -3,7 +3,7 @@ package ventilator.decision.rules
 import ventilator.decision.object.VentilatorPediatricDecision;
 
 rule "Start up rule"
-@author("Kathy")
+@author("Mike")
 lock-on-active 
 when
 	decision: VentilatorPediatricDecision()
